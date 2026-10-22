@@ -386,7 +386,22 @@ header .muted,.panel>.muted,header .tip,.panel>.tip,.panel p.muted,.panel p.tip{
 .panel button:focus-visible,.field .lane:focus-visible{outline:3px solid #ffdb78!important;outline-offset:2px}
 
 </style>
-</head>
+<style id="history-defense-v48-final-contrast">
+
+/* v4.8: consistent top-right lobby button; inline left position overridden. */
+body #defense-lobby-return{position:fixed!important;left:auto!important;right:12px!important;top:9px!important;z-index:99999!important;display:inline-flex!important;align-items:center;justify-content:center;min-height:38px;background:linear-gradient(180deg,#744a2e,#332318)!important;color:#fff3cf!important;border:2px solid #e1b579!important;border-radius:9px!important;padding:8px 13px!important;text-decoration:none!important;font-weight:800!important}
+/* Quiz: dark text on pale surfaces regardless of the dark shell. */
+body #quizPanel .quiz-question,body #quizPanel h2,body #quizPanel h3{color:#ffe1a1!important}
+body #quizPanel .qopts button,body #quizPanel .qopts button *,body #quizPanel .question-box,body #quizPanel .question-box *{color:#223c4d!important}
+body #quizPanel .qopts button{background:#f5faf8!important;border:2px solid #b68a53!important;opacity:1}
+body #quizPanel .qopts button:disabled{opacity:.95!important}
+body #quizPanel .quiz-question{color:#2b3440!important}
+body #quizPanel .quiz-card,body #quizPanel .quiz-card *,body #quizPanel .quiz-wrap,body #quizPanel .quiz-wrap *{color:#253a42}
+body #quizPanel .quiz-note{color:#f6ddba!important}
+body #quizPanel .qopts button.correct{color:#123927!important;background:#d4efdf!important}
+body #quizPanel .qopts button.wrong{color:#6f2424!important;background:#ffdfd9!important}
+
+</style></head>
 <body>
 <a id="defense-lobby-return" href="../../index.html" style="position:fixed;top:8px;left:8px;z-index:99999;display:inline-block;background:#143c4a;color:#fff;padding:8px 12px;border:2px solid #e4cb89;border-radius:12px;text-decoration:none;font-weight:800;font-size:14px;box-shadow:0 3px 10px #0005">↩ 전투 지휘소</a>
 <div class="wrap">
