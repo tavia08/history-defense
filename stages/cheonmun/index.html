@@ -733,5 +733,5 @@ function render(){const w=cnv.width,h=cnv.height;ctx.clearRect(0,0,w,h);
  }
  ctx.restore();}}
 let last=0,uiClock=0;function frame(t){let dt=Math.min(.06,(t-last)/1000||0);last=t;if(S.phase==='battle'){for(let i=0;i<S.speed;i++)tick(dt);uiClock+=dt;if(uiClock>=.15){ui();uiClock=0}}render();requestAnimationFrame(frame)}requestAnimationFrame(frame);log('천문령 전투 프롤로그를 시작합니다.');updateHeroSkillLabel();showStory('pro');setBattleMessage('해당 위치를 눌러 방어선을 선택하세요.',true);ui();
-</script><script src="../../assets/hd-records.js" data-stage="cheonmun"></script></body></html>
+</script><script src="../../assets/hd-online-config.js"></script><script src="../../assets/hd-online.js"></script><script src="../../assets/hd-records.js" data-stage="cheonmun"></script></body></html>
 <!-- v2.2.0: 중복 캔버스 산길 제거, 사용자 제작 배경 그대로 표시 -->
