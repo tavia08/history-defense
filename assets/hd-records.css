@@ -1,0 +1,4 @@
+
+#hdRecordPrompt{position:fixed;inset:0;z-index:2147483000;display:grid;place-items:center;background:#080604c9;padding:16px;font-family:'Malgun Gothic',sans-serif}
+.hd-record-panel{background:#2b2017;color:#fff0d1;border:3px solid #d1a66c;border-radius:18px;padding:24px;width:min(480px,96vw);box-shadow:0 20px 65px #000a}
+.hd-record-panel h2{margin:0 0 12px;color:#ffe0a0}.hd-record-panel strong{font-size:34px;color:#ffe1a3}.hd-record-panel p{line-height:1.5}.hd-record-panel .hd-note{font-size:12px;color:#e9caa2}.hd-record-panel form{display:grid;gap:10px;margin-top:14px}.hd-record-panel label{display:grid;gap:5px}.hd-record-panel input,.hd-record-panel select{padding:10px;border-radius:8px;border:1px solid #c7a16c;background:#fff8ed;color:#30231b;font:inherit}.hd-actions{display:flex;gap:8px}.hd-actions button{background:#1681a7;color:white;border:1px solid #b1c7c7;border-radius:9px;padding:10px;cursor:pointer}.hd-actions button:last-child{background:#5d544c}
