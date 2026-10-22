@@ -1,0 +1,23 @@
+/* Ansi battle UI pilot: visual styles only; gameplay rules and DOM unchanged. */
+:root{--hd-wood:#241910;--hd-panel:#312217;--hd-dark:#19120e;--hd-gold:#d8ad69;--hd-gold-light:#ffe1a4;--hd-text:#f7e9d0;--hd-muted:#d9be93}
+body{background:radial-gradient(ellipse at 50% 0,#55402a 0%,#2b211a 46%,#120d0a 100%)!important;color:var(--hd-text)!important}
+header,.panel,.learning-panel,.upgrade-panel,.battleSide,.quickGateWrap,.quickCombatBar,.worksheetQuiz{background:linear-gradient(145deg,#38271a,#231910)!important;border:1px solid #ad824b!important;color:var(--hd-text)!important;box-shadow:inset 0 1px 0 #f3d49a18,0 5px 14px #08050377!important}
+header{border-width:2px!important;border-radius:14px!important;padding-right:155px!important}
+header h1{color:var(--hd-gold-light)!important;letter-spacing:.03em}
+header p,.muted,small,.footer,.status,.heroPick button span{color:var(--hd-muted)!important}
+.panel h2,.panel h3,.battleSide h3,.quickGateTitle,.quickCombatLabel{color:var(--hd-gold-light)!important}
+.chip,.stat,.log,.heroStatus,#quickGateSummary,#threatOverview,.notice,.quickGateWrap,.battleSide .quickCombatBar{background:#261c16!important;border:1px solid #80603a!important;color:#f2ddba!important}
+.log div{border-bottom-color:#725333!important}
+button,.heroPick button,.controls button,#quickGates button,#troops button,.stepper button,.quizAnswers button{background:linear-gradient(180deg,#61462e,#39291d)!important;border:1px solid #b8915b!important;color:#fff0d0!important;box-shadow:inset 0 1px 0 #fff5da18;transition:filter .15s,border-color .15s,box-shadow .15s}
+button:hover:not(:disabled){filter:brightness(1.17)!important;border-color:#f0cd88!important}
+button:disabled{opacity:.47!important;filter:saturate(.58)!important}
+button.on,button[aria-pressed="true"],#quickGates button.on,.heroPick button.on{background:linear-gradient(180deg,#386c5b,#1d4739)!important;border:2px solid #9ed9af!important;color:#fff4d6!important;outline:0!important;box-shadow:inset 0 0 0 1px #d5f2d555,0 0 10px #3b9a6d55!important}
+button.gateAlert,#quickGates button.is-critical{background:linear-gradient(180deg,#9c4937,#53231b)!important;border:2px solid #ffad83!important;color:white!important}
+#startWave,#confirmHero,#quizNext:not(:disabled){background:linear-gradient(180deg,#ab4d31,#79251b)!important;border:2px solid #e8b272!important;color:#fff4db!important;font-weight:900}
+#startWave:disabled,#quizNext:disabled{background:#49372b!important}
+#defense-lobby-return{background:linear-gradient(180deg,#80502f,#3d2718)!important;border:2px solid #e3b673!important;color:#ffebc5!important}
+.field,.battleCenter{border-color:#b18c55!important;box-shadow:0 6px 18px #0006!important}
+.battleKey,.legend{color:#e7d1a8!important}
+.worksheetQuiz #quizQuestion,.worksheetQuiz #quizFeedback{color:#fff0cf!important}
+@media(max-width:700px){header{padding-right:14px!important;padding-top:49px!important}#defense-lobby-return{font-size:12px!important;top:8px!important;right:8px!important;padding:7px 9px!important}}
+@media(prefers-reduced-motion:reduce){button{transition:none!important}}

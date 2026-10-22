@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>역사디펜스 | 고려 귀주대첩 v1.0 완성 후보</title>
+<style>
+:root{font-family:'Malgun Gothic','Noto Sans KR',sans-serif;color:#27445b}*{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#dceaf0,#f3ecdb);padding:14px}
+.wrap{max-width:1180px;margin:auto}header,.panel,.field{border:2px solid #ffffffd9;border-radius:19px;box-shadow:0 7px 18px #40606b21}header{padding:15px 20px;background:#fffaf0e8}h1{margin:0;font-size:27px}h2{font-size:18px;margin:0 0 9px}p{line-height:1.5}.muted,.tip,small{color:#647f8c}.hud{display:flex;gap:9px;flex-wrap:wrap;margin:10px 0}.chip{background:#fff;border-radius:30px;padding:8px 12px;font-size:13px;font-weight:800;border:1px solid #aacaca}.layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:12px}.panel{background:#fffefaed;padding:14px}.field{height:410px;position:relative;overflow:hidden;margin-bottom:14px;background:#c1c9c1 url('visuals/battlefield.webp') center center/cover no-repeat;isolation:isolate}
+.field::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(0,0,0,.03));pointer-events:none}
+.lane{position:absolute;left:13px;right:13px;height:39%;border-radius:16px;background:linear-gradient(180deg,rgba(255,255,240,.06),rgba(83,58,35,.03));box-shadow:inset 0 0 0 1px rgba(240,227,187,.28);cursor:pointer;overflow:hidden}
+.lane.north{top:4.5%}.lane.south{bottom:4.5%}.lane.selected{outline:4px solid #ffdb70;outline-offset:-4px;box-shadow:inset 0 0 0 2px #6b532b,0 0 0 2px rgba(255,246,213,.6)}
+.laneName{position:absolute;top:7px;left:9px;z-index:6;background:rgba(255,251,227,.94);border:1px solid #ccb77d;color:#414b41;box-shadow:0 2px 5px #39332225;border-radius:9px;padding:4px 10px;font-weight:900;font-size:12px}.lane-mini{font-size:11px;color:#24455f;background:#ffffffe3;padding:5px 8px;border-radius:8px;position:absolute;top:7px;right:8px;z-index:6;pointer-events:none}
+.lanePath{position:absolute;left:6%;right:6%;top:54%;height:0;border-bottom:3px dashed rgba(241,232,181,.45)}
+.lane.north .lanePath{top:60%}.lane.south .lanePath{top:56%}
+.baseWrap{position:absolute;z-index:4;pointer-events:none;bottom:92px;width:165px}.baseWrap.ally{left:8px}.baseWrap.enemy{right:8px}.baseWrap img{width:100%;display:block;filter:drop-shadow(0 4px 5px rgba(0,0,0,.25))}.baseLabel{margin-top:4px;text-align:center;font-weight:900;font-size:12px;color:#fff;padding:4px 8px;border-radius:10px;background:rgba(42,79,109,.86)}.baseWrap.enemy .baseLabel{background:rgba(139,66,56,.86)}
+.baseWrap.damaged::after{content:'🔥';position:absolute;right:10px;top:4px;font-size:32px;animation:flicker .6s infinite alternate}.baseWrap.enemy.damaged::after{left:10px;right:auto}
+.baseWrap.hit{animation:baseHit .35s ease-out 1}.baseHpBar{height:8px;background:rgba(255,255,255,.55);border-radius:7px;overflow:hidden;margin-top:5px;border:1px solid rgba(66,62,52,.25)}.baseHpBar i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#6ccb95,#8de0ad)}.baseWrap.enemy .baseHpBar i{background:linear-gradient(90deg,#f2ae72,#e9784d)}
+@keyframes baseHit{0%{transform:translateX(0)}25%{transform:translateX(-4px)}50%{transform:translateX(4px)}100%{transform:translateX(0)}} @keyframes flicker{from{transform:scale(.92) rotate(-5deg)}to{transform:scale(1.08) rotate(4deg)}}
+.unit{position:absolute;bottom:40px;display:grid;justify-items:center;z-index:8;transform:translateX(-50%);width:67px;pointer-events:none}.unit .figure{width:69px;height:94px;display:grid;place-items:end center;filter:drop-shadow(0 3px 3px #241b1c9c)}.unit .figure img{max-width:100%;max-height:100%;object-fit:contain;user-select:none}.unit.enemy .figure{filter:drop-shadow(0 3px 3px #39130dcc)}.unit.midboss .figure,.unit.boss .figure{transform:scale(1.12)}.unit .hp{width:48px;height:6px;border:1px solid #4d412d;border-radius:6px;overflow:hidden;background:#6b463f;box-shadow:0 1px 3px #0005}.unit .hp i{display:block;height:100%;background:#63d290}.unit.enemy .hp i{background:#f3a45a}
+.shot{position:absolute;z-index:12;pointer-events:none;font-size:22px;animation:pop .32s ease-out forwards}@keyframes pop{to{opacity:0;transform:scale(1.5)}}
+.skill-flash{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:14px;z-index:20;pointer-events:none;background:linear-gradient(90deg,#f3e4b2ea,#e5f1d9ec);border:2px solid #b48d43;border-radius:16px;animation:flashout 1.15s ease-out forwards;padding:14px 20px;font-size:23px;font-weight:900;color:#554e3e;text-align:center;box-shadow:0 12px 28px rgba(0,0,0,.18)}.skill-flash img{width:82px;height:105px;object-fit:contain;border-radius:12px;border:3px solid #fff7d0;box-shadow:0 4px 10px rgba(0,0,0,.18)}@keyframes flashout{0%{opacity:0;transform:translate(-50%,-50%) scale(.8)}15%{opacity:1;transform:translate(-50%,-50%) scale(1)}75%{opacity:1}100%{opacity:0}}
+.boss-banner{position:absolute;left:50%;top:16px;transform:translateX(-50%);z-index:16;padding:10px 18px;border-radius:999px;background:rgba(99,39,29,.88);color:#fff7dc;font-weight:900;box-shadow:0 8px 16px rgba(0,0,0,.2)}
+.controls{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.controls button,.action,.choose{font:inherit;font-size:13px;cursor:pointer;background:#e8f6f0;border:2px solid #a6d3c1;border-radius:13px;padding:10px 5px;font-weight:800;color:#2c5970}.controls button:disabled,.action:disabled{opacity:.45;cursor:not-allowed}.controls button img{display:block;width:78px;height:75px;object-fit:contain;margin:0 auto 4px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.14))}.action{background:#3a8caf;color:white;border-color:#3682a0;padding:10px 15px}.row{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.selectedBtn{background:#ffe39b!important;border-color:#dfae4a!important}.log{height:143px;overflow:auto;background:#eaf2e9;border-radius:9px;padding:8px;font-size:12px}.qopts{display:grid;gap:7px}.qopts button{padding:10px;border:1px solid #b9cacc;border-radius:10px;background:white;text-align:left;cursor:pointer}.qopts button:disabled{opacity:.8}.heroes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.hero-card{font:inherit;padding:10px;border-radius:15px;background:#f4f8ea;border:2px solid #b9c9b0;cursor:pointer;text-align:left}.hero-card img{width:100%;height:132px;object-fit:contain;border-radius:12px;border:1px solid #dae3cd;background:#eef2eb}.hero-card b{display:block;margin-top:8px}.hero-card small{display:block;margin-top:4px;font-size:11px}.hero-role{display:inline-block;margin-top:4px;padding:3px 8px;border-radius:999px;background:#fbe3a6;color:#795019;font-size:11px;font-weight:900}.hide{display:none!important}.tip{font-size:12px;color:#68828c}.wave-note{background:#e6f2e9;border-radius:10px;padding:10px 12px;margin-top:8px;font-size:12px;color:#335b63}.prep{background:#fff6e4;border:1px solid #e6d7b0;border-radius:11px;padding:9px;margin:9px 0}.meter{height:7px;background:#d1d8cd;border-radius:6px;overflow:hidden;margin-top:4px}.meter i{display:block;background:#6cac82;height:100%;width:100%}.section-subtitle{font-size:16px;margin:12px 0 7px}
+.learning-panel{min-height:285px}.commander-panel .side-heading{font-size:18px;color:#274d66;margin:0 0 12px}.guardian-profile{display:flex;align-items:center;gap:11px;background:#edf5f4;border-radius:13px;padding:10px}.guardian-seal{height:48px;width:48px;background:linear-gradient(135deg,#336d96,#63a8b5);border:3px solid #dceef2;border-radius:14px;display:grid;place-items:center;color:#fff;font-size:22px;font-weight:900}.hero-status,.enemy-status{border:1px solid #d5e5e0;background:#fff9e9;border-radius:12px;margin:12px 0;padding:12px;line-height:1.5}.hero-mini-card,.enemy-mini-card{display:flex;gap:10px;align-items:center}.hero-mini-card img,.enemy-mini-card img{width:82px;height:112px;object-fit:contain;border-radius:12px;border:2px solid #d7d9cd;background:#eef2ea}.skill-button{width:100%;margin-bottom:7px}.record-heading{margin-top:21px!important}.source{font-size:11px;margin-top:8px;color:#657d85}
+@media(max-width:780px){.layout{grid-template-columns:1fr}.field{height:360px}.controls{grid-template-columns:repeat(2,1fr)}.heroes{grid-template-columns:1fr}.hud{gap:4px}.chip{padding:6px}.baseWrap{width:118px;bottom:90px}.unit{width:54px}.unit .figure{width:55px;height:78px}.lane-mini{font-size:10px}.skill-flash{font-size:17px;padding:10px 14px}.skill-flash img{width:56px;height:56px}}
+
+/* v0.8.2: 한산도 공통 게임 UI에 맞춘 영웅 카드와 조작 */
+.heroes{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.hero-card{display:flex;align-items:center;gap:12px;min-height:114px;padding:10px 12px;background:#e6f3f7;border-color:#b3d9e6}
+.hero-card img{flex:0 0 90px;width:90px;height:100px;object-fit:contain;object-position:center;background:linear-gradient(135deg,#ecf7fa,#d2e8ef);border-radius:10px}
+.hero-card b{margin-top:0;font-size:15px}.hero-card small{line-height:1.45}
+.hero-card.on{background:#d5f0fd;border-color:#218cba;box-shadow:inset 0 0 0 1px #218cba}
+.hero-card .hero-copy{display:block;min-width:0}.hero-card .hero-role{margin:5px 0}
+#pick{margin-top:11px}
+.hero-mini-card img{width:95px;height:105px;border-radius:12px;object-fit:contain;object-position:center;background:#e7f3f5;cursor:pointer}
+.hero-mini-card img:hover{box-shadow:0 0 0 3px #d9b25e}
+.hero-mini-card img:focus{outline:3px solid #308bb4}
+.hero-status{position:relative}
+.hero-trigger-tip{font-size:11px;color:#347a9d;font-weight:800;margin-top:6px}
+#speed{background:#eef5fc;border-color:#8ebccc}
+.lane{touch-action:manipulation}
+@media(max-width:780px){.heroes{grid-template-columns:1fr}.hero-card img{width:78px;height:86px;flex-basis:78px}}
+
+/* v0.8.2: two-front battle, portrait-only skill and clearer distinct hero cards */
+#heroPortrait{object-fit:contain!important;border-radius:12px!important;cursor:pointer;outline:3px solid transparent;outline-offset:2px;transition:filter .15s,outline-color .15s,transform .15s;}
+#heroPortrait.skill-ready{outline-color:#e6b64f;filter:drop-shadow(0 0 8px #f2c35c);}
+#heroPortrait.skill-used{filter:grayscale(1);cursor:default;opacity:.62}
+#heroPortrait.skill-ready:hover{transform:scale(1.05)}
+.hero-trigger-tip{font-size:12px;line-height:1.6;padding:8px 11px;background:#edf5f4;border:1px solid #c6dad5;border-radius:9px;margin-top:9px}
+.hero-card[data-hero="gamchan"]{border-left:5px solid #806c3b}
+.hero-card[data-hero="mincheom"]{border-left:5px solid #4772a6}
+.hero-card[data-hero="jonghyeon"]{border-left:5px solid #409893}
+.hero-card img{object-fit:contain!important;object-position:center center;background:#e4e9e9!important}
+.hero-mini-card img{object-fit:contain!important;background:#dce7ea!important}
+.hero-card .hero-role{display:inline-block}
+.supply-note{margin-top:5px;color:#3c6581;font-size:12px;font-weight:700}
+
+/* v0.9.0 — Hansando v3.8.4.4 interface-aligned layout */
+:root{--ink:#254b62;--blue:#237fa3;--gold:#f3c968}
+body{background:linear-gradient(145deg,#bfebfa,#e6edfd 50%,#fae8e6);color:var(--ink);padding:0;font-family:system-ui,'Malgun Gothic',sans-serif}
+.wrap{max-width:1160px;margin:auto;padding:13px}
+header{background:transparent;border:0;box-shadow:none;border-radius:0;padding:5px 0 1px}
+header h1{font-size:clamp(23px,3vw,32px);letter-spacing:-.6px}
+header .muted{font-size:13px;color:#69818d}
+.panel{background:#ffffffed;border:2px solid #fff;box-shadow:0 6px 21px #4c8b9b23;border-radius:20px;padding:16px}
+.hud{gap:7px;margin:12px 0}
+.chip{background:#e4f5ee;border:0;border-radius:30px;padding:8px 12px;font-size:13px;font-weight:800}
+#phaseBadge{background:#dcf0f9;color:#205675}
+.field{height:350px;border:4px solid #fff;border-radius:21px;box-shadow:0 6px 21px #4c8b9b23;margin-bottom:13px}
+.layout{grid-template-columns:minmax(0,1fr) 310px;gap:12px;align-items:start}
+.learning-panel>section h2,.section-subtitle{font-size:19px;color:#254b62;margin-bottom:12px}
+.heroes{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.hero-card{display:flex;flex-direction:row;align-items:center;text-align:left;gap:11px;min-height:110px;border:2px solid #b7d8e3;background:#e2f2f1;border-radius:12px;padding:11px}
+.hero-card img{width:78px;height:86px;flex:0 0 78px;object-fit:contain;object-position:center center;border:0;border-radius:10px;background:#e9eff1}
+.hero-copy{display:flex;flex-direction:column;min-width:0;gap:3px}
+.hero-card b{font-size:15px;display:block;margin:0}.hero-role{font-size:11px;width:max-content;margin:0;background:#d3edf7;color:#2b7695;border-radius:6px}
+.hero-card small{line-height:1.4;font-weight:500;font-size:12px;color:#587483}
+.hero-card.chosen,.hero-card[aria-pressed="true"]{border-color:#2483a9;background:#d9f5ff}
+.action{background:#237fa3;border-color:#237fa3;border-radius:12px;font-weight:800}
+.qopts{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.qopts button{background:#f0f7f8;border:2px solid transparent;border-radius:12px}
+#deployControls{margin-top:15px;padding-top:15px;border-top:1px solid #d6e5eb}
+#build{grid-template-columns:repeat(4,minmax(0,1fr))}#build button{background:#f1f8f9;border:2px solid #bfdae5;border-radius:13px;padding:8px 3px;font-size:12px}#build button img{height:68px;width:100%;max-width:82px}
+.commander-panel{background:#ffffffed}.commander-panel .side-heading{font-size:19px;color:#254b62}
+.guardian-profile{background:#e4f5ee;border:1px solid #cce8e4}
+.guardian-seal{background:linear-gradient(145deg,#337d9c,#8ac1d3)}
+.hero-status{background:#f4fbff;border-color:#d1e5ef}
+.hero-mini-card img{width:78px;height:92px;object-fit:contain;background:#ebf4fa;border-radius:12px;border:2px solid #a0c8dd}
+#heroPortrait{cursor:pointer}.hero-trigger-tip{background:#fff1cd;border:1px solid #efd395;color:#745725;border-radius:11px;padding:10px;margin-top:9px;font-size:12px;line-height:1.6}
+.enemy-status{background:#f9f5ed;border-color:#e7dacf}.enemy-mini-card img{object-fit:contain;background:#f4e9df}
+.log{background:#f0f7f8;min-height:150px;height:175px}
+.boss-banner{background:#88382f}
+@media(max-width:800px){.layout{grid-template-columns:1fr}.heroes{grid-template-columns:repeat(2,minmax(0,1fr))}.field{height:340px}}
+@media(max-width:530px){.heroes{grid-template-columns:1fr}.field{height:300px}#build{grid-template-columns:repeat(2,minmax(0,1fr))}.baseWrap{width:100px}.hero-card{min-height:92px}.hero-card img{height:76px}}
+
+/* v0.9.0: 한산도 대첩 기준 퀴즈 UI — 귀주 병력 준비는 간결한 원형 유지 */
+.quiz-intro{margin:7px 0 10px;line-height:1.55}
+.quiz-sheet{border-radius:14px;background:#eff8f2;padding:14px 15px;min-height:142px}
+.quiz-meta{font-size:12px;color:#577b86;margin-bottom:10px;line-height:1.45}
+.quiz-question{font-size:17px;color:#284b66;font-weight:900;line-height:1.5;margin:0 0 12px}
+#quizPanel .qopts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px 10px}
+#quizPanel .qopts button{min-width:0;background:#eff7f6;border:1px solid transparent;border-radius:10px;text-align:left;padding:10px 12px;font-size:13px;line-height:1.4;color:#344f61;cursor:pointer;transition:background .1s ease,border-color .1s ease}
+#quizPanel .qopts button:hover:not(:disabled){background:#deeff2;border-color:#a2cbd6}
+#quizPanel .qopts button:disabled{cursor:default;opacity:1}
+#quizPanel .qopts button.good{background:#dcf5e8;border:1px solid #96d8b6;color:#286348;font-weight:800}
+#quizPanel .qopts button.bad{background:#fbede8;border:1px solid #e8b5a2;color:#a0553a}
+.quiz-feedback{margin-top:10px;padding:11px 13px;background:#fff0ca;color:#6b4d17;border-radius:10px;font-size:13px;line-height:1.65}
+.quiz-feedback.ok{background:#e5f5dc;color:#35613f}
+.quiz-actions{display:flex;margin-top:9px}
+#quizPanel #nextQ{min-width:102px;font-weight:850}
+@media(max-width:550px){#quizPanel .qopts{grid-template-columns:1fr}.quiz-sheet{padding:11px}.quiz-question{font-size:16px}}
+/* v0.9.0 전투 UI 간소화 및 조작 대비 강화 */
+#speed,#speed:not(:disabled){background:#217ba2!important;color:#fff!important;border:2px solid #10516d!important;opacity:1!important;box-shadow:0 3px 0 #10516d;min-width:134px;font-weight:900;letter-spacing:.02em}
+#speed:hover{background:#155f81!important}#speed:focus-visible{outline:3px solid #f2b94c;outline-offset:2px}
+/* 우측 패널: 지휘관 소개를 제거하고 작전 기록이 빈 공간을 활용 */
+.commander-panel .record-heading{margin-top:15px!important}
+.commander-panel .log{height:clamp(330px,47vh,560px);min-height:330px;overflow-y:auto;overflow-x:hidden;word-break:keep-all;overflow-wrap:anywhere;line-height:1.55}.commander-panel{align-self:stretch;display:flex;flex-direction:column}.commander-panel .log{flex:1}.commander-panel .source{flex:none}
+.laneName,.lane-mini{display:none!important}
+
+/* v0.8.6: 세로 작전기록 + 실물 캐릭터 연계 + 영웅 전신 */
+.guardian-profile{align-items:center;min-height:96px}
+#guardianAvatar{height:112px;width:82px;object-fit:contain;flex:none;filter:drop-shadow(0 4px 5px #3354773b)}
+.hero-card img{object-fit:contain!important;background:linear-gradient(#eef8fb,#f5f9f4)}
+.hero-mini-card img{width:83px!important;height:122px!important;object-fit:contain!important;border-radius:10px!important}
+.skill-flash img{object-fit:contain!important;border-radius:10px!important}
+@media(max-width:780px){.commander-panel .log{height:360px;min-height:360px}}
+
+/* v0.8.7 — 한산도 기준 화면 비율, 읽기 편한 문제 카드와 세로 작전 기록 */
+.wrap{max-width:1180px}
+.layout{grid-template-columns:minmax(0,1fr) 295px!important;align-items:stretch!important}
+.learning-panel{min-height:465px!important}
+.commander-panel{display:flex!important;flex-direction:column!important;gap:8px!important;min-height:465px!important;padding:14px!important}
+.commander-panel .record-heading{margin:10px 0 0!important}
+.commander-panel .log{height:235px!important;min-height:235px!important;max-height:370px!important;overflow-y:auto!important;flex:1 1 auto!important;overflow-x:hidden!important;overflow-wrap:anywhere!important}
+.commander-panel .source{font-size:10px!important;line-height:1.4!important;margin-top:2px!important}
+.hero-card{display:flex!important;align-items:center!important;gap:10px!important;min-height:100px!important;padding:11px!important;text-align:left!important;background:#e6f6f6!important;border:1px solid #b4d8dc!important}
+.hero-card img{width:70px!important;min-width:70px!important;height:79px!important;flex:none!important;object-fit:contain!important;background:transparent!important;border:0!important;border-radius:0!important}
+.hero-card b{margin:0 0 3px!important;font-size:13px!important;color:#174c68!important}
+.hero-card small{font-size:11px!important;line-height:1.4!important;margin:3px 0 0!important}
+.hero-card .hero-role{background:#e3eef3!important;margin-top:3px!important;font-size:10px!important}
+.heroes{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+.hero-card[data-hero="jonghyeon"]{grid-column:1!important}
+.quiz-sheet{background:#eff7f1!important;border-radius:12px!important;padding:13px!important}
+#quizPanel .qopts{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+#quizPanel .qopts button{padding:11px 12px!important;min-height:43px!important;font-size:13px!important;background:#f4f8fc!important}
+#quizPanel .qopts button.good{background:#dcf4e5!important;border-color:#9cdbc0!important;color:#267452!important}
+#quizPanel .qopts button.bad{background:#fff1e9!important;border-color:#ecb5a4!important;color:#a0523f!important}
+.quiz-meta{font-size:11px!important}
+.prep{line-height:1.6!important}
+#enemyPreview{font-size:12px!important;line-height:1.5!important}
+@media(max-width:780px){.layout{grid-template-columns:1fr!important}.commander-panel .log{min-height:260px!important}.heroes{grid-template-columns:1fr!important}.hero-card[data-hero="jonghyeon"]{grid-column:auto!important}}
+
+/* v0.9.0: right-side vertical operation log and historical unit management */
+.layout{display:grid!important;grid-template-columns:minmax(0,1fr) 295px!important;align-items:start!important;gap:12px!important}
+.commander-panel{min-height:0!important;align-self:start!important;display:flex!important;flex-direction:column!important}
+.commander-panel .log{height:186px!important;min-height:186px!important;max-height:186px!important;flex:none!important;overflow-y:auto!important}
+.learning-panel{min-height:450px!important}
+.hero-card img{width:74px!important;height:106px!important;object-fit:contain!important}
+.hero-mini-card img{width:89px!important;height:137px!important;object-fit:contain!important}
+.upgrade-panel{margin-top:13px;padding-top:13px;border-top:1px solid #cde2e9}
+.upgrade-panel h2{margin:0 0 6px;color:#204d67;font-size:17px}
+.upgrade-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.upgrade-card{border:1px solid #b5d8e5;background:#eef8fa;border-radius:11px;padding:10px 8px;min-width:0}
+.upgrade-card strong{display:block;color:#1b5676;font-size:13px}
+.upgrade-card p{font-size:11px;color:#557484;line-height:1.5;margin:5px 0}
+.upgrade-card button{width:100%;border:1px solid #2684a9;background:#278bb1;color:white;font-weight:800;border-radius:9px;padding:8px;cursor:pointer}
+.upgrade-card button:disabled{background:#d3e1e6;color:#718793;border-color:#bed1da;cursor:default}
+.upgrade-level{font-size:11px;color:#557484}
+@media(max-width:780px){.layout{grid-template-columns:1fr!important}.upgrade-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.commander-panel .log{height:180px!important;min-height:180px!important;max-height:180px!important}}
+@media(max-width:500px){.upgrade-grid{grid-template-columns:1fr}}
+
+/* v0.9.0 - 육상 전투 타격/투사체 연출: 전투 수치에 영향 없음 */
+.battle-fx{position:absolute;z-index:14;pointer-events:none;will-change:transform,opacity;transform:translate(-50%,-50%)}
+.battle-fx.slash{width:42px;height:42px;border-right:5px solid #fff5bc;border-top:4px solid #efc061;border-radius:50%;filter:drop-shadow(0 0 5px #fbd172);animation:fxSlash .23s ease-out forwards}
+.battle-fx.cleave{width:54px;height:54px;border-left:6px solid #ffe2a0;border-bottom:4px solid #fff8d8;border-radius:50%;filter:drop-shadow(0 0 6px #f6cf68);animation:fxCleave .28s ease-out forwards}
+.battle-fx.impact{width:29px;height:29px;border:3px solid #ffdb93;border-radius:50%;box-shadow:0 0 14px 5px #fff4b58c;background:#fff4bf44;animation:fxImpact .3s ease-out forwards}
+.battle-fx.charge{width:50px;height:24px;background:linear-gradient(90deg,transparent,#e7efffbb,#ffffff);clip-path:polygon(0 35%,75% 35%,100% 0,85% 50%,100% 100%,75% 65%,0 65%);filter:drop-shadow(0 0 5px #c2e1fd);animation:fxCharge .3s ease-out forwards}
+.battle-fx.spear{height:4px;width:46px;border-radius:4px;background:linear-gradient(90deg,transparent,#fff2b8 35%,#ddeffe 72%,#ffffff);box-shadow:0 0 8px #fff3c7;animation:fxSpear .22s ease-out forwards}
+.battle-fx.spear::after{content:'';position:absolute;right:-5px;top:-5px;border-left:11px solid #f4fbff;border-top:7px solid transparent;border-bottom:7px solid transparent}
+.battle-fx.arrow,.battle-fx.bolt{height:3px;width:30px;border-radius:2px;background:linear-gradient(90deg,#8b5726,#fff3cf);box-shadow:0 0 5px #fff7c9;transform-origin:center center}
+.battle-fx.arrow::after,.battle-fx.bolt::after{content:'';position:absolute;right:-4px;top:-4px;border-left:9px solid #dddfe1;border-top:5px solid transparent;border-bottom:5px solid transparent}
+.battle-fx.bolt{height:5px;width:37px;background:linear-gradient(90deg,#625640,#cbdfe7);box-shadow:0 0 6px #bfeeff}
+.battle-fx.bolt::after{border-left-color:#a3d5df}
+@keyframes fxSlash{from{opacity:1;transform:translate(-50%,-50%) rotate(-70deg) scale(.55)}to{opacity:0;transform:translate(-50%,-50%) rotate(55deg) scale(1.4)}}
+@keyframes fxCleave{from{opacity:1;transform:translate(-50%,-50%) rotate(-90deg) scale(.5)}to{opacity:0;transform:translate(-50%,-50%) rotate(35deg) scale(1.45)}}
+@keyframes fxImpact{from{opacity:1;transform:translate(-50%,-50%) scale(.3)}to{opacity:0;transform:translate(-50%,-50%) scale(2)}}
+@keyframes fxCharge{from{opacity:1;transform:translate(-50%,-50%) scale(.7)}to{opacity:0;transform:translate(-50%,-50%) scale(1.7)}}
+@keyframes fxSpear{from{opacity:1;transform:translate(-50%,-50%) scaleX(.35)}to{opacity:0;transform:translate(-50%,-50%) scaleX(1.1)}}
+@media(prefers-reduced-motion:reduce){.battle-fx{animation:none!important;transition:none!important;opacity:.65}}
+
+/* v0.9.3 경량 프레임 공격 모션: 칼 휘두름/창 찌르기/활 발사/돌격을 3단계 포즈로 강화 */
+.unit {transform-origin:50% 90%;will-change:transform;}
+.unit .figure {position:relative;transform-origin:50% 82%;}
+.unit .figure::after{content:'';position:absolute;left:50%;top:53%;pointer-events:none;opacity:0;transform:translate(-50%,-50%)}
+.unit.motion-strike .figure {animation:gw-strike-steps .34s steps(3,end) both;}
+.unit.motion-thrust .figure {animation:gw-thrust-steps .30s steps(3,end) both;}
+.unit.motion-bow .figure {animation:gw-bow-steps .44s steps(3,end) both;}
+.unit.motion-bolt .figure {animation:gw-bolt-steps .40s steps(3,end) both;}
+.unit.motion-charge .figure {animation:gw-charge-steps .38s steps(3,end) both;}
+.unit.motion-heavy .figure {animation:gw-heavy-steps .46s steps(3,end) both;}
+.unit.motion-hit .figure img{animation:gw-hit .22s linear 1;}
+
+
+.unit .hp {position:relative; width:56px;height:9px; margin-bottom:3px;border:1px solid #162d39;border-radius:8px; box-shadow:0 1px 2px #101e2799; background:#3c2424;}
+.unit .hp i {transition:width .12s linear;background:linear-gradient(90deg,#20a655,#9deb8c)}
+.unit.enemy .hp i{background:linear-gradient(90deg,#bc3434,#f38d65)}
+.unit.midboss .hp,.unit.boss .hp{width:76px;height:12px;border:2px solid #f4d67d;box-shadow:0 0 0 2px #542624,0 1px 6px #0008;}
+.unit .hp.low i{filter:saturate(1.7);background:#ef4b42!important;}
+.unit .figure img {transform-origin:50% 75%}
+.unit.motion-strike .figure::after,.unit.motion-heavy .figure::after{width:42px;height:42px;border-right:4px solid #fff7c3;border-top:3px solid #efb656;border-radius:50%;opacity:.95;animation:gw-arc .28s steps(3,end) both;}
+.unit.motion-thrust .figure::after{width:44px;height:4px;border-radius:999px;background:linear-gradient(90deg,transparent,#fff3bf 35%,#dbedf8 80%,#ffffff);box-shadow:0 0 8px #fff3c7;opacity:1;animation:gw-spear .24s steps(3,end) both;}
+.unit.motion-bow .figure::after{width:30px;height:4px;border-radius:999px;background:linear-gradient(90deg,#8b5726,#fff5cf);box-shadow:0 0 7px #fff5c0;opacity:1;animation:gw-arrowpose .34s steps(3,end) both;}
+.unit.motion-bolt .figure::after{width:32px;height:5px;border-radius:999px;background:linear-gradient(90deg,#5a5038,#d3ebf7);box-shadow:0 0 7px #d6f4ff;opacity:1;animation:gw-arrowpose .28s steps(3,end) both;}
+.unit.motion-charge .figure::after{width:46px;height:18px;background:linear-gradient(90deg,transparent,#d9ebfb,#ffffff);clip-path:polygon(0 35%,75% 35%,100% 0,85% 50%,100% 100%,75% 65%,0 65%);opacity:.95;animation:gw-dash .26s steps(3,end) both;}
+@keyframes gw-strike-steps {0%{transform:translateX(0) rotate(0)}33%{transform:translateX(-5px) translateY(1px) rotate(-12deg)}66%{transform:translateX(10px) translateY(-1px) rotate(15deg)}100%{transform:translateX(0) rotate(0)}}
+@keyframes gw-thrust-steps {0%{transform:translateX(0)}33%{transform:translateX(-7px) rotate(-2deg)}66%{transform:translateX(14px) skewX(-8deg)}100%{transform:translateX(0)}}
+@keyframes gw-bow-steps {0%{transform:translateX(0) scaleX(1)}33%{transform:translateX(-5px) scaleX(.93) rotate(-5deg)}66%{transform:translateX(4px) scaleX(1.03) rotate(1deg)}100%{transform:translateX(0)}}
+@keyframes gw-bolt-steps{0%{transform:translateY(0)}33%{transform:translateY(2px) rotate(-6deg)}66%{transform:translateX(6px) translateY(-2px) rotate(5deg)}100%{transform:translateY(0)}}
+@keyframes gw-charge-steps {0%{transform:translateX(0) scale(1)}33%{transform:translateX(-7px) scale(.95)}66%{transform:translateX(16px) scale(1.08)}100%{transform:translateX(0) scale(1)}}
+@keyframes gw-heavy-steps {0%{transform:translateY(0) rotate(0)}33%{transform:translateY(-8px) rotate(-7deg)}66%{transform:translateY(2px) rotate(12deg)}100%{transform:translateY(0) rotate(0)}}
+@keyframes gw-hit{0%,100%{filter:brightness(1)}25%,70%{filter:brightness(1.8) sepia(.8) saturate(3)}}
+@keyframes gw-arc{0%{opacity:0;transform:translate(-50%,-50%) rotate(-85deg) scale(.5)}33%{opacity:1}66%{opacity:.85;transform:translate(-44%,-50%) rotate(0deg) scale(1)}100%{opacity:0;transform:translate(-36%,-48%) rotate(55deg) scale(1.25)}}
+@keyframes gw-spear{0%{opacity:0;transform:translate(-70%,-50%) scaleX(.35)}33%{opacity:1}66%{transform:translate(-30%,-50%) scaleX(.9)}100%{opacity:0;transform:translate(-12%,-50%) scaleX(1.08)}}
+@keyframes gw-arrowpose{0%{opacity:0;transform:translate(-55%,-55%) scaleX(.4)}33%{opacity:1;transform:translate(-50%,-55%) scaleX(.75)}66%{opacity:.95;transform:translate(-42%,-55%) scaleX(1)}100%{opacity:0;transform:translate(-28%,-55%) scaleX(1.15)}}
+@keyframes gw-dash{0%{opacity:0;transform:translate(-55%,-50%) scaleX(.6)}33%{opacity:1}66%{transform:translate(-42%,-50%) scaleX(1)}100%{opacity:0;transform:translate(-22%,-50%) scaleX(1.15)}}
+@media (prefers-reduced-motion:reduce){.unit.motion-strike .figure,.unit.motion-thrust .figure,.unit.motion-bow .figure,.unit.motion-bolt .figure,.unit.motion-charge .figure,.unit.motion-heavy .figure,.unit.motion-hit .figure img,.unit .figure::after{animation:none!important}}
+
+/* 안정화: 태블릿 가로모드 터치 및 버튼 가시성 */
+@media (hover:none) and (pointer:coarse){button,.button,[role="button"]{touch-action:manipulation}button{min-height:42px}}
+@media (max-height:650px) and (orientation:landscape){.modal{overflow-y:auto;align-items:start}.story{max-height:calc(100dvh - 18px);overflow-y:auto}}
+.unit .figure img[src^="sprite_assets/"]{object-fit:contain;image-rendering:pixelated;width:100%;height:100%;}.unit.enemy .figure img[src^="sprite_assets/"]{transform:scaleX(-1)}.unit.moving .figure{animation:renew-walk .34s ease-in-out infinite}@keyframes renew-walk{0%,100%{translate:0 0}50%{translate:0 -2px}}
+
+/* v4: battlefield-adjacent compact command dock, no scrolling needed between field and recruitment */
+#deployControls{background:#fffdf5;border:2px solid #95bbb5;border-radius:15px;padding:10px 12px;margin:-7px 0 12px;box-shadow:0 4px 12px #3a625321}
+#deployControls .section-subtitle{font-size:14px;margin:0 0 5px}
+#deployControls>.row{gap:6px}
+#deployControls .supply-note,#deployControls .tip{font-size:11px}
+#deployControls #build{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px!important;margin:7px 0!important}
+#deployControls #build button{min-height:76px;padding:5px 3px;line-height:1.23;font-size:12px}
+#deployControls #build button img{width:52px;height:45px;margin:0 auto 2px;object-fit:contain;image-rendering:pixelated}
+#deployControls .row:last-child{padding-top:2px}
+#startWave.launch{background:#277b55;border-color:#1c6444;min-width:154px;margin:0;font-size:15px}
+#deployControls:not(.hide) + .layout #readyPanel{padding-top:6px}
+@media(max-width:650px){#deployControls{padding:8px;margin:-7px 0 10px}#deployControls #build{grid-template-columns:repeat(4,minmax(0,1fr))}#deployControls #build button img{width:42px;height:39px}#deployControls #build button{font-size:10px;min-height:66px}#deployControls .supply-note{display:none}#startWave.launch{min-width:130px}}
+/* Keep sprite intact: prior source frames 03..09 had destructive cross-cell clipping. */
+.unit .figure img[src^="sprite_assets/"]{image-rendering:pixelated;object-fit:contain;width:100%;height:100%;transform-origin:center bottom}
+.unit.enemy .figure img[src^="sprite_assets/"]{transform:scaleX(-1)}
+.unit.moving .figure{animation:v4step .42s ease-in-out infinite}
+@keyframes v4step{0%,100%{translate:0 0}50%{translate:0 -2px}}
+.unit.motion-strike .figure,.unit.motion-thrust .figure,.unit.motion-bow .figure,.unit.motion-bolt .figure,.unit.motion-charge .figure,.unit.motion-heavy .figure{animation-duration:.35s;animation-timing-function:ease-out}
+@media(prefers-reduced-motion:reduce){.unit.moving .figure{animation:none}}
+
+/* v5: combat-only quick buttons adjacent to recruitment; upgrades only during preparation */
+#deployControls .row:last-child{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+#quickHeroSkill{margin:0;min-height:42px;background:#225e9b;color:white;border:2px solid #acd6ff;border-radius:9px;font-size:13px;font-weight:800;box-shadow:0 0 0 0 transparent;transition:box-shadow .18s,background .18s}
+#quickHeroSkill:not(:disabled){box-shadow:0 0 0 2px #f6d37470,0 0 9px #88cfff77}
+#quickHeroSkill:disabled{background:#748391;border-color:#a9b9c6;box-shadow:none;opacity:.8}
+#deployControls #speed{margin:0;min-height:42px}
+@media(max-width:640px){#deployControls .row:last-child{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}#deployControls #status{grid-column:1/-1}#startWave.launch,#quickHeroSkill,#deployControls #speed{width:100%;min-width:0;font-size:12px}}
+
+/* v6: battlefield quick-summon card, visible HP, boss class identity */
+#build.controls{grid-template-columns:repeat(5,minmax(0,1fr))}
+#build .hero-summon{position:relative;background:#fff5dd;border:2px solid #cca457;overflow:hidden;color:#704923;min-width:0;min-height:116px;padding:6px 3px}
+#build .hero-summon img{height:73px;width:68px;object-fit:contain;display:block;margin:0 auto 3px;transition:filter .25s,opacity .25s}
+#build .hero-summon:disabled{opacity:1;cursor:not-allowed}
+#build .hero-summon:disabled img{filter:grayscale(.95) brightness(.8);opacity:.32}
+#build .hero-summon.skill-ready{border-color:#f4bb36;background:#fff2c5;box-shadow:inset 0 0 9px #ffca6180,0 0 8px #f4ba5288}
+#build .hero-summon.skill-ready img{opacity:1;filter:none}
+#build .hero-summon.skill-spent{background:#e3e8e9;border-color:#9da8ae;color:#68747c}
+#build .hero-summon span{font-size:12px;font-weight:900;line-height:1.15}
+#build .hero-summon .hero-card-mask{display:none}
+.unit .hp-number{font-size:10px;color:#fffde7;background:#18252dce;padding:1px 4px;border-radius:5px;text-shadow:0 1px 2px #000;white-space:nowrap;order:-1;margin-bottom:2px;line-height:1.1}
+.unit .hp-number.critical{background:#ae3333;color:white}
+.unit .hp{width:60px!important;height:9px!important}
+.unit.midboss .figure,.unit.boss .figure{transform:none!important}
+.unit.midboss .figure{width:91px;height:104px}.unit.boss .figure{width:99px;height:116px}
+.unit.midboss .hp,.unit.boss .hp{width:83px!important;height:13px!important}
+.unit.midboss .hp-number,.unit.boss .hp-number{font-weight:900;color:#ffe4aa;background:#51332be0}
+.unit.motion-charge .figure{animation:gw-charge-steps .42s cubic-bezier(.13,.67,.34,1) both}
+.unit.motion-strike .figure,.unit.motion-thrust .figure,.unit.motion-heavy .figure{filter:drop-shadow(0 0 6px #fff0af)}
+@media(max-width:780px){#build.controls{grid-template-columns:repeat(5,minmax(72px,1fr));overflow-x:auto;gap:4px}#build .hero-summon img{width:56px;height:60px}#build .hero-summon{min-height:106px}.unit .hp-number{font-size:9px}}
+
+/* v6.1: stronger readability without changing existing combat motion */
+#bossPanel .boss-hp-number{font-size:12px;font-weight:900;color:#8b3e27;white-space:nowrap;margin-left:5px}
+#bossPanel.boss-critical .boss-hp-number{color:#c82626}
+#bossPanel.boss-critical #bossMeter{background:linear-gradient(90deg,#b81e26,#ee6950)!important}
+.unit .hp-number{font-variant-numeric:tabular-nums;max-width:94px;text-align:center;box-shadow:0 1px 3px #0006}
+.unit.low-health .hp{border-color:#df5441;box-shadow:0 0 5px #f35653a0}
+#quickHeroSkill.skill-spent img{filter:grayscale(1);opacity:.26}
+#quickHeroSkill.skill-ready:focus-visible{outline:3px solid #f1ad25;outline-offset:3px}
+@media(max-width:900px){#build .hero-summon{min-width:75px}#bossPanel .boss-hp-number{display:inline-block}}
+
+
+/* v6.2: top-row summon + hero skill card and enemy hp bars above heads */
+#deployControls #build{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:6px!important;overflow:visible!important}
+#deployControls #build button{min-height:84px!important;padding:4px 2px!important;font-size:11px!important;line-height:1.18!important}
+#deployControls #build button img{width:46px!important;height:40px!important;margin:0 auto 2px!important}
+#build .hero-summon{min-height:84px!important;padding:4px 2px!important}
+#build .hero-summon img{width:42px!important;height:48px!important;margin:0 auto 2px!important}
+#quickHeroText{display:block;font-size:11px;line-height:1.08;font-weight:900}
+#deployControls .row:last-child{padding-top:1px!important}
+@media(max-width:780px){#deployControls #build{grid-template-columns:repeat(5,minmax(0,1fr))!important}#deployControls #build button{min-height:78px!important;font-size:10px!important}#deployControls #build button img{width:38px!important;height:34px!important}#build .hero-summon img{width:35px!important;height:41px!important}#quickHeroText{font-size:10px!important}}
+.unit{overflow:visible!important}
+.unit .figure{position:relative;z-index:1}
+.unit .hp{position:absolute!important;left:50%;transform:translateX(-50%);bottom:95px;z-index:3;margin:0!important}
+.unit .hp-number{position:absolute!important;left:50%;transform:translateX(-50%);bottom:107px;z-index:4;margin:0!important}
+.unit.enemy .hp{bottom:99px!important}
+.unit.enemy .hp-number{bottom:111px!important}
+.unit.midboss .hp,.unit.boss .hp{bottom:118px!important}
+.unit.midboss .hp-number,.unit.boss .hp-number{bottom:133px!important}
+
+
+/* v6.3: ensure four troop cards and one selected hero tile remain in one row */
+#deployControls #build.controls{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;column-gap:6px!important;row-gap:6px!important;margin:6px 0!important;overflow:visible!important}
+#deployControls #build>button{width:100%;min-width:0!important;min-height:91px!important;max-height:110px;padding:5px 3px!important;overflow:hidden;font-size:clamp(10px,1.1vw,12px)!important;line-height:1.15!important;word-break:keep-all}
+#deployControls #build>button>img{display:block;width:100%!important;max-width:49px!important;height:46px!important;object-fit:contain!important;margin:0 auto 3px!important}
+#deployControls #build .hero-summon{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:91px!important;background:#fff2d4;}
+#deployControls #build .hero-summon img{max-width:45px!important;height:47px!important;flex:0 0 47px}
+#deployControls #build .hero-summon span#quickHeroText{display:block!important;max-width:100%;font-size:clamp(9px,1vw,11px)!important;line-height:1.13!important;white-space:normal;overflow-wrap:anywhere}
+#deployControls #build .hero-summon.skill-ready{background:#fff1be;border-color:#efb33b!important}
+#deployControls #build .hero-summon.skill-spent img{filter:grayscale(1);opacity:.3}
+#deployControls #build .hero-summon:disabled{cursor:not-allowed}
+#deployControls .row:last-child{display:flex!important;gap:7px!important;flex-wrap:wrap!important;align-items:center}
+#deployControls .row:last-child #status{flex:1 1 130px;min-width:0}
+@media(max-width:650px){#deployControls #build.controls{gap:3px!important}#deployControls #build>button{padding:4px 1px!important;font-size:9px!important;min-height:81px!important}#deployControls #build>button>img{max-width:39px!important;height:36px!important}#deployControls #build .hero-summon img{max-width:36px!important;height:38px!important;flex-basis:38px}#deployControls #build .hero-summon{min-height:81px!important}#deployControls #build .hero-summon span#quickHeroText{font-size:9px!important}}
+/* HP is anchored to the unit container, not the animated sprite, so attacks never shake it. */
+.unit{overflow:visible!important;isolation:isolate}
+.unit .figure{position:relative;z-index:1}
+.unit .hp{position:absolute!important;left:50%!important;top:-15px!important;bottom:auto!important;translate:-50% 0;transform:none!important;z-index:4!important;margin:0!important}
+.unit .hp-number{position:absolute!important;left:50%!important;top:-31px!important;bottom:auto!important;translate:-50% 0;transform:none!important;z-index:5!important;margin:0!important}
+.unit.enemy .hp{top:-17px!important}
+.unit.enemy .hp-number{top:-33px!important}
+.unit.midboss .hp,.unit.boss .hp{top:-20px!important}
+.unit.midboss .hp-number,.unit.boss .hp-number{top:-38px!important}
+
+
+/* v6.4: compact hero selection and preparation panel. Preserve JS-bound hidden DOM. */
+#pickPanel .heroes{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:7px!important}
+#pickPanel .hero-card{grid-column:auto!important;display:flex!important;flex-direction:column!important;align-items:center!important;text-align:center!important;min-height:134px!important;padding:8px 5px!important;gap:3px!important}
+#pickPanel .hero-card img{height:64px!important;width:68px!important;min-width:0!important;flex:none!important;object-fit:contain!important}
+#pickPanel .hero-card .hero-copy{align-items:center!important;gap:1px!important}
+#pickPanel .hero-card b{font-size:12px!important;margin:0!important}
+#pickPanel .hero-card .hero-role{font-size:9px!important;padding:2px 4px!important;margin:0!important;max-width:100%;white-space:normal}
+#pickPanel .hero-card small{font-size:10px!important;line-height:1.22!important;margin:2px 0 0!important}
+#pickPanel .tip{line-height:1.4}
+.commander-panel>.side-heading:first-child,.commander-panel>.guardian-profile,.commander-panel>.hero-status{display:none!important}
+.commander-panel .record-heading{margin:0 0 9px!important;font-size:17px!important}
+.commander-panel .log{height:220px;min-height:170px!important}
+.commander-panel{align-self:start}
+#upgradePanel{padding-top:0!important;margin-top:0!important}
+#upgradePanel h2{margin-top:0}
+.compact-ready-panel{border-top:1px solid #d6e5eb;margin-top:10px;padding-top:8px}
+.compact-ready-panel h2{font-size:15px;margin-bottom:5px}
+.compact-ready-panel .ready-summary{font-size:12px;font-weight:800;background:#fff5df;border:1px solid #ead4a9;border-radius:7px;padding:6px 9px;color:#805528}
+.compact-ready-panel .wave-note{padding:6px 9px;margin:5px 0;font-size:11px}
+.compact-ready-panel .tip{margin:4px 0;font-size:11px}
+@media(max-width:780px){#pickPanel .heroes{grid-template-columns:repeat(3,minmax(0,1fr))!important}#pickPanel .hero-card img{width:54px!important;height:56px!important}#pickPanel .hero-card{min-height:124px!important}#pickPanel .hero-card small{font-size:9px!important}}
+
+/* final review: clear troop-empty warning */
+#emptyArmyWarning{background:#fff1d7;border:2px solid #e6a74f;border-radius:12px;padding:8px 12px;margin:0 0 8px;font-size:13px;font-weight:800;color:#7e4c22}
+</style>
+</head>
+<body>
+<a id="defense-lobby-return" href="../../index.html" style="position:fixed;top:8px;left:8px;z-index:99999;display:inline-block;background:#143c4a;color:#fff;padding:8px 12px;border:2px solid #e4cb89;border-radius:12px;text-decoration:none;font-weight:800;font-size:14px;box-shadow:0 3px 10px #0005">↩ 전투 지휘소</a>
+<div class="wrap">
+<header>
+<h1>역사디펜스 <small style="font-size:15px;font-weight:600;color:#537a8b">고려 · 귀주대첩 완성 후보 v1</small></h1>
+<div class="muted">3단원 학습지 복습 · 귀주대첩 2전선 전투 · 상단 통합 소환/기술 UI 정리</div>
+</header>
+<div class="hud">
+  <div class="chip">🏰 고려 본진 <span id="hp">100</span></div>
+  <div class="chip">⚑ 거란 진영 <span id="ehp">100</span></div>
+  <div class="chip">🪙 자원 <span id="money">210</span></div>
+  <div class="chip">🌊 웨이브 <span id="wave">1</span>/5</div>
+  <div class="chip">📖 정답 <span id="score">0</span>/<span id="answered">0</span></div>
+  <div class="chip">전투 시간 <span id="elapsed">0</span>초</div>
+  <div class="chip" id="skillState">기술 대기</div><div class="chip" id="phaseBadge">영웅 선택</div>
+</div>
+<div id="field" class="field">
+  <div class="baseWrap ally" id="allyBaseWrap">
+    <img id="allyBaseImg" src="visuals/base_ally_full.webp" alt="고려 본진">
+    <div class="baseLabel">고려 본진</div>
+    <div class="baseHpBar"><i id="allyBaseBar"></i></div>
+  </div>
+  <div class="baseWrap enemy" id="enemyBaseWrap">
+    <img id="enemyBaseImg" src="visuals/base_enemy_full.webp" alt="거란 진영">
+    <div class="baseLabel">거란 진영</div>
+    <div class="baseHpBar"><i id="enemyBaseBar"></i></div>
+  </div>
+  <div class="lane north selected" data-lane="0">
+    <div class="lanePath"></div>
+  </div>
+  <div class="lane south" data-lane="1">
+    <div class="lanePath"></div>
+  </div>
+</div>
+<div id="emptyArmyWarning" class="hide" role="status" aria-live="polite">⚠️ 출전 병력이 없습니다. 북쪽 또는 남쪽을 선택한 뒤 병력을 1부대 이상 소환하세요.</div><div id="deployControls" class="hide"><h2 class="section-subtitle">병력 소환 · 전선 선택</h2><div class="row"><strong>출전 전선:</strong><button class="choose selectedBtn" id="north">북쪽</button><button class="choose" id="south">남쪽</button><span class="tip">두 전선에 병력 분산 배치</span><span class="supply-note">두 전선 보급: 전투 중 3초마다 +21자원 · 최대 650자원</span></div><div class="controls" style="margin:9px 0" id="build"><button data-type="shield"><img src="sprite_assets/goryeo/shield/00.webp" alt="">방패 보병<br>40자원</button><button data-type="bow"><img src="sprite_assets/goryeo/bow/00.webp" alt="">궁병<br>50자원</button><button data-type="crossbow"><img src="sprite_assets/goryeo/crossbow_full.webp" alt="">쇠뇌병<br>70자원</button><button data-type="horse"><img src="sprite_assets/goryeo/horse/00.webp" alt="">기병<br>85자원</button><button id="quickHeroSkill" class="hero-summon" type="button" disabled><img id="quickHeroPortrait" src="visuals/hero_gamchan.webp" alt="영웅"><span id="quickHeroText">영웅 기술<br>전투 중 사용</span><span class="hero-card-mask"></span></button></div><div class="row"><button class="action launch" id="startWave" type="button">⚔️ 전투개시</button><button class="action" id="speed">현재 속도 ×1</button><span class="tip" id="status">영웅을 선택하세요</span></div></div>
+<div class="layout">
+<main class="panel learning-panel">
+  <section id="pickPanel">
+    <h2>출전 영웅 선택</h2><p class="tip">지휘관 3명 중 1명을 선택하세요. 기술은 전투 중 상단 소환창의 영웅 카드를 눌러 사용합니다.</p>
+    <div class="heroes">
+      <button class="hero-card" data-hero="gamchan"><img src="visuals/hero_gamchan.webp" alt="강감찬"><span class="hero-copy"><b>강감찬</b><span class="hero-role">광역 섬멸형</span><small>양쪽 전선을 동시에 타격하는 총공격 기술</small></span></button>
+      <button class="hero-card" data-hero="mincheom"><img src="visuals/hero_mincheom.webp" alt="강민첨"><span class="hero-copy"><b>강민첨</b><span class="hero-role">보스 저격형</span><small>선택 전선을 집중 타격하는 돌파 기술</small></span></button>
+      <button class="hero-card" data-hero="jonghyeon"><img src="visuals/hero_jonghyeon.webp" alt="김종현"><span class="hero-copy"><b>김종현</b><span class="hero-role">기병 난입형</span><small>지원 기병을 추가 소환하며 돌격 피해를 주는 기술</small></span></button>
+    </div>
+    <button class="action" id="pick" type="button">영웅 확정 → 문제 풀기</button>
+    <p class="tip">영웅 기술과 병력 배치는 역사 학습용 게임 각색입니다.</p>
+  </section>
+  <section id="quizPanel" class="hide"><h2>② 단원 전체 복습</h2><p class="tip quiz-intro">고려 단원 학습지의 사실·개념·추론 문제를 섞어 냅니다. 전투 전에 3문제를 풀어 병력을 준비합니다.</p><div class="quiz-sheet"><div class="quiz-meta" id="topic"></div><h3 id="question" class="quiz-question"></h3><div class="qopts" id="options"></div><div id="feedback" class="quiz-feedback hide" role="status" aria-live="polite"></div></div><div class="quiz-actions"><button class="action hide" id="nextQ">다음 문제 →</button></div></section>
+  <section id="upgradePanel" class="upgrade-panel hide">
+    <h2>④ 병과 관리 · 무기 강화</h2><p class="tip">자원을 사용해 병과를 강화하세요. 강화 효과는 북쪽·남쪽 두 전선에 모두 적용되며 웨이브 사이에도 유지됩니다.</p>
+    <div class="upgrade-grid">
+      <div class="upgrade-card"><strong>🛡 방패 보병 훈련</strong><p>체력 +22% (단계별)</p><div class="upgrade-level" id="level-shield">0/3단계</div><button data-upgrade="shield">강화 · 55자원</button></div>
+      <div class="upgrade-card"><strong>🏹 궁병 · 쇠뇌 개량</strong><p>원거리 공격력 +20% (단계별)</p><div class="upgrade-level" id="level-ranged">0/3단계</div><button data-upgrade="ranged">강화 · 65자원</button></div>
+      <div class="upgrade-card"><strong>🐎 기병 무장 개선</strong><p>기병 공격력 +20% (단계별)</p><div class="upgrade-level" id="level-horse">0/3단계</div><button data-upgrade="horse">강화 · 75자원</button></div>
+    </div>
+  </section>
+  <section id="readyPanel" class="hide compact-ready-panel"><h2>③ 병력 배치 · 전투 준비</h2><div class="ready-summary">북쪽·남쪽 전선 선택 → 위 소환창에서 병력 배치 → 전투개시</div><div class="wave-note" id="enemyPreview"></div><p class="tip">전선별 최대 11부대 · 준비 중에는 적이 공격하지 않습니다.</p></section>
+  <section id="battlePanel" class="hide"><h2>귀주대첩 전투</h2><p class="tip">병력은 선택한 전선에만 출전합니다. 영웅 기술은 웨이브당 1회이며, 적군이 지나가면 고려 본진 체력이 감소합니다.</p><div class="tip">기술: <b id="skillName"></b></div><div class="tip">웨이브별 진행 상태: <span id="remaining"></span></div><div id="bossPanel" class="wave-note hide"><b id="bossLabel">거란 지휘군 등장</b><span id="bossHpNumber" aria-live="off" class="boss-hp-number"></span><div class="meter" role="progressbar" aria-label="보스 체력" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" id="bossHpProgress"><i id="bossMeter"></i></div></div></section>
+  <section id="resultPanel" class="hide"><h2 id="resultTitle"></h2><p id="resultDesc"></p><button class="action" id="continue">다음 웨이브</button><button class="action" id="restartGame" type="button">처음부터 다시 도전</button></section>
+  
+
+
+</main>
+<aside class="panel commander-panel">
+  <h2 class="side-heading">역사 수호대</h2>
+  <div class="guardian-profile"><img id="guardianAvatar" src="" alt="선택한 시간탐험대 캐릭터" onerror="this.style.visibility='hidden'"><div><b id="guardianName">나의 수호대원</b><div class="tip" id="guardianDesc">연결된 캐릭터 확인 중</div></div></div>
+  <div class="hero-status"><div class="hero-mini-card"><img id="heroPortrait" role="button" tabindex="0" aria-label="선택한 영웅의 전투 기술 사용" title="초상화를 클릭하여 기술 발동" src="visuals/hero_gamchan.webp" alt="영웅"><div><div id="heroMini" class="tip">기술 대기</div><b id="heroName">출전 영웅 선택 전</b><div id="heroDesc" class="tip">영웅을 선택해 전투를 시작하세요.</div></div></div><div class="hero-trigger-tip"><strong>전투 중 영웅 초상화를 누르면 기술 발동</strong><br>웨이브당 1회 · 사용 가능 시 초상화가 빛납니다</div></div>
+  <div id="skill" class="hide" aria-hidden="true"></div>
+  
+  <h2 class="side-heading record-heading">작전 기록</h2>
+  <div class="log" id="log"></div>
+  <div class="source">문제은행: 1학기 읽는 역사 고려 36~54쪽만 활용한 60문항. 한 판 15문항 무작위 출제. 본 게임은 교육용 각색입니다.</div>
+</aside>
+</div>
+</div>
+<script>
+'use strict';
+const TYPES={shield:{label:'방패 보병',cost:40,hp:165,dmg:13,range:29,speed:13,rate:1.1},bow:{label:'궁병',cost:50,hp:88,dmg:17,range:140,speed:12,rate:1.25},crossbow:{label:'쇠뇌병',cost:70,hp:100,dmg:32,range:132,speed:9,rate:1.85},horse:{label:'기병',cost:85,hp:128,dmg:27,range:35,speed:27,rate:.85}};
+const BASE_TYPES=JSON.parse(JSON.stringify(TYPES));
+const UPGRADES={shield:0,ranged:0,horse:0};
+const UPGRADE_COST={shield:55,ranged:65,horse:75};
+function upgradeUnit(kind){if(S.phase!=='ready')return;const level=UPGRADES[kind];if(level>=3)return;const cost=UPGRADE_COST[kind]+level*35;if(S.coins<cost)return;S.coins-=cost;UPGRADES[kind]++;
+ if(kind==='shield'){TYPES.shield.hp=Math.round(TYPES.shield.hp*1.22);for(const unit of S.units.filter(u=>u.type==='shield')){const gain=Math.round(unit.max*.22);unit.max+=gain;unit.hp+=gain;}}
+ if(kind==='ranged'){TYPES.bow.dmg=Math.round(TYPES.bow.dmg*1.20);TYPES.crossbow.dmg=Math.round(TYPES.crossbow.dmg*1.20);}
+ if(kind==='horse'){TYPES.horse.dmg=Math.round(TYPES.horse.dmg*1.20);}
+ log('병과 강화: '+({shield:'방패 보병',ranged:'궁병·쇠뇌',horse:'기병'})[kind]+' '+UPGRADES[kind]+'단계');updateUpgrades();ui();}
+function updateUpgrades(){for(const kind of Object.keys(UPGRADES)){const level=UPGRADES[kind],button=document.querySelector('[data-upgrade="'+kind+'"]');if(!button)continue;document.getElementById('level-'+kind).textContent=level+'/3단계';button.textContent=level>=3?'최대 강화':'강화 · '+(UPGRADE_COST[kind]+level*35)+'자원';button.disabled=level>=3||S.phase!=='ready'||S.coins<UPGRADE_COST[kind]+level*35;}}
+const FOES={inf:{label:'거란 보병',hp:85,dmg:12,range:32,speed:19,rate:1.2},bow:{label:'거란 궁병',hp:72,dmg:13,range:118,speed:18,rate:1.4},horse:{label:'거란 기병',hp:106,dmg:20,range:34,speed:28,rate:1.05},guard:{label:'거란 중장병',hp:185,dmg:21,range:34,speed:10,rate:1.5},midboss:{label:'야율팔가',hp:410,dmg:24,range:48,speed:13,rate:1.0},boss:{label:'소배압',hp:570,dmg:26,range:65,speed:9,rate:1.18}};
+const WAVES=[['inf','inf','bow','inf','inf','bow','inf','inf','bow','inf','inf','inf'],['inf','bow','inf','bow','horse','inf','bow','horse','inf','inf','bow','inf','horse','inf','bow','inf'],['horse','inf','bow','horse','guard','midboss','horse','bow','guard','inf','bow','inf','horse','inf','bow','guard','inf','bow','horse','inf'],['guard','horse','bow','inf','guard','horse','bow','inf','guard','horse','bow','guard','inf','bow','horse','inf','guard','bow','inf','horse','inf','bow','horse','bow'],['guard','horse','bow','guard','horse','boss','bow','guard','horse','inf','guard','horse','inf','bow','horse','inf','guard','bow','inf','horse','bow','guard','inf','bow']];
+const HEROES={gamchan:{name:'강감찬',mini:'고려군 총공격',desc:'양쪽 전선을 동시에 타격하는 광역 공격형 영웅',portrait:'visuals/hero_gamchan.webp',skill:'고려군 총공격',flash:'강감찬 · 고려군 총공격'},mincheom:{name:'강민첨',mini:'집중 돌파',desc:'선택 전선의 보스와 정예를 집중 타격하는 보스 저격형 영웅',portrait:'visuals/hero_mincheom.webp',skill:'집중 돌파',flash:'강민첨 · 집중 돌파'},jonghyeon:{name:'김종현',mini:'지원 기병 난입',desc:'기병 증원과 돌격 피해를 동시에 주는 난입형 영웅',portrait:'visuals/hero_jonghyeon.webp',skill:'지원 기병 합류',flash:'김종현 · 지원 기병 합류'}};
+const ENEMY_INFO={midboss:{name:'야율팔가 · 중간보스',desc:'3웨이브 등장 · 북쪽 또는 남쪽 전선 한 곳을 강하게 밀어붙입니다.',portrait:'visuals/enemy_midboss.webp'},boss:{name:'소배압 · 최종보스',desc:'5웨이브 등장 · 근접 피해와 돌파 피해가 강합니다.',portrait:'visuals/enemy_finalboss.webp'},normal:{name:'거란군 지휘부',desc:'3웨이브에 야율팔가, 5웨이브에 소배압이 등장합니다.',portrait:'visuals/enemy_midboss.webp'}};
+const SPRITES={ally:{shield:'visuals/ally_shield.webp',bow:'visuals/ally_bow.webp',crossbow:'visuals/ally_crossbow.webp',horse:'visuals/ally_horse.webp'},enemy:{inf:'visuals/enemy_inf.webp',bow:'visuals/enemy_bow.webp',horse:'visuals/enemy_horse.webp',guard:'visuals/enemy_guard.webp',midboss:'visuals/enemy_midboss.webp',boss:'visuals/enemy_finalboss.webp'}};
+const QUIZZES=[{"id":"G36-01","type":"fact","topic":"36","page":36,"question":"고려를 건국한 인물은?","options":["왕건","궁예","견훤","최승로"],"answer":0,"explanation":"궁예가 실각하자 신하들의 추대로 왕건이 즉위했습니다."},{"id":"G36-02","type":"fact","topic":"36","page":36,"question":"태조 왕건이 수도로 삼은 송악의 의미와 연결되는 설명은?","options":["고려의 정치적 중심지로 삼았다","몽골 침입을 피해 옮긴 수도였다","조선이 건국한 뒤 새로 정한 수도였다","거란의 수도를 점령해 옮긴 곳이었다"],"answer":0,"explanation":"태조 왕건은 송악을 수도로 삼아 고려의 통치 기반을 마련했습니다."},{"id":"G36-03","type":"fact","topic":"36","page":36,"question":"태조의 지방 호족 통제 제도 중 호족의 자제를 수도에 머물게 한 것은?","options":["기인 제도","사심관 제도","과거제","음서"],"answer":0,"explanation":"기인 제도는 호족 자제를 수도에 머물게 하여 호족을 견제했습니다."},{"id":"G36-04","type":"fact","topic":"36","page":36,"question":"광종이 불법으로 노비가 된 사람을 양인으로 회복시킨 제도는?","options":["노비안검법","전민변정도감","사심관 제도","과전법"],"answer":0,"explanation":"광종은 노비안검법으로 호족의 기반을 약화시켰습니다."},{"id":"G36-05","type":"concept","topic":"36","page":36,"question":"태조가 신라와의 관계에서 취한 정책은?","options":["우호 관계 유지","지속적인 정복 전쟁","국교 단절","강제 천도"],"answer":0,"explanation":"태조는 신라와 우호적으로 관계를 맺고 후백제와 대립했습니다."},{"id":"G36-06","type":"concept","topic":"36","page":36,"question":"태조가 북진 정책에서 서경을 중시한 배경은?","options":["고구려 계승 의식","몽골의 요구","조선 건국 준비","왜구의 침입"],"answer":0,"explanation":"태조는 고구려의 옛 영토 회복을 염두에 두고 서경을 중시했습니다."},{"id":"G36-07","type":"concept","topic":"36","page":36,"question":"광종이 과거제를 실시한 목적과 가장 가까운 것은?","options":["능력 있는 관리 등용과 왕권 강화","호족에게 관직 세습 보장","무신 정권 수립","공물 부담 확대"],"answer":0,"explanation":"과거제는 능력 있는 관리를 뽑아 국왕 중심의 통치에 도움을 주었습니다."},{"id":"G36-08","type":"concept","topic":"36","page":36,"question":"성종이 최승로의 시무 28조를 수용하며 강화한 통치 이념은?","options":["유교","도교","선종","풍수지리설"],"answer":0,"explanation":"성종은 시무 28조를 수용해 유교 통치 체제를 정비했습니다."},{"id":"G36-09","type":"reason","topic":"36","page":36,"question":"태조가 호족의 딸과 혼인한 이유를 추론하면?","options":["호족을 포섭하여 통일 국가를 안정시키려고","중앙 귀족을 모두 폐지하려고","거란에 항복하려고","과거제를 없애려고"],"answer":0,"explanation":"혼인 정책은 호족을 자신의 편으로 포섭하기 위한 정치적 선택이었습니다."},{"id":"G36-10","type":"reason","topic":"36","page":36,"question":"후백제의 왕위 계승 다툼이 고려에 미친 영향은?","options":["견훤의 투항으로 고려의 통일에 유리해졌다","거란의 3차 침입이 시작되었다","고려의 수도가 강화도로 옮겨졌다","신라가 고구려를 공격했다"],"answer":0,"explanation":"견훤이 신검에게 왕위를 빼앗긴 뒤 고려에 투항하여 고려에 유리해졌습니다."},{"id":"G39-01","type":"fact","topic":"39","page":39,"question":"고려의 국가 정책을 심의하고 결정한 중앙 기구는?","options":["중서문하성","상서성","어사대","삼사"],"answer":0,"explanation":"중서문하성은 고려 중앙의 최고 정책 심의·결정 기구였습니다."},{"id":"G39-02","type":"fact","topic":"39","page":39,"question":"고려의 군사 기밀과 왕명 출납을 담당한 기구는?","options":["중추원","어사대","삼사","식목도감"],"answer":0,"explanation":"중추원은 군사 기밀과 왕명 출납을 맡았습니다."},{"id":"G39-03","type":"fact","topic":"39","page":39,"question":"고려의 관리 비리를 감찰한 기구는?","options":["어사대","삼사","상서성","국자감"],"answer":0,"explanation":"어사대는 관리들의 비리를 감찰했습니다."},{"id":"G39-04","type":"fact","topic":"39","page":39,"question":"성종이 개경에 설치한 최고 교육 기관은?","options":["국자감","성균관","집현전","홍문관"],"answer":0,"explanation":"성종은 국자감을 설치해 인재를 양성했습니다."},{"id":"G39-05","type":"concept","topic":"39","page":39,"question":"고려의 삼사가 담당한 업무는?","options":["재정 출납과 회계","관리 감찰","군사 기밀","법령 심의"],"answer":0,"explanation":"고려의 삼사는 국가 재정 출납과 회계를 담당했습니다."},{"id":"G39-06","type":"concept","topic":"39","page":39,"question":"고려의 양계를 설치한 주된 목적은?","options":["국경 지역의 군사적 관리","개경 주변의 시장 통제","승려 교육","해외 교역"],"answer":0,"explanation":"양계는 국경 방어를 위한 군사 행정 구역입니다."},{"id":"G39-07","type":"concept","topic":"39","page":39,"question":"고려에 속현이 주현보다 많았다는 사실이 보여주는 것은?","options":["중앙이 모든 지방을 직접 다스리지는 못했다","모든 지역에 지방관을 파견했다","향리가 존재하지 않았다","군현이 모두 없었다"],"answer":0,"explanation":"속현에는 지방관이 파견되지 않아 향리가 행정을 맡았습니다."},{"id":"G39-08","type":"concept","topic":"39","page":39,"question":"고려의 음서 제도에서 중요한 요소는?","options":["가문의 신분과 관직","무예 시험 성적만","무역량","불교 수행 기간"],"answer":0,"explanation":"왕족과 공신의 후손, 5품 이상 관리의 자손은 음서 혜택을 받을 수 있었습니다."},{"id":"G39-09","type":"reason","topic":"39","page":39,"question":"중서문하성과 중추원의 고위 관료가 모인 도병마사는 어떤 문제에 적합했을까?","options":["국방과 군사 문제 논의","왕궁 장식 선정","사원 건축만 감독","과거 답안 채점"],"answer":0,"explanation":"도병마사는 국방과 군사 문제를 논의하는 고려의 독자적 회의 기구였습니다."},{"id":"G39-10","type":"reason","topic":"39","page":39,"question":"속현에 지방관이 파견되지 않았는데도 행정이 이루어질 수 있었던 까닭은?","options":["향리가 해당 지역의 실질적인 행정을 맡았기 때문에","모든 속현에 국왕이 직접 거주했기 때문에","속현에는 주민이 살지 않았기 때문에","군사 조직이 지방 행정을 모두 폐지했기 때문에"],"answer":0,"explanation":"고려의 속현에는 지방관이 파견되지 않았고 향리가 실질적인 행정을 맡았습니다."},{"id":"G42-01","type":"fact","topic":"42","page":42,"question":"고려 문벌 사회에서 왕실과 혼인해 권력을 장악한 가문 출신 인물은?","options":["이자겸","김윤후","공민왕","강감찬"],"answer":0,"explanation":"이자겸은 경원 이씨 문벌 가문 출신으로 외척 권력을 강화했습니다."},{"id":"G42-02","type":"fact","topic":"42","page":42,"question":"서경 천도와 칭제건원을 주장한 인물은?","options":["묘청","광종","양규","윤관"],"answer":0,"explanation":"묘청은 풍수지리설을 토대로 서경 천도와 칭제건원을 주장했습니다."},{"id":"G42-03","type":"fact","topic":"42","page":42,"question":"무신 정변을 일으켜 권력을 장악한 인물에 해당하는 사람은?","options":["정중부","최승로","의천","이자겸"],"answer":0,"explanation":"이의방과 정중부 등이 무신 정변을 주도했습니다."},{"id":"G42-04","type":"fact","topic":"42","page":42,"question":"최우가 관리 인사권을 장악하기 위해 설치한 기구는?","options":["정방","중방","삼사","도병마사"],"answer":0,"explanation":"최우는 정방을 설치해 인사권을 장악했습니다."},{"id":"G42-05","type":"concept","topic":"42","page":42,"question":"문벌 귀족 사회의 특징은?","options":["고위 관직이 여러 세대의 가문에 이어졌다","모든 관직을 선거로만 선발했다","가문의 영향력이 전혀 없었다","농민만 정치에 참여했다"],"answer":0,"explanation":"문벌 귀족은 여러 세대에 걸쳐 고위 관직과 영향력을 유지했습니다."},{"id":"G42-06","type":"concept","topic":"42","page":42,"question":"무신들이 정변을 일으킨 주된 배경은?","options":["문신 중심 정치와 무신 차별에 대한 불만","몽골과의 강화 체결","신진 사대부의 과전법 시행","청자 생산 감소"],"answer":0,"explanation":"무신은 승진과 군대 지휘에서 차별받으며 불만이 쌓였습니다."},{"id":"G42-07","type":"concept","topic":"42","page":42,"question":"최충헌이 도방을 확대해 활용한 이유는?","options":["자신의 권력을 지키는 사병 조직이 필요했기 때문에","고려의 모든 노비를 해방하기 위해","송나라와 교역하는 상인을 보호하기 위해","과거 시험의 답안을 채점하기 위해"],"answer":0,"explanation":"학습지는 최충헌이 사병 집단인 도방을 확대해 권력 유지에 활용했다고 설명합니다."},{"id":"G42-08","type":"concept","topic":"42","page":42,"question":"만적의 봉기가 다른 일반 농민 봉기와 구분되는 이유는?","options":["신분 차별 자체의 철폐를 주장했다","몽골 황제의 명령을 따랐다","관료의 세금 감면만 요구했다","서경으로 천도하려 했다"],"answer":0,"explanation":"만적은 신분 해방을 주장하며 봉기를 계획했습니다."},{"id":"G42-09","type":"reason","topic":"42","page":42,"question":"무신 정권 시기에 농민·천민 봉기가 늘어난 배경은?","options":["수탈 심화와 지방 통제 약화","고려의 완전한 평등 사회 실현","세금의 전면 폐지","모든 노비의 해방 완료"],"answer":0,"explanation":"정치 혼란과 수탈 증가, 지방 통제력 약화가 봉기의 배경이었습니다."},{"id":"G42-10","type":"reason","topic":"42","page":42,"question":"서경 천도를 주장한 묘청이 풍수지리설을 강조한 까닭으로 가장 적절한 것은?","options":["서경의 지리적 기운을 근거로 정치적 변화를 주장하려고","모든 관리의 과거 시험을 없애려고","원나라의 생활 풍습을 확산시키려고","서경에 있던 불교 사원을 모두 철거하려고"],"answer":0,"explanation":"학습지는 묘청이 풍수지리설을 근거로 서경 천도와 칭제건원을 주장했다고 설명합니다."},{"id":"G45-01","type":"fact","topic":"45","page":45,"question":"거란 1차 침입 때 외교 담판으로 강동 6주를 얻는 데 기여한 인물은?","options":["서희","양규","강감찬","윤관"],"answer":0,"explanation":"서희의 담판으로 강동 6주를 확보했습니다."},{"id":"G45-02","type":"fact","topic":"45","page":45,"question":"거란 2차 침입 당시 활약한 고려 인물은?","options":["양규","강감찬","김윤후","최무선"],"answer":0,"explanation":"학습지는 2차 침입 당시 양규의 활약을 설명합니다."},{"id":"G45-03","type":"fact","topic":"45","page":45,"question":"거란 3차 침입을 막은 대표적 전투는?","options":["귀주대첩","살수대첩","황산벌 전투","안시성 전투"],"answer":0,"explanation":"강감찬이 지휘한 고려군이 귀주에서 거란을 크게 격파했습니다."},{"id":"G45-04","type":"fact","topic":"45","page":45,"question":"여진에 맞서 별무반을 조직한 인물은?","options":["윤관","서희","박위","신돈"],"answer":0,"explanation":"윤관은 여진 기병에 대응하기 위해 별무반을 조직했습니다."},{"id":"G45-05","type":"concept","topic":"45","page":45,"question":"거란의 1차 침입에서 서희가 주목한 상대의 목적은?","options":["고려와 송의 관계를 끊으려는 것","고려의 남쪽 항구 점령만","몽골의 수도 이전","신라 부흥 운동 지원"],"answer":0,"explanation":"서희는 거란의 외교적 요구를 간파하고 담판했습니다."},{"id":"G45-06","type":"concept","topic":"45","page":45,"question":"거란의 여러 차례 침입 이후 고려가 구축한 방어 시설은?","options":["천리장성","한양도성","장경판전","화성"],"answer":0,"explanation":"고려는 북방 침입에 대비하려고 천리장성을 쌓았습니다."},{"id":"G45-07","type":"concept","topic":"45","page":45,"question":"몽골군의 침입에 맞서 고려가 강화도로 수도를 옮긴 전략적 이유는?","options":["육상 기병 중심의 몽골군이 바다를 건너 공격하기 어렵다고 판단했기 때문에","강화도에서 대륙으로 곧바로 진격할 수 있었기 때문에","기존 개경에 아무도 살지 않았기 때문에","거란군이 강화도에 수도를 설치했기 때문에"],"answer":0,"explanation":"고려는 몽골군이 해상 전투에 익숙하지 않은 점을 고려하여 강화도로 천도했습니다."},{"id":"G45-08","type":"concept","topic":"45","page":45,"question":"몽골 침입기에 부처의 힘으로 나라를 지키려는 염원을 담아 만든 것은?","options":["팔만대장경","훈민정음","경국대전","동국통감"],"answer":0,"explanation":"고려 정부는 몽골 침입 극복을 기원하며 팔만대장경을 만들었습니다."},{"id":"G45-09","type":"reason","topic":"45","page":45,"question":"서희의 외교 담판과 강감찬의 귀주대첩을 비교한 설명으로 옳은 것은?","options":["고려는 외교와 군사적 대응을 상황에 맞게 활용했다","거란의 침입을 언제나 항복만으로 해결했다","두 사건 모두 몽골의 침입에 대응한 사례이다","고려는 전쟁 이후에도 북방 방어를 준비하지 않았다"],"answer":0,"explanation":"학습지에는 서희의 외교 담판과 강감찬의 군사적 승리, 이후 천리장성 축조가 모두 제시되어 있습니다."},{"id":"G45-10","type":"reason","topic":"45","page":45,"question":"고려가 여진에게 동북 9성을 돌려준 이유로 학습지에 제시된 것은?","options":["방어와 관리의 어려움","송나라의 명령만","수도 이전 계획","고려군의 별무반 해체 법령"],"answer":0,"explanation":"고려는 여진의 반환 요구와 방어·관리의 어려움으로 동북 9성을 돌려주었습니다."},{"id":"G48-01","type":"fact","topic":"48","page":48,"question":"원이 일본 원정을 준비하기 위해 고려에 설치한 기구는?","options":["정동행성","도병마사","정방","국자감"],"answer":0,"explanation":"정동행성은 원이 일본 원정을 준비할 목적으로 설치했습니다."},{"id":"G48-02","type":"fact","topic":"48","page":48,"question":"공민왕이 공격하여 철령 이북의 땅을 회복한 곳은?","options":["쌍성총관부","동녕부","탐라총관부","강동 6주"],"answer":0,"explanation":"공민왕은 쌍성총관부를 공격해 철령 이북 지역을 회복했습니다."},{"id":"G48-03","type":"fact","topic":"48","page":48,"question":"공민왕이 등용해 전민변정도감을 설치하도록 한 승려는?","options":["신돈","지눌","의천","일연"],"answer":0,"explanation":"공민왕은 신돈을 등용해 내정 개혁을 추진했습니다."},{"id":"G48-04","type":"fact","topic":"48","page":48,"question":"고려 말 요동 정벌에 반대하고 위화도에서 군대를 돌린 인물은?","options":["이성계","최영","정몽주","이자겸"],"answer":0,"explanation":"이성계는 위화도 회군으로 정권 장악의 계기를 만들었습니다."},{"id":"G48-05","type":"concept","topic":"48","page":48,"question":"권문세족의 특징은?","options":["원과의 관계를 배경으로 특권을 누렸다","과거만으로 평등한 사회를 만들었다","모든 농장을 농민에게 돌려주었다","무신 정변 직후 모두 몰락했다"],"answer":0,"explanation":"권문세족은 원과의 관계를 활용해 권력과 토지를 확대했습니다."},{"id":"G48-06","type":"concept","topic":"48","page":48,"question":"원 간섭기 몽골풍과 고려양의 의미는?","options":["고려와 원 사이에 생활문화가 서로 전해진 것","고려가 원의 문화를 전혀 받아들이지 않은 것","오직 군사 무기 교역만 이루어진 것","신라와 백제의 문화 교류를 뜻한 것"],"answer":0,"explanation":"몽골풍은 고려에 퍼진 몽골의 풍습, 고려양은 원에 퍼진 고려의 풍습입니다."},{"id":"G48-07","type":"concept","topic":"48","page":48,"question":"전민변정도감의 주된 활동은?","options":["빼앗긴 토지와 억울한 노비의 신분을 바로잡는 일","중국 황제에게 조공하는 일","군사 훈련만 담당하는 일","서경 천도 집행"],"answer":0,"explanation":"전민변정도감은 권문세족이 빼앗은 토지와 노비 문제를 바로잡으려 했습니다."},{"id":"G48-08","type":"concept","topic":"48","page":48,"question":"신진 사대부의 사상적 기반은?","options":["성리학","불교 선종만","도교만","풍수지리설만"],"answer":0,"explanation":"신진 사대부는 성리학을 바탕으로 고려 말 개혁을 주장했습니다."},{"id":"G48-09","type":"reason","topic":"48","page":48,"question":"광종의 노비안검법과 공민왕의 전민변정도감이 공통으로 해결하려 한 문제는?","options":["부당하게 노비가 된 사람의 신분 문제","거란에 빼앗긴 강동 6주 문제","몽골의 일본 원정 준비 문제","고려의 불교 종파 통합 문제"],"answer":0,"explanation":"학습지에서 두 개혁 모두 부당한 노비 신분 문제를 바로잡으려 했고, 전민변정도감은 토지 문제도 다루었다고 설명합니다."},{"id":"G48-10","type":"reason","topic":"48","page":48,"question":"정몽주가 온건파 사대부로 분류되는 이유는?","options":["고려 왕조를 유지하면서 개혁하려 했다","새 왕조 건국만 주장했다","거란에 항복하자고 했다","무신 정변을 주도했다"],"answer":0,"explanation":"온건파는 고려를 유지하며 개혁할 것을 주장했습니다."},{"id":"G51-01","type":"fact","topic":"51","page":51,"question":"고려에서 흉년에 농민에게 곡식을 빌려주던 제도는?","options":["의창","과거제","기인 제도","전민변정도감"],"answer":0,"explanation":"의창은 식량 부족 시 곡식을 빌려주는 구휼 제도였습니다."},{"id":"G51-02","type":"fact","topic":"51","page":51,"question":"고려의 국립 의료·구제 기관은?","options":["동서대비원","중추원","어사대","사심관"],"answer":0,"explanation":"동서대비원은 병든 사람과 가난한 사람을 구제했습니다."},{"id":"G51-03","type":"fact","topic":"51","page":51,"question":"교종을 중심으로 선종을 통합하려 한 승려는?","options":["의천","지눌","신돈","일연"],"answer":0,"explanation":"의천은 해동 천태종을 열어 교종 중심의 통합을 추진했습니다."},{"id":"G51-04","type":"fact","topic":"51","page":51,"question":"선종 중심의 결사 운동을 펼친 승려는?","options":["지눌","의천","최승로","김부식"],"answer":0,"explanation":"지눌은 수선사를 중심으로 결사 운동을 벌였습니다."},{"id":"G51-05","type":"concept","topic":"51","page":51,"question":"고려의 자녀 재산 상속에 관한 특징은?","options":["아들과 딸의 균분 상속","장남만 모든 재산 상속","딸에게 재산 상속 금지","국왕에게 재산 모두 귀속"],"answer":0,"explanation":"고려에서는 자녀 균분 상속이 원칙이었습니다."},{"id":"G51-06","type":"concept","topic":"51","page":51,"question":"고려의 팔관회에 나타난 특징은?","options":["자연 숭배와 불교 요소의 결합","과거제만의 행사","궁궐에서만 하는 군사 훈련","왕권 폐지를 요구하는 모임"],"answer":0,"explanation":"팔관회에는 자연 숭배와 불교 신앙이 결합됐습니다."},{"id":"G51-07","type":"concept","topic":"51","page":51,"question":"고려 시대 역사서 중 김부식이 편찬한 책과 일연이 편찬한 책을 바르게 연결한 것은?","options":["김부식—삼국사기 / 일연—삼국유사","김부식—삼국유사 / 일연—삼국사기","김부식—훈요 10조 / 일연—시무 28조","김부식—동명왕편 / 일연—삼국사기"],"answer":0,"explanation":"학습지에서 김부식의 삼국사기와 일연의 삼국유사를 구분해 소개합니다."},{"id":"G51-08","type":"concept","topic":"51","page":51,"question":"단군 이야기와 불교 설화 등을 수록한 역사책을 찾는다면 어느 책을 살펴봐야 할까?","options":["일연의 삼국유사","김부식의 삼국사기","최승로의 시무 28조","태조의 훈요 10조"],"answer":0,"explanation":"학습지는 일연의 삼국유사가 단군 이야기와 여러 전승을 전한다고 소개합니다."},{"id":"G51-09","type":"reason","topic":"51","page":51,"question":"고려에서 호적을 남녀 출생 순서대로 적고 자녀에게 재산을 균분 상속한 점으로 추론할 수 있는 것은?","options":["여성이 가족 안에서 비교적 높은 지위를 누렸다","고려는 딸의 상속을 원칙적으로 금지했다","호적은 남자만 기록했다","가족의 재산을 반드시 장남이 독점했다"],"answer":0,"explanation":"호적의 남녀 출생 순서 기록과 자녀 균분 상속은 여성의 비교적 높은 지위를 보여줍니다."},{"id":"G51-10","type":"reason","topic":"51","page":51,"question":"의천과 지눌의 불교 개혁 방식에서 공통점을 찾으면?","options":["나뉜 불교 종파의 갈등을 해소하려 했다","둘 다 교종만을 인정하고 선종을 배제했다","둘 다 불교를 금지하려 했다","둘 다 고려 건국에 참여했다"],"answer":0,"explanation":"의천과 지눌은 방향은 달랐지만 불교 통합을 추구했습니다."}];
+function pickQuiz(){
+ const shuffle=a=>{const r=[...a];for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]];}return r;};
+ const quotas={fact:6,concept:6,reason:3},selected=[];
+ for(const [type,count] of Object.entries(quotas)){
+  const pool=shuffle(QUIZZES.filter(q=>q.type===type));
+  const pages=shuffle([...new Set(pool.map(q=>q.page))]);
+  const part=[];
+  for(const page of pages){const q=pool.find(q=>q.page===page&&!part.includes(q));if(q&&part.length<count)part.push(q)}
+  for(const q of pool){if(part.length===count)break;if(!part.includes(q))part.push(q)}
+  if(part.length!==count)throw Error('문제은행이 부족합니다: '+type);
+  selected.push(...part);
+ }
+ return shuffle(selected);
+}
+const $=s=>document.querySelector(s);
+let S={hero:null,phase:'pick',lane:0,wave:1,coins:210,castle:100,enemyCastle:100,units:[],foes:[],spawns:[],clock:0,elapsed:0,skillUsed:false,speed:1,qIndex:0,correct:0,answered:0,quizOrder:[],last:0,uid:0,finished:false,supportClock:0,supportGiven:[0,0]};
+document.querySelectorAll('[data-upgrade]').forEach(b=>b.onclick=()=>upgradeUnit(b.dataset.upgrade));
+function log(msg){const d=document.createElement('div');d.textContent=msg;$('#log').prepend(d);while($('#log').children.length>35) $('#log').lastChild.remove();}
+function setEnemyInfo(kind='normal'){/* 지휘관 카드 제거: 전장 보스 체력 표시는 유지 */}
+function flashBase(side){const el=side==='ally'?$('#allyBaseWrap'):$('#enemyBaseWrap'); el.classList.remove('hit'); void el.offsetWidth; el.classList.add('hit');}
+function updateBaseVisuals(){ const allyWrap=$('#allyBaseWrap'), enemyWrap=$('#enemyBaseWrap'); $('#allyBaseBar').style.width=Math.max(0,S.castle)+'%'; $('#enemyBaseBar').style.width=Math.max(0,S.enemyCastle)+'%'; allyWrap.classList.toggle('damaged',S.castle>0 && S.castle<=45); enemyWrap.classList.toggle('damaged',S.enemyCastle>0 && S.enemyCastle<=45); const allyImg=S.castle<=0?'visuals/base_ally_ruin.webp':'visuals/base_ally_full.webp', enemyImg=S.enemyCastle<=0?'visuals/base_enemy_ruin.webp':'visuals/base_enemy_full.webp'; if(!$('#allyBaseImg').src.endsWith(allyImg))$('#allyBaseImg').src=allyImg; if(!$('#enemyBaseImg').src.endsWith(enemyImg))$('#enemyBaseImg').src=enemyImg; }
+function ui(){ const emptyHint=$('#emptyArmyWarning');if(emptyHint)emptyHint.classList.toggle('hide',S.phase!=='ready'||S.units.some(u=>u.hp>0)); for(const [id,v] of Object.entries({hp:Math.max(0,Math.ceil(S.castle)),ehp:Math.max(0,Math.ceil(S.enemyCastle)),money:S.coins,wave:S.wave,score:S.correct,answered:S.answered,elapsed:Math.floor(S.elapsed)})) $('#'+id).textContent=v; $('#north').classList.toggle('selectedBtn',S.lane===0); $('#south').classList.toggle('selectedBtn',S.lane===1); document.querySelectorAll('.lane').forEach((e,i)=>e.classList.toggle('selected',S.lane===i)); $('#skill').disabled=S.phase!=='battle'||S.skillUsed; $('#status').textContent=S.phase==='battle'?'현재 '+(S.lane?'남쪽':'북쪽')+' 전선 선택 · 기술 '+(S.skillUsed?'사용 완료':'사용 가능'):'현재 '+({pick:'영웅 선택',quiz:'문제 풀이',ready:'병력 배치',result:'전투 결과'}[S.phase]||S.phase); document.querySelectorAll('#build button[data-type]').forEach(b=>b.disabled=!['battle','ready'].includes(S.phase)||S.coins<TYPES[b.dataset.type].cost); $('#remaining').textContent=S.spawns.length+'개 부대 증원 대기 / 적 생존 '+S.foes.length+'부대'; $('#skillState').textContent=S.phase==='battle'?(S.skillUsed?'기술 사용 완료':'기술 사용 가능'):'기술 대기'; const boss=S.foes.find(u=>(u.type==='midboss'||u.type==='boss')&&u.hp>0); $('#bossPanel').classList.toggle('hide',!boss);if(!boss)$('#bossPanel').classList.remove('boss-critical'); if(boss){ $('#bossLabel').textContent=FOES[boss.type].label+' 등장'; const bossRate=Math.max(0,Math.min(100,100*boss.hp/boss.max));$('#bossMeter').style.width=bossRate+'%';$('#bossHpNumber').textContent=' · 체력 '+Math.ceil(boss.hp)+' / '+Math.ceil(boss.max);$('#bossHpProgress').setAttribute('aria-valuenow',String(Math.round(bossRate)));$('#bossPanel').classList.toggle('boss-critical',bossRate<30); setEnemyInfo(boss.type==='boss'?'boss':'midboss'); } else if(S.phase!=='pick'){ setEnemyInfo(S.wave>=5?'boss':S.wave>=3?'midboss':'normal'); } updateBaseVisuals(); updateUpgrades(); const portrait=$('#heroPortrait');portrait.classList.toggle('skill-ready',S.phase==='battle'&&!S.skillUsed);portrait.classList.toggle('skill-used',S.phase==='battle'&&S.skillUsed);portrait.setAttribute('aria-disabled',String(S.phase!=='battle'||S.skillUsed)); const quickSkill=$('#quickHeroSkill');if(quickSkill){const active=S.phase==='battle';quickSkill.disabled=!active||S.skillUsed;quickSkill.classList.toggle('skill-ready',active&&!S.skillUsed);quickSkill.classList.toggle('skill-spent',S.skillUsed);const title=HEROES[S.hero]?.skill||'영웅 기술';$('#quickHeroText').innerHTML=active?(S.skillUsed?'사용 완료<br>다음 웨이브':title+'<br>⚡ 발동'):title+'<br>전투 시작 후';quickSkill.setAttribute('aria-label', (HEROES[S.hero]?.name||'영웅')+' 기술 · '+(active?(S.skillUsed?'이번 웨이브 사용 완료':'사용 가능'):'전투 시작 후 사용 가능'));quickSkill.setAttribute('aria-pressed',String(S.skillUsed));} }
+function phase(v){S.phase=v; const ph=$('#phaseBadge'); if(ph) ph.textContent=({pick:'영웅 선택',quiz:'역사 퀴즈',ready:'병력 준비',battle:'전투 진행',result:'전투 결과'})[v]||v; ['pickPanel','quizPanel','readyPanel','battlePanel','resultPanel'].forEach((id,i)=>$('#'+id).classList.toggle('hide',['pick','quiz','ready','battle','result'][i]!==v)); $('#deployControls').classList.toggle('hide',!['ready','battle'].includes(v)); $('#upgradePanel').classList.toggle('hide',v!=='ready'); const launch=$('#startWave');if(launch)launch.classList.toggle('hide',v!=='ready'); ui();}
+function selectLane(l){S.lane=l; ui();}
+$('#north').onclick=()=>selectLane(0); $('#south').onclick=()=>selectLane(1); document.querySelectorAll('.lane').forEach(el=>el.onclick=()=>selectLane(Number(el.dataset.lane)));
+document.querySelectorAll('[data-hero]').forEach(b=>b.onclick=()=>{S.hero=b.dataset.hero; document.querySelectorAll('[data-hero]').forEach(x=>{x.classList.toggle('chosen',x===b);x.setAttribute('aria-pressed',x===b?'true':'false')}); document.querySelectorAll('[data-hero]').forEach(x=>x.classList.toggle('on',x===b)); const h=HEROES[S.hero]; $('#heroName').textContent=h.name; $('#heroDesc').textContent=h.desc; $('#heroMini').textContent=h.mini; $('#heroPortrait').src=h.portrait;$('#quickHeroPortrait').src=h.portrait; $('#skillName').textContent=h.skill; log('출전 영웅 선택: '+h.name);}); $('#pick').onclick=()=>{if(!S.hero)return; S.quizOrder=pickQuiz(); quizStart();};
+function quizStart(){S.qIndex=0; phase('quiz'); question();}
+function question(){ S.quizAnswered=false; const index=(S.wave-1)*3+S.qIndex, q=S.quizOrder[index]; $('#topic').textContent='웨이브 '+S.wave+' · '+(S.qIndex+1)+'/3 · '+({fact:'사실 확인',concept:'개념 이해',reason:'역사적 추론'}[q.type])+' · 학습지 '+q.page+'쪽'; $('#question').textContent=q.question; $('#feedback').textContent=''; $('#feedback').className='quiz-feedback hide'; $('#nextQ').classList.add('hide'); $('#options').replaceChildren(); const order=[0,1,2,3]; for(let k=3;k>0;k--){const j=Math.floor(Math.random()*(k+1)); [order[k],order[j]]=[order[j],order[k]];} order.forEach((i,n)=>{ const b=document.createElement('button'); b.textContent=(n+1)+'. '+q.options[i]; b.onclick=()=>{ if(S.phase!=='quiz'||S.quizAnswered)return; S.quizAnswered=true; const ok=i===q.answer; S.answered++; const gain=ok?47:20; if(ok)S.correct++; S.coins=Math.min(650,S.coins+gain); $('#options').querySelectorAll('button').forEach(x=>{ x.disabled=true; if(Number(x.dataset.original)===q.answer)x.classList.add('good'); else if(x===b)x.classList.add('bad'); }); $('#feedback').textContent=(ok?'정답! ':'오답! ')+'자원 +'+gain+' · '+q.explanation; $('#feedback').className='quiz-feedback'+(ok?' ok':''); $('#nextQ').textContent=S.qIndex<2?'다음 문제 →':'병력 배치 →'; $('#nextQ').classList.remove('hide'); ui(); }; b.dataset.original=String(i); $('#options').append(b); }); }
+$('#nextQ').onclick=()=>{ if(S.phase!=='quiz'||!S.quizAnswered)return; S.quizAnswered=false; S.qIndex++; if(S.qIndex===3) prepareWave(); else question(); };
+function make(team,type,lane,x){ const base=(team==='ally'?TYPES:FOES)[type];
+ // 후반부 압박만 소폭 높입니다. 보스와 일반 거란군 모두 같은 비율을 적용합니다.
+ const hpScale=team==='enemy'?(S.wave===5?1.12:S.wave===4?1.08:1):1;
+ const obj={id:++S.uid,team,type,lane,x,hp:Math.round(base.hp*hpScale),max:Math.round(base.hp*hpScale),cd:Math.random()*.5,anim:'',animUntil:0,hitUntil:0,movingUntil:0};
+ (team==='ally'?S.units:S.foes).push(obj); return obj; }
+function summon(type,lane=S.lane,free=false){ const def=TYPES[type]; if(!['battle','ready'].includes(S.phase)&&!free) return; if(!free){ if(S.coins<def.cost) return; S.coins-=def.cost; } if(S.units.filter(u=>u.lane===lane&&u.hp>0).length>=11&&!free){ log('선택 전선 병력은 최대 11부대입니다.'); S.coins+=def.cost; return; } make('ally',type,lane,118); draw(); ui(); }
+document.querySelectorAll('#build button[data-type]').forEach(b=>b.onclick=()=>summon(b.dataset.type));
+function previewEnemyText(){ const n=WAVES[S.wave-1].length; const special=S.wave===3?' · 북쪽 정예 집중! 남쪽 기병 우회 경계 · 야율팔가':S.wave===5?' · 소배압 북쪽 주력 · 남쪽 기병 우회':''; return '웨이브 '+S.wave+' · 거란군 '+n+'부대 출전 예정'+special+' · 무료 지원병은 전선마다 1회'; }
+function prepareWave(){ S.skillUsed=false; S.quizAnswered=false; phase('ready'); $('#enemyPreview').textContent=previewEnemyText(); log('웨이브 '+S.wave+' 준비: 병력을 배치한 뒤 전투를 시작하세요.'); }
+$('#startWave').onclick=()=>startBattle();
+function bossSpawnPlan(){
+ const wave=S.wave, troop=WAVES[wave-1];
+ if(wave===3){
+   // 야율팔가가 북쪽 전선에 정예군을 집중하고 남쪽으로 기병을 우회 투입한다.
+   let northIndex=0,southIndex=0;
+   return troop.map((type,i)=>{
+     const lane=(type==='midboss'||type==='guard'||i%2!==0)?0:1;
+     const at=1.0 + (lane===0?northIndex++*1.45:southIndex++*3.15);
+     return {type,lane,at};
+   }).sort((a,b)=>a.at-b.at);
+ }
+ if(wave===5){
+   // 소배압의 북쪽 주력과 남쪽 기병 우회 공격을 동시 진행한다.
+   let northIndex=0,southIndex=0;
+   return troop.map((type,i)=>{
+     const lane=(type==='boss'||type==='guard'||(type!=='horse'&&i%3!==0))?0:1;
+     const at=1.0+(lane===0?northIndex++*1.55:southIndex++*2.1);
+     return {type,lane,at};
+   }).sort((a,b)=>a.at-b.at);
+ }
+ return troop.map((type,i)=>({type,lane:(i+wave)%2,at:i*1.32+0.9}));
+}
+function startBattle(){ if(S.phase!=='ready')return; if(!S.units.some(u=>u.hp>0)){log('전투 전에 북쪽 또는 남쪽 전선에 병력 1부대 이상을 소환하세요.');$('#status').textContent='병력 소환 후 전투를 시작하세요';return;} S.spawns=bossSpawnPlan(); S.clock=0; S.supportClock=0; S.supportGiven=[0,0]; S.skillUsed=false; phase('battle'); log('웨이브 '+S.wave+' 시작! 두 전선을 방어하세요.');
+if(S.wave===3)log('전황 보고: 북쪽 야율팔가 정예 집중! 남쪽 우회병도 경계하세요.');
+if(S.wave===5)log('전황 보고: 소배압 주력 북진 · 남쪽 기병 우회 공격!');
+ui(); }
+function skill(){ if(S.phase!=='battle'||S.skillUsed) return; S.skillUsed=true; const h=HEROES[S.hero]; const vis=document.createElement('div'); vis.className='skill-flash'; vis.innerHTML='<img src="'+h.portrait+'" alt=""> <span>'+h.flash+'</span>'; $('#field').append(vis); setTimeout(()=>vis.remove(),1200); if(S.hero==='gamchan'){ for(const u of S.foes) u.hp-=83; log('강감찬: 양쪽 전선 총공격!'); } if(S.hero==='mincheom'){ let group=S.foes.filter(u=>u.lane===S.lane).sort((a,b)=>b.hp-a.hp); group.slice(0,1).forEach(u=>u.hp-=320); group.slice(1,7).forEach(u=>u.hp-=110); S.foes.filter(u=>u.lane!==S.lane).forEach(u=>u.hp-=40); log('강민첨: 주력 적군 집중 타격과 교란 포격!'); } if(S.hero==='jonghyeon'){ for(let i=0;i<2;i++){const h=make('ally','horse',S.lane,130-i*10); h.hp*=.8; h.max=h.hp;} for(const u of S.foes.filter(x=>x.lane===S.lane)) u.hp-=55; log('김종현: 지원 기병 돌격!'); } S.foes=S.foes.filter(u=>u.hp>0); ui(); }
+$('#skill').onclick=skill; $('#quickHeroSkill').onclick=skill; $('#heroPortrait').onclick=skill; $('#heroPortrait').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();skill();}};
+$('#speed').onclick=()=>{ S.speed=S.speed===1?2:1; $('#speed').textContent='현재 속도 ×'+S.speed; log('전투 속도 '+S.speed+'배'); };
+// 같은 전선의 근접 충돌/화살/쇠뇌/기병 돌격 효과. 동시 표시 최대 32개.
+let fxCount=0; const FX_LIMIT=32;
+function fxNode(lane,x,kind){
+ if(fxCount>=FX_LIMIT || S.phase!=='battle')return null;
+ const parent=document.querySelectorAll('.lane')[lane]; if(!parent)return null;
+ const el=document.createElement('span');el.className='battle-fx '+kind;
+ el.style.left=(x/9)+'%';el.style.top='61%';parent.appendChild(el);fxCount++;
+ return el;
+}
+function fxRemove(el,ms){if(!el)return;setTimeout(()=>{el.remove();fxCount=Math.max(0,fxCount-1);},ms);}
+function spawnProjectile(lane,startX,endX,kind){
+ const el=fxNode(lane,startX,kind);if(!el)return;
+ const duration=kind==='bolt'?190:260;
+ const dist=(endX-startX)/9; const angle=(endX>=startX?0:180);
+ el.style.transform='translate(-50%,-50%) rotate('+angle+'deg)';
+ el.animate([{transform:'translate(-50%,-50%) rotate('+angle+'deg)',opacity:1},{transform:'translate(calc(-50% + '+dist+'%),-50%) rotate('+angle+'deg)',opacity:1}],{duration,fill:'forwards',easing:'linear'});
+ // element의 퍼센트 transform은 자기 자신의 폭 기준이므로 위치는 left 애니메이션으로 이동한다.
+ el.animate([{left:(startX/9)+'%'},{left:(endX/9)+'%'}],{duration,fill:'forwards',easing:'linear'});
+ fxRemove(el,duration+30);
+ setTimeout(()=>{const impact=fxNode(lane,endX,'impact');fxRemove(impact,320);},duration);
+}
+function showAttackFx(u,target){
+ if(fxCount>=FX_LIMIT)return;
+ const motion=attackMotionType(u);
+ if(motion==='bow' || motion==='bolt'){spawnProjectile(u.lane,u.x,target.x,motion==='bolt'?'bolt':'arrow');return;}
+ if(motion==='charge'){
+   const mid=(u.x+target.x)/2;
+   const el=fxNode(u.lane,mid,'charge');fxRemove(el,300);
+   setTimeout(()=>{const impact=fxNode(u.lane,target.x,'impact');fxRemove(impact,300);},160);
+   return;
+ }
+ if(motion==='thrust'){
+   const mid=(u.x+target.x)/2;
+   const el=fxNode(u.lane,mid,'spear');fxRemove(el,260);
+   setTimeout(()=>{const impact=fxNode(u.lane,target.x,'impact');fxRemove(impact,280);},110);
+   return;
+ }
+ if(motion==='heavy'){
+   const el=fxNode(u.lane,target.x,'cleave');fxRemove(el,300);
+   setTimeout(()=>{const impact=fxNode(u.lane,target.x,'impact');fxRemove(impact,300);},120);
+   return;
+ }
+ const el=fxNode(u.lane,target.x,'slash');fxRemove(el,290);
+ setTimeout(()=>{const impact=fxNode(u.lane,target.x,'impact');fxRemove(impact,280);},95);
+}
+function showHit(lane,x,mark){const e=fxNode(lane,x,'impact');fxRemove(e,310);}
+function attackMotionType(u){
+ if(u.type==='horse')return 'charge';
+ if(u.type==='bow')return 'bow';
+ if(u.type==='crossbow')return 'bolt';
+ if(u.type==='guard'||u.type==='boss'||u.type==='midboss')return 'heavy';
+ return u.team==='enemy'?'strike':'thrust';
+}
+function attackMotionDuration(kind){ return ({strike:.34,thrust:.30,bow:.44,bolt:.40,charge:.38,heavy:.46})[kind]||.34; }
+function attack(u,enemy,def,dt){ u.cd-=dt; const candidates=enemy.filter(t=>t.lane===u.lane&&t.hp>0); let target=candidates.filter(t=>Math.abs(t.x-u.x)<=def.range).sort((a,b)=>Math.abs(a.x-u.x)-Math.abs(b.x-u.x))[0]; if(target){ if(u.cd<=0){ const motion=attackMotionType(u); target.hp-=def.dmg; u.cd=def.rate; u.anim=motion;u.animUntil=S.elapsed+attackMotionDuration(motion);target.hitUntil=S.elapsed+0.24;showAttackFx(u,target); } } else { const step=def.speed*dt*(u.team==='ally'?1:-1); const prevX=u.x;u.x=Math.max(20,Math.min(875,u.x+step));if(Math.abs(u.x-prevX)>.01)u.movingUntil=S.elapsed+.16; }
+ if(u.team==='enemy'&&u.x<=84){ const hit=u.type==='boss'?20:u.type==='midboss'?13:7; S.castle-=hit; u.hp=0; flashBase('ally'); log('⚠️ '+(u.lane?'남쪽':'북쪽')+' 전선 돌파! 고려 본진 피해'); }
+ if(u.team==='ally'&&u.x>=760 && !candidates.length && !S.spawns.length && S.wave===5){ S.enemyCastle-=dt*(u.type==='crossbow'?11:u.type==='horse'?13:8); if(Math.random()<.12){showHit(u.lane,835,'💥'); flashBase('enemy');} }
+ if(u.team==='ally'&&u.x>=815){ u.x=815; }
+}
+function tick(dt){ if(S.phase!=='battle') return; S.clock+=dt; S.elapsed+=dt; S.supportClock+=dt; if(S.supportClock>=22){S.supportClock-=22; for(let lane=0;lane<2;lane++){
+ const alive=S.units.filter(u=>u.lane===lane&&u.hp>0).length;
+ if(alive<6 && S.supportGiven[lane]<1){const reinforcement=make('ally','shield',lane,110);
+ reinforcement.hp=64;reinforcement.max=64; S.supportGiven[lane]++;
+ log((lane?'남쪽':'북쪽')+' 전선 비상 지원병 도착');}
+ }} while(S.spawns.length && S.spawns[0].at<=S.clock){ const s=S.spawns.shift(); make('enemy',s.type,s.lane,820); if(s.type==='midboss' || s.type==='boss'){ const title=s.type==='midboss'?'야율팔가':'소배압'; log(title+' 지휘군 등장! 전선에 주의하세요.'); const alert=document.createElement('div'); alert.className='boss-banner'; alert.textContent='거란군 총공세 · '+title+' 등장'; $('#field').append(alert); setTimeout(()=>alert.remove(),1800); }} if(S.clock>2 && Math.floor(S.clock/3)>Math.floor((S.clock-dt)/3)) S.coins=Math.min(650,S.coins+18); for(const u of [...S.units]) attack(u,S.foes,TYPES[u.type],dt); for(const u of [...S.foes]) attack(u,S.units,FOES[u.type],dt); S.units=S.units.filter(u=>u.hp>0); S.foes=S.foes.filter(u=>u.hp>0); if(S.castle<=0){ S.castle=0; updateBaseVisuals(); end(false); return; } if(S.clock>=210){ S.castle-=7; flashBase('ally'); log('장기 교전 경과: 고려군 사기 하락'); S.clock=195; }
+ if(!S.spawns.length && !S.foes.length){ if(S.wave<5){ end(true); return; } if(S.enemyCastle<=0){ S.enemyCastle=0; updateBaseVisuals(); end(true); return; } if(!S.units.length){ S.castle-=dt*5; flashBase('ally'); if(S.castle<=0){S.castle=0; end(false); return;} } }
+}
+const unitNodes=new Map();
+
+// Renewal v1: nation-coloured live sprite motions (original stats and battle flow unchanged).
+const NEW_SPRITE_MAP={ally:{shield:'shield',bow:'bow',crossbow:'bow',horse:'horse'},enemy:{inf:'shield',bow:'bow',horse:'horse',guard:'shield'}};
+const NEW_SPRITE_NATION={ally:'goryeo',enemy:'khitan'};
+let spriteTick=0;
+function newSpriteFrame(u){
+ const type=NEW_SPRITE_MAP[u.team]?.[u.type]; if(u.team==='enemy'&&u.type==='midboss')return 'sprite_assets/khitan/midboss_champion.webp';if(u.team==='enemy'&&u.type==='boss')return 'sprite_assets/khitan/boss_warlord.webp';if(!type)return null;
+ // Frame 00 is the full-body master. Many cells 03-09 in the generated sheet
+ // contain clipped torsos/FX fragments. Keep body intact and animate with CSS.
+ if(u.team==='ally'&&u.type==='crossbow')return 'sprite_assets/goryeo/crossbow_full.webp';
+ return 'sprite_assets/'+NEW_SPRITE_NATION[u.team]+'/'+type+'/00.webp';
+}
+
+function draw(){
+ const alive=new Set();
+ for(const u of [...S.units,...S.foes]){
+  alive.add(u.id);
+  let node=unitNodes.get(u.id);
+  if(!node){
+   node=document.createElement('div');node.className='unit '+(u.team==='enemy'?'enemy':'ally')+((u.type==='midboss'||u.type==='boss')?' '+u.type:'');
+   const def=(u.team==='ally'?TYPES:FOES)[u.type];
+   const src=SPRITES[u.team][u.type];
+   node.innerHTML='<div class="hp"><i></i></div><span class="hp-number"></span><div class="figure"><img loading="lazy" draggable="false" src="'+src+'" alt="'+def.label+'"></div>';
+   if(u.type==='midboss'||u.type==='boss'){node.setAttribute('aria-label',def.label+' · 보스');node.setAttribute('title',def.label);}document.querySelectorAll('.lane')[u.lane].appendChild(node);unitNodes.set(u.id,node);
+  }
+  node.style.left=(u.x/9)+'%';
+  const newImage=newSpriteFrame(u);if(newImage){const img=node.querySelector('.figure img');if(img&&img.getAttribute('src')!==newImage)img.setAttribute('src',newImage);}
+  const bar=node.querySelector('.hp');bar.querySelector('i').style.width=Math.max(0,u.hp/u.max*100)+'%';bar.classList.toggle('low',u.hp/u.max<.28);node.querySelector('.hp-number').textContent=Math.max(0,Math.ceil(u.hp))+'/'+Math.ceil(u.max);node.querySelector('.hp-number').classList.toggle('critical',u.hp/u.max<.28);node.classList.toggle('low-health',u.hp/u.max<.28);
+  const anim=u.animUntil>S.elapsed?'motion-'+u.anim:'';
+  for(const c of ['motion-strike','motion-thrust','motion-bow','motion-bolt','motion-charge','motion-heavy'])node.classList.toggle(c,c===anim);
+  node.classList.toggle('motion-hit',u.hitUntil>S.elapsed);node.classList.toggle('moving',(u.movingUntil||0)>S.elapsed && !(u.animUntil>S.elapsed));
+ }
+ for(const [id,node] of unitNodes){if(!alive.has(id)){node.remove();unitNodes.delete(id);}}
+}
+
+function end(win){ S.spawns=[]; S.finished=true; phase('result'); $('#resultTitle').textContent=win?(S.wave===5?'🏆 귀주대첩 승리':'✅ 웨이브 '+S.wave+' 방어 성공'):'⚠️ 고려 본진 방어 실패'; $('#resultDesc').textContent='고려 본진 '+Math.max(0,Math.round(S.castle))+' · 거란 진영 '+Math.max(0,Math.round(S.enemyCastle))+' · 정답 '+S.correct+'/'+S.answered; $('#continue').classList.toggle('hide',!win||S.wave===5); $('#restartGame').classList.toggle('hide',win&&S.wave<5); log($('#resultTitle').textContent); updateBaseVisuals(); const portrait=$('#heroPortrait');portrait.classList.toggle('skill-ready',S.phase==='battle'&&!S.skillUsed);portrait.classList.toggle('skill-used',S.phase==='battle'&&S.skillUsed);portrait.setAttribute('aria-disabled',String(S.phase!=='battle'||S.skillUsed)); }
+function resetGame(){
+ for(const kind of Object.keys(UPGRADES))UPGRADES[kind]=0;
+ for(const kind of Object.keys(BASE_TYPES))Object.assign(TYPES[kind],BASE_TYPES[kind]);
+ for(const node of unitNodes.values())node.remove();unitNodes.clear();
+ document.querySelectorAll('.battle-fx,.skill-flash,.boss-banner').forEach(node=>node.remove());fxCount=0;
+ const initial={hero:null,phase:'pick',lane:0,wave:1,coins:210,castle:100,enemyCastle:100,units:[],foes:[],spawns:[],clock:0,elapsed:0,skillUsed:false,speed:1,qIndex:0,correct:0,answered:0,quizOrder:[],last:0,uid:0,finished:false,supportClock:0,supportGiven:[0,0],quizAnswered:false};
+ Object.assign(S,initial);
+ document.querySelectorAll('[data-hero]').forEach(node=>{node.classList.remove('chosen','on');node.setAttribute('aria-pressed','false')});
+ $('#heroName').textContent='출전 영웅 선택 전';$('#heroMini').textContent='기술 대기';$('#heroDesc').textContent='영웅을 선택해 전투를 시작하세요.';
+ $('#heroPortrait').src=HEROES.gamchan.portrait;$('#quickHeroPortrait').src=HEROES.gamchan.portrait;
+ $('#speed').textContent='현재 속도 ×1'; $('#log').replaceChildren();
+ updateBaseVisuals();phase('pick');log('새 게임을 시작합니다. 출전 영웅을 선택하세요.');
+}
+$('#restartGame').onclick=resetGame;
+$('#continue').onclick=()=>{ S.wave++; S.coins=Math.min(650,S.coins+85); S.units=S.units.filter(u=>u.hp>0); for(const u of S.units){ u.x=Math.min(145,u.x); u.hp=Math.min(u.max,u.hp+10); } quizStart(); };
+let lastRender=0; function frame(t){ const dt=Math.min(.06,(t-S.last)/1000||0); S.last=t; if(S.phase==='battle'){ for(let i=0;i<(S.speed===2?2:1);i++) tick(dt); if(t-lastRender>=40){draw(); ui(); lastRender=t;} } requestAnimationFrame(frame); }
+setEnemyInfo('normal'); requestAnimationFrame(frame); phase('pick'); log('귀주대첩 2전선 게임을 준비했습니다. 영웅을 선택하세요.');
+
+// 캐릭터 자산과 id는 '역사디펜스 지도메인_캐릭터연계' 판본과 공유합니다.
+const DEFENSE_CHARACTERS = [{id:'heecheol',name:'희철',desc:'역사의 흐름을 짚어주는 선생님',base:31},{id:'miyoung',name:'미영',desc:'사건의 연결고리를 찾아주는 선생님',base:37},{id:'seonggyu',name:'성규',desc:'새로운 시대에 도전하는 탐험가',base:43},{id:'yunseo',name:'윤서',desc:'역사의 단서를 모으는 탐험가',base:49}];
+function readGuardianChoice(){
+  const params=new URLSearchParams(location.search);
+  let raw=params.get('character')||params.get('avatar')||'';
+  if(!raw){try{raw=localStorage.getItem('hd_demo_char')||localStorage.getItem('historyDefenseCharacter')||'';}catch(e){}}
+  return DEFENSE_CHARACTERS.find(c=>c.id===raw)||null;
+}
+function syncGuardianCharacter(){
+  const chosen=readGuardianChoice();
+  const avatar=document.querySelector('#guardianAvatar');
+  if(!chosen){
+    document.querySelector('#guardianName').textContent='나의 수호대원';
+    document.querySelector('#guardianDesc').textContent='시간탐험대 캐릭터 연동 전 · 지도에서 선택하거나 연결 주소로 접속하세요';
+    avatar.style.visibility='hidden';return;
+  }
+  avatar.style.visibility='visible';
+  avatar.src='assets/asset_'+String(chosen.base+3).padStart(3,'0')+'.png';
+  document.querySelector('#guardianName').textContent=chosen.name;
+  document.querySelector('#guardianDesc').textContent=chosen.desc;
+}
+window.addEventListener('storage',e=>{if(e.key==='hd_demo_char'||e.key==='historyDefenseCharacter')syncGuardianCharacter();});
+window.addEventListener('pageshow',syncGuardianCharacter);
+syncGuardianCharacter();
+</script>
+</body></html>
+<!-- v0.9.3 경량 프레임 공격 모션: 3단계 포즈 애니메이션과 근접/원거리 전투 효과 강화 -->

@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>역사디펜스 · 천문령 전투 v3.8 · 안정화판</title><style>
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(130deg,#d6e8df,#e9efe4);font-family:'Malgun Gothic',sans-serif;color:#254151}.wrap{max-width:1210px;margin:auto;padding:12px}header,.panel,.stage{background:#fffdf4;border:2px solid #fff;border-radius:18px;box-shadow:0 8px 22px #41645720}header{padding:13px 20px}h1{margin:0;font-size:26px}h2{font-size:18px;margin:0 0 9px}h3{margin:9px 0}.small{font-size:12px;color:#5f7c7e}.chips{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}.chip{padding:8px 12px;background:#ffffffde;border:1px solid #c6dcd4;border-radius:30px;font-size:13px;font-weight:bold}.stage{position:relative;aspect-ratio:1120/385;min-height:0;overflow:hidden;background:linear-gradient(#40553a88,#40553a66),url('visuals/mountain_trail_custom.png') center / cover no-repeat;margin-bottom:12px}.stage:before{display:none}.ridge{display:none}.track{display:none}.spot{position:absolute;z-index:4;border:2px solid #ffffffaa;border-radius:13px;padding:6px 8px;background:#233f40c9;color:white;cursor:pointer;font-weight:900;min-width:112px;text-align:center;font-size:13px;backdrop-filter:blur(2px)}.spot[data-zone="0"]{left:60%;top:50%}.spot[data-zone="1"]{left:40%;top:20%}.spot[data-zone="2"]{left:15%;top:64%}.spot.selected{outline:4px solid #ffe28d;background:#16455a}.spot small{display:block;font-size:11px;color:#dbefe0}canvas{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none}.field-note{position:absolute;z-index:5;top:8px;left:12px;background:#fff9def0;border-radius:10px;padding:7px 12px;font-size:12px;font-weight:bold}.field-note.hide-note{display:none!important}.layout{display:grid;grid-template-columns:minmax(0,1fr) 293px;gap:12px}.panel{padding:14px}.buttons{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.button,button{font:inherit;cursor:pointer}.button{background:#e9f4ed;border:2px solid #b5d1bf;border-radius:11px;padding:12px 4px;font-size:13px;font-weight:bold;color:#29556a}.button:disabled,button:disabled{opacity:.45;cursor:not-allowed}.action{background:#2183ac;color:#fff;border:0;border-radius:10px;font-weight:900;padding:11px 18px;margin-top:9px}.action.alt{background:#597669}.action.danger{background:#b36342}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.roles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.role{padding:12px 9px;border:2px solid #bad4ca;border-radius:12px;background:#eef8ee;text-align:left;font-weight:bold}.role.selected{border-color:#328bae;background:#d7eff3}.role img{width:64px;height:74px;object-fit:cover;object-position:center 18%;border-radius:9px;float:left;margin-right:9px}.role span{font-size:11px;display:block;font-weight:400;margin-top:5px}.log{height:165px;overflow:auto;background:#eaf2ea;border-radius:10px;padding:9px;font-size:12px;line-height:1.65}.option{display:block;width:100%;text-align:left;margin:5px 0;padding:10px;border:1px solid #b7cbc6;background:white;border-radius:9px}.option:hover{background:#e4f6f7}.hide{display:none!important}.modal{position:fixed;z-index:99;inset:0;background:#16362fbd;display:grid;place-items:center;padding:14px}.story{width:min(720px,100%);background:#fffaf0;border:3px solid #d5b67c;border-radius:20px;overflow:hidden;box-shadow:0 20px 55px #101d18b9}.story-art{height:225px;position:relative;background:#d0dbce center / cover no-repeat;display:grid;place-items:center;font-size:82px}.story-body{padding:21px 27px}.story p{line-height:1.8;min-height:85px}.tag{background:#edf5e8;color:#4f694e;border-radius:99px;padding:3px 9px;font-size:11px}.progress{height:12px;background:#cbd4c6;border-radius:7px;overflow:hidden}.progress i{display:block;height:100%;background:linear-gradient(90deg,#df8b55,#56ba83);width:100%}.warning{padding:9px;background:#fff0d5;border-radius:9px;color:#845329;font-size:12px}.basehp{width:100%;height:10px;background:#e4c5a3;border-radius:9px;overflow:hidden}.basehp i{display:block;height:100%;width:100%;background:#4fae7e}.mono{font-variant-numeric:tabular-nums}@media(max-width:850px){.layout{grid-template-columns:1fr}.stage{min-height:0}.buttons{grid-template-columns:repeat(2,1fr)}.roles{grid-template-columns:1fr}.spot{min-width:92px;font-size:11px}.spot small{font-size:9px}}
+.boss-alert{position:absolute;right:16px;top:35px;z-index:9;display:flex;gap:10px;align-items:center;background:#221f26e8;border:2px solid #f7d17e;border-radius:14px;padding:8px;color:#fff1ca;font-size:14px;font-weight:900;max-width:300px;box-shadow:0 7px 20px #0007}.boss-alert img{width:76px;height:70px;object-fit:cover;object-position:center 18%;border-radius:8px;border:1px solid #ffe5af}.story-art{background-position:center!important}.stage canvas{z-index:3}.spot{z-index:5}
+
+/* v0.7.1: 전투 가독성 개선. 기존 반투명 산/넓은 도로 장식을 숨기고 배경 원본을 사용 */
+.stage{
+ background-image:linear-gradient(180deg,rgba(9,24,22,.06),rgba(9,24,22,.03)),url('visuals/mountain_trail_custom.png')!important;
+ background-position:center center!important;
+ background-size:cover!important;
+}
+.stage::before,.stage .ridge,.stage .track{display:none!important}
+.stage canvas{z-index:4!important}
+.stage .spot{z-index:6!important;min-width:103px;padding:5px 7px;
+ background:rgba(19,49,59,.90);box-shadow:0 2px 6px rgba(0,0,0,.27)}
+.stage .field-note{z-index:7!important}
+/* v0.7.2: 전투 중 거점 라벨 축소 */
+.stage.battle-compact .spot{min-width:76px!important;padding:4px 7px!important;font-size:11px!important;line-height:1.2;border-radius:11px;background:rgba(20,54,61,.88)!important;box-shadow:0 3px 10px rgba(0,0,0,.22)}
+.stage.battle-compact .spot small{display:none!important}
+.stage.battle-compact .spot[data-zone="0"]{left:12px!important;top:56px!important}
+.stage.battle-compact .spot[data-zone="1"]{left:12px!important;top:98px!important}
+.stage.battle-compact .spot[data-zone="2"]{left:12px!important;top:140px!important}
+.stage.battle-compact .field-note{font-size:11px!important;padding:6px 10px!important;max-width:240px}
+@media (max-width:850px){.stage .spot{min-width:85px;padding:5px 6px}.stage.battle-compact .spot{min-width:70px!important;font-size:10px!important}.stage.battle-compact .spot[data-zone="0"]{top:48px!important}.stage.battle-compact .spot[data-zone="1"]{top:86px!important}.stage.battle-compact .spot[data-zone="2"]{top:124px!important}}
+
+/* v0.7.3: 전투 방해 없는 실위치 거점 번호 표식 */
+.zone-pin{position:absolute;z-index:8;width:30px;height:30px;border:2px solid #fffcdf;border-radius:50%;display:grid;place-items:center;color:#fff;font:900 14px/1 'Malgun Gothic',sans-serif;box-shadow:0 2px 8px #101a1ab0;cursor:pointer;padding:0;transform:translate(-50%,-50%);background:#234c66;touch-action:manipulation}
+.zone-pin[data-zone="1"]{background:#af6d24}.zone-pin[data-zone="2"]{background:#388060}
+.zone-pin.selected{outline:3px solid #ffcf54;outline-offset:2px;box-shadow:0 0 0 7px #fbe29930,0 2px 12px #0008;scale:1.06}
+.zone-pin small{position:absolute;top:29px;left:50%;transform:translateX(-50%);white-space:nowrap;background:#102f3ee8;color:white;padding:2px 5px;border-radius:5px;font-size:10px;pointer-events:none;line-height:1.1}
+.zone-pin.pulse::before{content:'';position:absolute;inset:-14px;border:3px solid #ffe082;border-radius:50%;animation:zonePulse .62s ease-out forwards;pointer-events:none}
+@keyframes zonePulse{from{transform:scale(.45);opacity:1}to{transform:scale(1.45);opacity:0}}
+@media(max-width:700px){.zone-pin{width:26px;height:26px;font-size:12px}.zone-pin small{font-size:9px;top:25px}}
+.camp-abandoned{opacity:.48!important;filter:grayscale(1);border-color:#c0b0a0!important}.stage .zone-pin.camp-abandoned{background:#59514a!important;outline:none!important}.camp-abandoned small{color:#ffd4b8!important}/* v2.0.1: 도주로를 가리는 커다란 거점 레이블 제거 */
+.stage .spot{min-width:0!important;padding:4px 8px!important;font-size:11px!important;white-space:nowrap}
+.stage .spot small{display:none!important}
+.stage .spot[data-zone="0"]{left:61%;top:37%}
+.stage .spot[data-zone="1"]{left:36%;top:17%}
+.stage .spot[data-zone="2"]{left:9%;top:10%}
+.stage.battle-compact .spot{display:none!important}
+.stage .zone-pin small{background:#102f3de8}
+
+/* v2.0.2 — no floating name labels: hitboxes perfectly cover painted camp sprites. */
+.stage .spot{display:none!important}
+.stage .zone-pin{z-index:9;display:block!important;width:8.5%;height:19%;min-width:52px;min-height:52px;max-width:none;border:2px solid transparent;border-radius:18px;transform:translate(-50%,-50%);background:transparent!important;box-shadow:none!important;outline:0!important;color:transparent;font-size:0;scale:1;padding:0;touch-action:manipulation}
+.stage .zone-pin small,.stage .zone-sign-data{display:none!important}
+.stage .zone-pin[data-zone="0"]{left:57.2%;top:49.2%}
+.stage .zone-pin[data-zone="1"]{left:35.3%;top:31.4%}
+.stage .zone-pin[data-zone="2"]{left:6.5%;top:18.7%;width:8.2%;height:22%}
+.stage .zone-pin.selected{border-color:#ffe18c!important;box-shadow:0 0 0 4px #ffe18c45,0 0 18px #ffdc7480!important}
+.stage .zone-pin:hover,.stage .zone-pin:focus-visible{border-color:#fff5c2!important;box-shadow:0 0 0 4px #ffe18c45!important}
+.stage .zone-pin.camp-abandoned{border-color:transparent!important;box-shadow:none!important;cursor:not-allowed}
+.rear-choice{margin:0 0 9px}.rear-select{padding:8px 12px;flex:0 1 auto}.rear-select.selected{border-color:#398b77;background:#d2eee1}
+@media(max-width:700px){.stage .zone-pin{min-width:45px;min-height:55px}}
+
+/* v2.0.3: retreat cutscene and distinct camps */
+.retreat-story{max-width:660px}.retreat-scene{background:linear-gradient(110deg,#283e37,#76613d);padding:26px 26px 21px;color:#fff1c9}.retreat-stamp{font-weight:900;font-size:14px}.retreat-route{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:22px;font-size:18px;font-weight:900;flex-wrap:wrap}.retreat-route strong{font-size:14px;color:#ffe6a0}.retreat-story .story-body p{min-height:0;margin:9px 0;line-height:1.65}.retreat-story .action{display:block;margin-left:auto;margin-top:20px}.stage .zone-pin[data-zone="0"]{width:8.8%;height:21%}.stage .zone-pin[data-zone="1"]{width:8.8%;height:21%}.stage .zone-pin[data-zone="2"]{width:8.2%;height:22%}
+
+.tactics-guide{margin:12px 0;padding:13px 15px;border:1px solid #d3ac67;border-radius:12px;background:#fff5df;color:#433620}
+.tactics-guide p{margin:7px 0 9px;line-height:1.55}.tactics-roles{display:flex;flex-wrap:wrap;gap:7px;margin:8px 0}.tactics-roles span{padding:5px 8px;border-radius:7px;background:#efe3cb;font-size:13px}.battle-help{padding:10px 12px;background:#e1f2e9;color:#174b38;border:1px solid #96c7ae;border-radius:10px;margin:8px 0;font-weight:700;line-height:1.5}
+.retreat-readiness{padding:12px 14px;margin:12px 0;border:2px solid #c69352;border-radius:13px;background:#fff0d0;color:#4b321c}.retreat-readiness p{margin:8px 0;line-height:1.6}.retreat-readiness .button{margin-top:4px}.retreat-readiness.hide{display:none!important}
+
+/* v2.2.3: 실제 배경 이미지를 가리지 않는 작은 철수 상태 표식. */
+.stage .zone-pin[data-zone="0"].camp-abandoned::after{content:'철수';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);padding:3px 7px;border-radius:6px;background:rgba(49,46,42,.88);border:1px solid #e1c9a2;color:#fff1d5;font:900 12px/1.35 'Malgun Gothic',sans-serif;white-space:nowrap;pointer-events:none;}
+.stage .zone-pin[data-zone="1"].retreat-active{border-color:#9df0bd!important;box-shadow:0 0 0 4px #72d59650,0 0 18px #65c58d95!important;}
+
+/* v2.2.7: non-blocking battlefield status & legible results */
+.battle-hud{position:absolute;z-index:8;right:10px;bottom:9px;display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;pointer-events:none;max-width:68%}
+.battle-hud span{background:rgba(20,42,42,.83);border:1px solid rgba(244,228,178,.65);color:#fff8db;border-radius:9px;padding:5px 9px;font-size:12px;font-weight:800;text-shadow:0 1px 2px #102222}
+.stage:has(.boss-alert:not(.hide)) .battle-hud{bottom:9px}
+.result-score{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:14px 0}
+.result-score>div{padding:12px 5px;border:1px solid #c8d8cb;background:#f0f6ee;border-radius:12px;text-align:center}
+.result-score strong{display:block;font-size:21px;color:#24546b;font-variant-numeric:tabular-nums}
+.result-score span{display:block;font-size:11px;color:#455e54;margin-top:4px}
+.result-meaning,.retreat-next{border-radius:10px;background:#fff1d5;border-left:4px solid #c18a3c;padding:10px 13px;line-height:1.55;font-size:13px}
+@media(max-width:650px){.result-score{grid-template-columns:repeat(2,minmax(0,1fr))}.battle-hud{max-width:90%}.battle-hud span{font-size:10px;padding:4px 6px}}
+.final-debrief{margin:12px 0;padding:13px 15px;background:#f4f1e4;border:1px solid #c7b98e;border-radius:12px;font-size:13px;line-height:1.7}.final-debrief p{margin:6px 0}.final-debrief strong{font-size:15px}#nextWave:disabled{opacity:.55;cursor:not-allowed}
+
+/* v2.2.7 역사 이벤트 삽화 적용 */
+.story {max-height:calc(100dvh - 24px);overflow-y:auto}
+.story-art {height:260px;background-size:cover;background-position:center 45%!important}
+.retreat-scene {position:relative;isolation:isolate;min-height:225px;
+ background:linear-gradient(90deg,rgba(15,28,29,.64),rgba(15,28,29,.09)),
+ url('visuals/retreat_event.webp') center 47%/cover no-repeat}
+.retreat-scene .retreat-stamp,.retreat-scene .retreat-route {
+ position:relative;z-index:1;text-shadow:0 2px 5px #102326}
+@media(max-height:700px){.story-art{height:190px}.retreat-scene{min-height:170px}}
+
+
+/* v2.3.0 역사 이벤트 - 태블릿 가독성 / 화면 크기 대응 */
+.modal{overflow-y:auto;overscroll-behavior:contain;align-items:center}
+.story{width:min(760px,100%);max-height:calc(100dvh - 28px);max-height:calc(100vh - 28px);overflow-y:auto;overscroll-behavior:contain}
+.story-art{height:clamp(170px,32vh,270px);background-position:center 44%!important}
+.story-body{padding:clamp(12px,2.4vh,21px) clamp(16px,3vw,28px)}
+.story-body h2{font-size:clamp(19px,2.7vw,25px);line-height:1.35}
+.story-body p{min-height:0;line-height:1.65;font-size:clamp(13px,1.55vw,16px);margin:11px 0}
+.story-body .action{min-height:44px}
+#storyModal[data-theme="pro"] .story{border-color:#bc8d61;background:#fff7ec}
+#storyModal[data-theme="pro"] .tag{background:#f2dfc9;color:#774a31}
+#storyModal[data-theme="epi"] .story{border-color:#83ac9a;background:#f2faf5}
+#storyModal[data-theme="epi"] .tag{background:#dceee4;color:#2a6951}
+#retreatStoryModal .story{border-color:#c26f55;background:#fff5ef}
+#retreatStoryModal .retreat-scene{min-height:clamp(150px,28vh,225px)}
+#retreatStoryModal .retreat-route{background:rgba(18,34,36,.75);border-radius:12px;padding:9px 12px;margin-top:12px;font-size:clamp(12px,1.7vw,17px)}
+#retreatStoryModal .retreat-stamp{display:inline-block;background:rgba(18,34,36,.75);border-radius:9px;padding:5px 10px}
+@media(max-width:600px){.modal{padding:8px}.story{max-height:calc(100dvh - 16px)}.story-art{height:175px}.story-body{padding:12px 15px}.story-body .row{gap:6px}}
+@media(max-height:570px){.story-art{height:115px!important}.story-body p{margin:6px 0}.retreat-scene{min-height:115px!important}}
+
+
+/* v2.3.1 안전한 터치 영역과 이미지 위치 */
+#storyModal .story,#retreatStoryModal .story{overscroll-behavior:contain}
+#storyModal .story button,#retreatStoryModal .story button{min-height:44px}
+#storyModal .story-art{background-repeat:no-repeat}
+#retreatStoryModal .retreat-scene{background-position:center 42%}
+@media (max-height:500px){#storyModal .story-art{height:96px!important}#retreatStoryModal .retreat-scene{min-height:100px!important}}
+
+/* v2.3.2 tablet: viewport, touch, landscape and modal visibility */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.modal{overflow-x:hidden;overflow-y:auto;padding:max(8px,env(safe-area-inset-top,0px)) max(8px,env(safe-area-inset-right,0px)) max(8px,env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px))}
+.modal .story{max-height:calc(100vh - 16px);max-height:calc(100dvh - 16px);overflow:auto;overscroll-behavior:contain}
+#storyNext,#storySkip,#confirmRetreat{min-height:48px;min-width:110px}
+#storyModal .row{flex-wrap:wrap;position:sticky;bottom:0;background:#fff7ec;padding:7px}
+.zone-pin{min-width:44px;min-height:44px;touch-action:manipulation}
+.spot,.rear-select{min-height:44px;touch-action:manipulation}
+@media(pointer:coarse){.action,.button,.option,.role{min-height:44px}.zone-pin{min-width:44px;min-height:44px}}
+@media(max-height:560px) and (orientation:landscape){
+ .story-art{height:104px!important}
+ .story-body{padding:9px 14px!important}
+ .story-body p{margin:5px 0!important;line-height:1.5!important}
+ .story-body h2{font-size:17px!important;margin:4px 0!important}
+ #retreatStoryModal .retreat-scene{min-height:102px!important;padding:12px 16px!important}
+ #retreatStoryModal .retreat-route{margin-top:5px!important;padding:5px 8px!important}
+}
+@media(max-width:410px){
+ .wrap{padding:7px}
+ header{padding:10px 12px}
+ h1{font-size:21px}
+ .chips{gap:4px}
+ .chip{font-size:11px;padding:6px 8px}
+ .spot{min-width:54px;padding:4px 3px;font-size:10px}
+ .spot small{font-size:9px}
+ .stage .field-note{font-size:10px;padding:5px 7px;max-width:76%}
+ .modal .story-art{height:155px}
+}
+
+/* v2.3.3 - battlefield-adjacent quick recruitment */
+.quick-command{margin:-3px 0 10px;border:2px solid #a0c8b5;border-radius:15px;background:#fffdf2;padding:9px 12px;box-shadow:0 4px 13px #1c453122}
+.quick-summon h3{font-size:15px;margin:0 0 7px;display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+.quick-summon .rear-choice{margin:0 0 7px}
+.quick-summon .rear-choice .button{font-size:12px;padding:5px 12px;min-height:32px}
+.quick-summon .buttons{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.quick-summon .summon-card{display:flex;align-items:center;justify-content:center;gap:7px;padding:5px 7px;min-height:78px;text-align:left;border:2px solid #b6d1bd;border-radius:10px;background:#eef7eb;white-space:normal}
+.quick-summon .summon-card img{display:block;width:58px;height:62px;object-fit:contain;object-position:center;flex-shrink:0;mix-blend-mode:multiply}
+.quick-summon .summon-name{display:block;flex:1;min-width:0;line-height:1.3;font-size:14px;font-weight:900;color:#2b4d46}
+.quick-summon .summon-name small{display:block;font-size:10px;font-weight:500;color:#577b6b}
+.quick-summon .summon-cost{font-size:12px;color:#a76520;white-space:nowrap;margin:0 2px}
+.quick-command .compact-battle-controls{padding:0 0 7px;margin:0 0 9px;border-bottom:1px solid #d9e5dc}
+.compact-battle-controls h2{font-size:14px;margin:0 0 4px}
+.compact-battle-controls #battleInfo{margin:0 0 4px}
+.compact-battle-controls #battleHelp{padding:4px 7px;font-size:11px;line-height:1.3;margin-bottom:4px}
+.compact-battle-controls .row{gap:6px}
+.compact-battle-controls .action{margin:0;min-height:38px;padding:6px 10px;font-size:12px;flex:1}
+.battle-instructions{font-size:12px;color:#597369;margin:6px 0}.battle-instructions summary{cursor:pointer}
+@media(max-width:800px){.quick-summon .summon-card{flex-direction:column;text-align:center;gap:2px;min-height:102px;padding:5px 2px}.quick-summon .summon-card img{width:45px;height:49px}.quick-summon .summon-name{font-size:12px}.quick-summon .summon-name small{display:none}.quick-summon .summon-cost{font-size:11px}}
+@media(max-width:440px){.quick-command{padding:7px}.quick-summon .buttons{gap:4px}.quick-summon .summon-card img{width:37px;height:40px}.quick-summon .summon-card{min-height:91px}.compact-battle-controls .row{display:grid;grid-template-columns:repeat(2,1fr)}}
+
+/* v2.3.7: directly accessible start button under summoning cards */
+.quick-start-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:9px;padding:8px 10px;border-radius:11px;background:#e6f1e2;border:1px solid #a7c8a7}
+.quick-start-hint{font-size:13px;font-weight:800;color:#375847}
+.quick-start-btn{margin:0;min-height:48px;min-width:185px;background:#167eaa;box-shadow:0 3px 8px #26648133;font-size:17px;white-space:nowrap}
+@media(max-width:680px){.quick-start-bar{flex-direction:column;align-items:stretch;gap:5px}.quick-start-hint{text-align:center;font-size:12px}.quick-start-btn{width:100%;min-height:48px}}
+
+/* 안정화: 태블릿 가로모드 터치 및 버튼 가시성 */
+@media (hover:none) and (pointer:coarse){button,.button,[role="button"]{touch-action:manipulation}button{min-height:42px}}
+@media (max-height:650px) and (orientation:landscape){.modal{overflow-y:auto;align-items:start}.story{max-height:calc(100dvh - 18px);overflow-y:auto}}
+
+/* v3.2 - battlefield quick command and hero as a fifth card */
+.quick-summon .buttons{grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch}
+.hero-summon{border:2px solid #b68b46;background:#fff2d8;transition:filter .16s,opacity .16s,box-shadow .16s;}
+.hero-summon img{object-fit:cover!important;object-position:center 12%;border-radius:7px;}
+.hero-summon:disabled{filter:grayscale(.65);opacity:.52;cursor:not-allowed}
+.hero-summon.hero-ready{opacity:1;filter:none;border-color:#d8a327;box-shadow:0 0 0 2px #ffe6a3,0 0 11px #f3c95888;}
+.hero-summon.hero-used{filter:grayscale(.8);opacity:.42}
+#useSkill{display:none!important}
+@media(max-width:640px){.quick-summon .buttons{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:400px){.quick-summon .buttons{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+/* v3.7 귀주대첩 표준 UI: 3영웅 가로 배열, 5칸 전투 조작, 작전기록 상단 */
+.layout{grid-template-columns:minmax(0,1fr) 250px;align-items:start}
+.layout>.panel{min-width:0}
+.roles{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:7px!important}
+.role{display:flex;align-items:center;gap:7px;min-width:0;min-height:96px;padding:7px 6px!important;font-size:13px!important;line-height:1.25;text-align:left}
+.role img{float:none!important;flex:0 0 55px;width:55px!important;height:72px!important;margin:0!important;object-fit:contain!important;background:#e6f3ee}
+.role span{font-size:10px;line-height:1.35;margin-top:4px}
+.mission-log-panel{padding:12px!important}
+.mission-log-panel h2{font-size:17px;margin:0 0 9px}
+.mission-log-panel .log{height:clamp(180px,33vh,360px);overflow:auto}
+.quick-command .quick-summon .buttons{grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:6px!important;overflow:visible!important}
+.quick-command .summon-card{min-width:0!important;min-height:79px!important;padding:4px!important;display:flex;align-items:center;flex-direction:column;text-align:center;gap:1px!important;justify-content:center}
+.quick-command .summon-card img{width:46px!important;height:43px!important;flex-shrink:0;object-fit:contain!important}
+.quick-command .summon-name{flex:none;font-size:12px!important;line-height:1.12}
+.quick-command .summon-name small{display:none}
+.quick-command .summon-cost{font-size:11px!important}
+.quick-command .hero-summon{background:#fff0d4!important}
+.quick-command .hero-summon img{width:40px!important;height:44px!important;object-fit:contain!important;mix-blend-mode:normal}
+.quick-command .hero-summon .summon-name small{display:block!important;font-size:9px!important}
+.quick-command .compact-battle-controls{padding:9px 0 0!important;margin:9px 0 0!important;border-top:1px solid #d9e5dc;border-bottom:0!important}
+.quick-command .compact-battle-controls .row{display:flex;flex-wrap:wrap}
+.quick-command #useAmbush,.quick-command #speed,.quick-command #emergency{flex:1 1 130px}
+.quick-command .rear-choice{margin-bottom:6px}
+.quick-command .quick-start-bar{margin-top:7px;padding:6px 8px}
+#heroPanel>.small{margin:8px 0}
+@media(max-width:900px){.layout{grid-template-columns:minmax(0,1fr) 205px}.role{flex-direction:column;text-align:center}.role img{flex-basis:auto;height:59px!important}.role span{font-size:10px}.roles{gap:5px!important}}
+@media(max-width:700px){.layout{grid-template-columns:1fr}.roles{grid-template-columns:repeat(3,minmax(0,1fr))!important}.role{flex-direction:row;text-align:left}.role img{width:42px!important;height:60px!important}.quick-command .summon-card{min-height:72px!important}.quick-command .summon-card img{width:34px!important;height:35px!important}.quick-command .summon-name{font-size:10px!important}.quick-command .summon-cost{font-size:10px!important}.mission-log-panel .log{height:135px}}
+@media(max-width:420px){.role{flex-direction:column;text-align:center}.role img{height:54px!important}.quick-command .buttons{gap:3px!important}.quick-command .summon-card{padding:2px!important}.quick-command .summon-name{font-size:9px!important}}
+</style><style id="unified-defense-ui">
+/* v2.5: Preserve original battle mechanics and battlefield art. UI shell only. */
+body{background:linear-gradient(145deg,#251a12,#4b3421 45%,#191611)!important;color:#f7e6c7!important}
+.wrap{background:transparent!important}
+header,.panel,.learning-panel,.upgrade-panel{border-color:#b28a57!important;background-color:#2b2119!important;color:#f6e2bf!important;box-shadow:0 4px 15px #130d0988!important}
+header h1,header h2,.panel h2,.panel h3{color:#ffdf9b!important;text-shadow:0 1px 1px #160f0a}
+header button,.panel button,.upgrade-panel button{border-color:#b78b53!important}
+#defense-lobby-return{position:fixed;right:12px;top:9px;z-index:99998;text-decoration:none;color:#fff0c8;background:linear-gradient(180deg,#744a2e,#332318);border:2px solid #e1b579;border-radius:9px;padding:9px 13px;font:800 14px 'Malgun Gothic',sans-serif;box-shadow:0 4px 12px #0007}
+#defense-lobby-return:focus-visible{outline:3px solid #ffda73}
+</style></head><body><a id="defense-lobby-return" href="../../index.html">↩ 전투 지휘소</a><div class="wrap"><header><h1>⚔️ 역사디펜스 <span class="small">남북국 시대 · 천문령 전투 v3.7 귀주형 UI</span></h1><div class="small">발해 건국의 길 | 역사 학습지 연계 · 산악 매복 · 유민 호위</div></header><div class="chips"><div class="chip">👨‍👩‍👧‍👦 전체 유민 생존율 <b id="protect">100</b>%</div><div class="chip">🚶 대피 완료 <b id="rescued">0</b>/25</div><div class="chip">🪙 자원 <b id="coins">240</b></div><div class="chip">🌿 매복 준비 <b id="ambush">0</b>/100</div><div class="chip">⚔️ 웨이브 <b id="wave">1</b>/5</div><div class="chip">📜 퀴즈 <b id="quizscore">0</b>/15</div><div class="chip" id="phaseChip">프롤로그</div></div><div class="stage" id="stage"><div class="ridge"></div><div class="track"></div><div class="boss-alert hide" id="bossAlert"><img alt="" id="bossArt"/><span id="bossAnnounce"></span></div><div class="field-note" id="battleMessage">해당 위치를 눌러 방어선을 선택하세요.</div><canvas height="385" id="fieldCanvas" width="1120"></canvas><div aria-live="off" class="battle-hud" id="battleHud"><span id="hudLine">1번 막사 방어</span><span id="hudTroops">아군 0부대</span><span id="hudConvoy">구조 0/25</span></div><button aria-label="1번 막사 선택" class="zone-pin selected" data-zone="0" title="1번 막사 선택" type="button"><small id="pin0">0부대</small></button><button aria-label="2번 막사 선택" class="zone-pin" data-zone="1" title="2번 막사 선택" type="button"><small id="pin1">0부대</small></button><button aria-label="동모산 입구 선택" class="zone-pin" data-zone="2" title="동모산 입구 선택" type="button"><small id="pin2">0부대</small></button><button class="spot selected" data-zone="0">① 1번 막사<small id="z0">부대 0</small></button><button class="spot" data-zone="1">② 2번 막사<small id="z1">부대 0</small></button><button class="spot" data-zone="2">③ 동모산 입구<small id="z2">부대 0</small></button></div><div class="quick-command hide" id="quickCommand"><section class="quick-summon" id="quickSummonSection"><h3>⚔️ 병력 즉시 소환 <span class="small">선택 거점: <b id="selectedZone">1번 막사</b></span></h3><div class="row rear-choice"><button aria-label="동모산 입구 후방 차단병 선택" class="button rear-select" data-zone="2" type="button">🌲 동모산 후방 차단병 선택</button></div><div class="buttons" id="summons"><button aria-label="방패병 소환 45자원" class="button summon-card" data-type="shield" type="button"><img alt="" loading="eager" src="sprite_assets/balhae/shield/00.webp"/><span class="summon-name">방패병<small>방어</small></span><strong class="summon-cost">🪙 45</strong></button><button aria-label="창병 소환 55자원" class="button summon-card" data-type="spear" type="button"><img alt="" loading="eager" src="sprite_assets/balhae/shield/00.webp"/><span class="summon-name">창병<small>근접</small></span><strong class="summon-cost">🪙 55</strong></button><button aria-label="궁병 소환 65자원" class="button summon-card" data-type="bow" type="button"><img alt="" loading="eager" src="sprite_assets/balhae/bow/00.webp"/><span class="summon-name">궁병<small>원거리</small></span><strong class="summon-cost">🪙 65</strong></button><button aria-label="기병 소환 90자원" class="button summon-card" data-type="horse" type="button"><img alt="" loading="eager" src="sprite_assets/balhae/horse/00.webp"/><span class="summon-name">기병<small>기동</small></span><strong class="summon-cost">🪙 90</strong></button><button class="button summon-card hero-summon" disabled="" id="heroSkillCard" title="전투 중 영웅 기술 사용" type="button"><img alt="선택한 지휘관" id="heroSkillPortrait" src="visuals/hero_dae.webp"/><span class="summon-name" id="heroSkillCardLabel">대조영<small>전투 중 사용</small></span><strong class="summon-cost" id="heroSkillStatus">⚡ 준비</strong></button></div></section><section class="hide compact-battle-controls" id="battlePanel"><h2>④ 천문령 전투 진행</h2><p class="small" id="battleInfo"></p><div aria-live="polite" class="battle-help" id="battleHelp" role="status">⚔ 전투 중에도 병력을 소환할 수 있습니다. 자원은 3초마다 12씩 보급됩니다.</div><div class="row"><button class="action" id="useAmbush">매복 발동 (100)</button><button class="action alt" id="useSkill">지휘관 기술 (웨이브당 1회)</button><button class="action alt" id="speed">속도 ×1</button><button class="action alt" id="emergency">🛡 무료 긴급 방패병 (웨이브당 1회)</button></div></section><div class="quick-start-bar hide" id="quickStartBar"><span class="quick-start-hint">✅ 병력 배치 완료 → 전투를 시작하세요</span><button class="action quick-start-btn" id="startBattle" type="button">⚔️ 전투개시</button></div></div><div class="layout"><main class="panel"><section id="heroPanel"><h2>① 지휘관 선택</h2><div class="roles"><button class="role selected" data-hero="dae"><img alt="" src="visuals/hero_dae.webp"/>대조영<span>건국 주역 · 전선 반격 기술</span></button><button class="role" data-hero="jung"><img alt="" src="visuals/hero_jung.webp"/>걸걸중상<span>건국 세력의 기반 · 유민 결집</span></button><button class="role" data-hero="biu"><img alt="" src="visuals/hero_biu.webp"/>걸사비우<span>말갈 세력 지도자 · 추격 차단 18초</span></button></div><p class="small">역사 안내: 걸걸중상·걸사비우는 발해 건국 과정의 관련 인물입니다. 전투 기술과 직접 참전 설정은 교육용 각색입니다.</p><button class="action" id="chooseHero">지휘관 확정 → 퀴즈</button></section><section class="hide" id="quizPanel"><h2>② 남북국 시대 전체 문제은행 복습 · 무작위 문제 <span class="small" id="qCount"></span></h2><p id="question"></p><div id="options"></div><p class="small" id="feedback"></p><button class="action hide" id="nextQuiz">다음</button></section><section class="hide" id="readyPanel"><h2>③ 산악 방어 거점 배치</h2><div class="warning">게임용 각색: 세 거점·유민 보호율·매복 전술과 걸걸중상·걸사비우의 지휘관 기술은 실제 천문령 전투 참여를 재현한 것이 아닙니다.</div><p id="waveDescription"></p><details class="battle-instructions"><summary>방어선 조작 방법 보기</summary><p class="small">막사 ①·②는 길 옆에 있고, 소환한 병사는 막사 앞 도주로에서 싸웁니다. ③ 동모산 입구는 막사가 아닌 탈출 지점입니다. 후방 차단병은 아래 버튼으로 선택합니다. 2웨이브 종료 뒤 역사 이벤트를 보고 ① 1번 막사를 철수합니다. 생존 병력은 ② 막사로 자동 이동하며 ①에는 더 이상 소환할 수 없습니다. ③ 동모산 입구에는 후방 차단병을 배치하세요.</p></details><div class="hide" id="retreatPanel" style="padding:13px;margin:12px 0;border:2px solid #d6ae63;border-radius:13px;background:#fff4dc"><h3 style="margin:0 0 8px">📯 역사 이벤트: 피란 행렬 엄호</h3><p>장군님! 불길이 번지기 전에 유민들을 먼저 산길로 보내야 합니다. 2번 본진으로 물러서며 피란 행렬을 엄호하시죠!</p><p class="small">생존 병력이 자동으로 2번 막사로 이동합니다. 이제 이곳에서 당군을 막으며 동모산 입구까지 마지막 호송을 이어가세요.</p></div><div aria-live="polite" class="retreat-readiness hide" id="retreatReadiness" role="status"><b>📯 2번 본진 재정비 상황</b><p id="retreatReadinessText"></p><button class="button" id="selectSecondCamp" type="button">🏕️ 2번 본진 선택하고 보충하기</button></div><div aria-live="polite" class="tactics-guide" id="tacticsGuide"><b>🧭 출전 전술 안내</b><p id="tacticsText">병력의 역할을 확인하고 도주로를 지킬 방어선을 선택하세요.</p><div class="tactics-roles"><span>🛡 방패병: 적을 막기</span><span>⚔ 창병: 근접 공격</span><span>🏹 궁병: 먼 거리 지원</span><span>🐎 기병: 빠른 공격</span></div><button class="button" id="tacticsRecommend" type="button">추천 배치 확인</button></div></section><section class="hide" id="resultPanel"><h2 id="resultTitle"></h2><p id="resultDesc"></p><div aria-label="유민 구조 실적" class="result-score" id="resultScore"><div><strong id="scoreWave">0/5</strong><span>이번 웨이브 구조</span></div><div><strong id="scoreLost">0</strong><span>이번 웨이브 손실</span></div><div><strong id="scoreTotal">0/25</strong><span>전체 누적 구조</span></div><div><strong id="scoreRate">100%</strong><span>전체 유민 생존율</span></div></div><p class="result-meaning" id="resultMeaning"></p><div class="final-debrief hide" id="finalHistoryDebrief"><strong>📜 실제 역사와 게임 속 선택</strong><p>실제 역사에서 대조영 세력은 당의 추격군을 천문령 일대에서 물리친 후 동모산 일대에서 발해를 세웠습니다.</p><p>게임의 막사 두 곳, 유민 25무리, 후퇴 명령과 병력 기술은 역사적 상황을 이해하기 위한 교육용 각색입니다.</p><p id="finalHistoryReflect">오늘의 선택이 유민 보호에 어떤 영향을 주었는지 생각해 보세요.</p></div><button class="action" id="nextWave">다음 웨이브</button><button class="action alt hide" id="retry">다시 도전</button></section></main><aside class="panel mission-log-panel"><h2>📜 작전 기록</h2><div aria-live="polite" class="log" id="log"></div><div class="legacy-status hide"><div id="guide">유민을 보호하세요.</div><div class="progress"><i id="protectBar"></i></div><div class="basehp"><i id="enemyBar"></i></div><p id="enemyInfo">추격군 접근 전</p></div></aside></div></div>
+<div aria-labelledby="retreatEventTitle" aria-modal="true" class="modal hide" id="retreatStoryModal" role="dialog"><div class="story retreat-story"><div class="retreat-scene"><span class="retreat-stamp">📯 역사 이벤트 · 방어선 후퇴</span><div class="retreat-route"><span>⛺ 1번 본진</span><strong>⟵ 병력 철수</strong><span>🏕️ 2번 본진</span></div></div><div class="story-body"><h2 id="retreatEventTitle">1번 본진에서 물러나다</h2><p>“장군님! 당군의 추격이 거세지고 있습니다. 더는 1번 본진에서 버티기 어렵습니다.”</p><p>“유민들이 동모산으로 향하고 있습니다. 병력을 2번 본진으로 물려 남은 도주로를 지켜야 합니다!”</p><p class="retreat-next"><b>다음 행동</b> · 후퇴 명령 확인 → 3웨이브 역사 퀴즈 → 2번 본진 병력 재정비 → 전투개시</p><p class="warning">역사 학습 안내: 실제 천문령 전투의 승리와 발해 건국을 바탕으로 한 장면입니다. 불타는 막사, 두 방어선, 철수 대사와 장면 연출은 교육용 각색입니다.</p><button class="action" id="confirmRetreat" type="button">2번 본진으로 후퇴 →</button></div></div></div><div class="modal" id="storyModal"><div class="story"><div class="story-art" id="storyArt">🏞️</div><div class="story-body"><span class="tag" id="storyCategory">프롤로그</span><h2 id="storyTitle"></h2><p id="storyText"></p><div class="row" style="justify-content:flex-end"><button class="action alt" id="storySkip">건너뛰기</button><button class="action" id="storyNext">다음 장면 →</button></div></div></div></div>
+<script>
+'use strict';
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const PRO=[["나라를 잃고 길 위에 서다","668년 고구려가 멸망했습니다. 많은 고구려인은 당의 지배 아래 놓였고, 일부는 고향을 떠났습니다. 고구려를 계승하려는 움직임은 이후에도 이어졌습니다.",""],["새로운 터전을 향한 대이동","696년 거란의 봉기로 당의 동북방 지배가 흔들렸습니다. 대조영을 중심으로 고구려 유민과 말갈 세력이 동쪽으로 이동했습니다.",""],["천문령, 결전을 준비하다","당의 추격군이 다가옵니다. 이동 과정에서 걸걸중상과 걸사비우는 사망한 것으로 전해집니다. 대조영 세력은 천문령에서 추격을 막아야 합니다.",""]];
+const EPI=[["천문령에서 추격군을 물리치다","대조영 세력은 천문령에서 이해고의 추격군을 물리쳤습니다. 이 승리는 독자적인 나라를 세우는 중요한 전환점이 되었습니다.",""],["동모산에 뿌리내리다","대조영은 동모산 일대에 자리를 잡았습니다. 고구려 유민과 말갈 세력은 새로운 생활 기반을 다져 나갔습니다.",""],["발해 건국, 새로운 시대의 시작","698년 대조영은 나라를 세웠습니다. 처음에는 진이라 하였고, 이후 발해라는 이름을 사용했습니다. 남쪽 신라와 북쪽 발해가 공존했습니다.",""]];
+// 각 문항의 출처: 2026 읽는역사 1학기 주제7 (학습지 인쇄 21~35쪽) · 주제7~10
+// 2단원 문제은행: 학습지 1학기 주제 7~10, 총 60문항.
+const Q=[{"topic":7,"tier":"fact","text":"백제 옛 땅에 당이 설치한 통치 기구는?","options":["웅진 도독부","안동 도호부","계림 도독부","집사부"],"correct":0,"explain":"당이 백제 옛 땅에 웅진 도독부를 설치했습니다."},{"topic":7,"tier":"fact","text":"당이 고구려 옛 수도 평양에 설치한 기구는?","options":["안동 도호부","웅진 도독부","계림 도독부","정당성"],"correct":0,"explain":"당은 평양에 안동 도호부를 설치했습니다."},{"topic":7,"tier":"fact","text":"나당 전쟁에서 당의 육군을 크게 격파한 전투는?","options":["매소성 전투","기벌포 전투","황산벌 전투","안시성 전투"],"correct":0,"explain":"매소성은 당의 육군을 격파한 곳입니다."},{"topic":7,"tier":"fact","text":"나당 전쟁에서 당의 수군을 격파한 전투는?","options":["기벌포 전투","매소성 전투","살수 대첩","황산벌 전투"],"correct":0,"explain":"기벌포에서 당 수군을 격파했습니다."},{"topic":7,"tier":"fact","text":"발해 건국을 주도한 인물은?","options":["대조영","대흠무","대무예","유득공"],"correct":0,"explain":"대조영이 고구려 유민과 말갈인을 이끌고 발해를 세웠습니다."},{"topic":7,"tier":"fact","text":"발해 건국의 터전이 된 지역은?","options":["동모산 부근","한양","금마저","사비"],"correct":0,"explain":"대조영이 동모산 부근에 발해를 건국했습니다."},{"topic":7,"tier":"concept","text":"당이 웅진 도독부·안동 도호부·계림 도독부를 설치한 이유로 적절한 것은?","options":["한반도에 대한 지배를 확대하려고","발해 건국을 지원하려고","신라의 독립을 인정하려고","신라의 9주를 설치하려고"],"correct":0,"explain":"당은 옛 백제·고구려와 신라 땅까지 지배하려 했습니다."},{"topic":7,"tier":"concept","text":"신라의 삼국 통일이 자주적인 성격을 지닌다고 평가하는 근거는?","options":["유민과 협력해 당군을 몰아냄","당에 국왕의 자리를 양보함","당의 통치 기구를 유지함","고구려 유민을 모두 추방함"],"correct":0,"explain":"백제·고구려 유민과 힘을 합쳐 당을 몰아낸 점이 의의입니다."},{"topic":7,"tier":"concept","text":"신라 삼국 통일의 한계로 적절한 것은?","options":["대동강 이북 고구려 땅 대부분을 차지하지 못함","유민과 협력함","당의 수군을 격파함","새로운 문화를 발전시킴"],"correct":0,"explain":"대동강 이북의 고구려 땅 대부분을 확보하지 못했습니다."},{"topic":7,"tier":"concept","text":"신라가 통일 후 백제·고구려 출신을 관리와 군대에 포함시킨 목적은?","options":["서로 다른 주민을 통합하기 위해","왕실만의 군대를 해산하려고","당의 통치를 회복하려고","발해의 왕을 선출하려고"],"correct":0,"explain":"서로 다른 주민을 하나로 묶는 민족 융합 정책입니다."},{"topic":7,"tier":"concept","text":"대조영 세력이 동쪽으로 이동할 수 있었던 배경은?","options":["거란 봉기로 당의 통제력이 약해짐","신라가 고려를 멸망시킴","요나라가 발해를 멸망시킴","몽골이 침략함"],"correct":0,"explain":"거란 봉기로 당 동북방의 통제가 흔들렸습니다."},{"topic":7,"tier":"concept","text":"발해가 고구려를 계승했다고 볼 수 있는 근거는?","options":["일본에 보낸 문서에서 고려 국왕이라 칭함","신라의 9주를 설치함","고려의 과전법을 실시함","조선의 6조를 설치함"],"correct":0,"explain":"발해는 외교 문서에서 고구려 계승 의식을 드러냈습니다."},{"topic":7,"tier":"inference","text":"신라가 당과 손잡아 삼국을 통일한 일을 평가할 때 가장 균형 잡힌 태도는?","options":["당과의 연합이라는 한계와 당을 몰아낸 의의를 함께 살핀다","외세와 연합했으니 모든 의미를 부정한다","영토만 넓히면 모든 정책이 옳다고 본다","백제·고구려 유민의 활동은 무시한다"],"correct":0,"explain":"학습지는 당과의 연합에 대한 비판과 자주적 통일의 의의를 함께 제시합니다."},{"topic":7,"tier":"inference","text":"발해를 우리 역사로 보는 설명에 가장 적절한 근거의 조합은?","options":["고구려계 건국 세력과 고구려 계승 의식","한반도 남부 수도와 조선 왕조의 제도","몽골 왕실의 혈통과 조선의 법전","왜국의 통치와 신라의 왕위 계승"],"correct":0,"explain":"학습지는 고구려계 건국 세력, 옛 영토, 계승 의식을 근거로 제시합니다."},{"topic":7,"tier":"inference","text":"신라와 발해가 공존하는 시대를 남북국이라 부르는 이유로 적절한 것은?","options":["남쪽 신라뿐 아니라 북쪽 발해도 역사에 포함하기 위해","신라가 발해를 직접 통치했기 때문에","두 나라가 항상 같은 왕을 두었기 때문에","고려와 조선이 함께 존재했기 때문에"],"correct":0,"explain":"남북국은 통일 신라와 발해가 함께 존재한 시기를 설명하는 용어입니다."},{"topic":8,"tier":"fact","text":"진골 출신 최초의 신라 왕으로 즉위한 인물은?","options":["태종 무열왕","신문왕","원성왕","혜공왕"],"correct":0,"explain":"김춘추가 태종 무열왕으로 즉위했습니다."},{"topic":8,"tier":"fact","text":"신문왕이 진골 귀족 세력을 누르는 계기가 된 반란은?","options":["김흠돌의 난","원종과 애노의 난","김헌창의 난","장보고의 난"],"correct":0,"explain":"신문왕은 김흠돌의 반란을 진압했습니다."},{"topic":8,"tier":"fact","text":"신문왕이 설치한 유학 교육 기관은?","options":["국학","주자감","태학","성균관"],"correct":0,"explain":"신문왕은 인재를 양성하려고 국학을 설치했습니다."},{"topic":8,"tier":"fact","text":"통일 신라의 중앙군과 지방군의 조합으로 옳은 것은?","options":["9서당과 10정","10위와 9주","5경과 15부","9주와 5소경"],"correct":0,"explain":"9서당은 중앙군, 10정은 지방군입니다."},{"topic":8,"tier":"fact","text":"발해 무왕 때 당의 산둥반도를 공격한 장군은?","options":["장문휴","장보고","김유신","김흠돌"],"correct":0,"explain":"무왕 때 장문휴를 보내 산둥반도를 공격했습니다."},{"topic":8,"tier":"fact","text":"발해 전성기의 왕으로 해동성국이라는 이름과 관련된 왕은?","options":["선왕","무왕","문왕","대조영"],"correct":0,"explain":"선왕 때 영토를 확대하여 해동성국이라 불렸습니다."},{"topic":8,"tier":"concept","text":"신문왕이 녹읍을 폐지하고 관료전을 지급한 핵심 목적은?","options":["귀족의 백성 지배력을 줄이고 왕권 강화","귀족의 노동력 징발 권한 확대","모든 관직 세습 확대","당에 지방 통치를 맡기기"],"correct":0,"explain":"녹읍은 노동력 징발도 가능하지만 관료전은 조세 수취만 허용했습니다."},{"topic":8,"tier":"concept","text":"신문왕의 관료전과 녹읍의 가장 큰 차이는?","options":["관료전은 조세만 거둘 수 있고 녹읍은 노동력 징발도 가능","관료전은 외국 영토이고 녹읍은 왕궁이다","관료전은 군대이고 녹읍은 학교다","둘은 모든 권한이 동일하다"],"correct":0,"explain":"학습지는 노동력 징발 가능 여부를 핵심 차이로 설명합니다."},{"topic":8,"tier":"concept","text":"통일 신라가 5소경을 설치한 목적은?","options":["동남쪽에 치우친 수도의 위치를 보완하고 지방을 통치","당나라로 수도를 옮기기","모든 지방군 해산","고구려 유민의 해외 이주 강요"],"correct":0,"explain":"5소경은 치우친 수도의 위치를 보완하기 위한 작은 수도였습니다."},{"topic":8,"tier":"concept","text":"통일 신라의 9서당에 백제·고구려·말갈인을 포함한 의미는?","options":["다양한 주민을 군사 조직에 통합함","당군만으로 중앙군을 구성함","진골만 징병하는 제도","모든 지방군을 없앰"],"correct":0,"explain":"9서당 구성에서 주민 통합 의지를 확인할 수 있습니다."},{"topic":8,"tier":"concept","text":"발해 무왕과 문왕의 대외 정책 차이로 옳은 것은?","options":["무왕은 당과 대립, 문왕은 당과 친선 교류","무왕은 당에만 의지, 문왕은 당을 침략","두 왕 모두 교류를 금지","두 왕 모두 수도를 한양에 둠"],"correct":0,"explain":"무왕은 정복과 충돌, 문왕은 당과 친선 및 제도 수용에 중점을 두었습니다."},{"topic":8,"tier":"concept","text":"발해가 당의 3성 6부를 받아들이면서도 독자성을 보였다는 근거는?","options":["정당성 중심 운영과 6부의 유교적 명칭","당의 3성 명칭을 한 글자도 바꾸지 않음","당 황제가 발해 관리를 직접 선출","모든 지방 제도를 폐지"],"correct":0,"explain":"발해는 당 제도를 참고하되 정당성 중심으로 운영하고 6부 이름을 바꾸었습니다."},{"topic":8,"tier":"inference","text":"왕권을 강화하는 신문왕의 조치가 귀족에게 불리했던 이유는?","options":["녹읍 폐지로 귀족의 경제적·사회적 지배력이 줄어들어서","귀족이 모두 새 왕이 되었기 때문에","관료전이 귀족에게 노동력 징발권을 더 주어서","9서당이 당나라 군대였기 때문에"],"correct":0,"explain":"왕권 강화 정책은 귀족의 독자적 지배력을 억제했습니다."},{"topic":8,"tier":"inference","text":"당의 제도를 받아들이면서도 발해만의 방식으로 바꾼 일을 평가하면?","options":["외래 제도를 선택적으로 수용하고 독자적으로 운영한 사례","발해가 당의 지방 행정 기구였다는 결정적 증거","발해가 유교를 전혀 알지 못했다는 증거","발해가 모든 외교를 중단한 사례"],"correct":0,"explain":"학습지는 당 제도 수용과 발해의 독자적 운영을 동시에 설명합니다."},{"topic":8,"tier":"inference","text":"발해가 5경 15부 62주로 지방을 나눈 이유를 가장 잘 설명한 것은?","options":["넓어진 영토를 체계적으로 관리하려고","모든 도시를 한 곳으로 이전하려고","9서당을 10위로 바꾸기 위해","당과 전쟁을 완전히 없애려고"],"correct":0,"explain":"여러 도시와 지방을 나누어 넓은 영토를 통치하기 위한 제도였습니다."},{"topic":9,"tier":"fact","text":"원성왕이 신라 말 개혁을 위해 시행한 제도는?","options":["독서삼품과","과전법","호패법","관료전"],"correct":0,"explain":"원성왕은 독서삼품과를 실시했습니다."},{"topic":9,"tier":"fact","text":"신라 말 진성여왕 때 상주에서 일어난 농민 봉기는?","options":["원종과 애노의 난","김흠돌의 난","김헌창의 난","왕자의 난"],"correct":0,"explain":"상주에서 원종과 애노의 난이 일어났습니다."},{"topic":9,"tier":"fact","text":"신라 말 청해진을 중심으로 해상 무역에서 활약한 인물은?","options":["장보고","장문휴","대조영","의상"],"correct":0,"explain":"장보고는 청해진을 중심으로 해상 무역을 이끌었습니다."},{"topic":9,"tier":"fact","text":"신라 말 시무 10조를 제시한 6두품 출신 인물은?","options":["최치원","김흠돌","대무예","김헌창"],"correct":0,"explain":"최치원은 시무 10조를 올려 개혁을 주장했습니다."},{"topic":9,"tier":"fact","text":"완산주를 도읍으로 후백제를 세운 인물은?","options":["견훤","궁예","왕건","장보고"],"correct":0,"explain":"견훤은 완산주에 후백제를 세웠습니다."},{"topic":9,"tier":"fact","text":"후고구려를 세우고 국호를 마진·태봉으로 바꾼 인물은?","options":["궁예","견훤","문왕","신문왕"],"correct":0,"explain":"궁예는 후고구려를 세우고 이후 마진, 태봉으로 국호를 바꿨습니다."},{"topic":9,"tier":"concept","text":"신라 말 호족이 성장한 직접적 배경은?","options":["왕권 약화로 중앙 정부의 지방 통제력이 줄어서","신문왕이 모든 호족을 왕으로 임명해서","당이 신라 수도를 직접 통치해서","국학이 폐지된 직후라서"],"correct":0,"explain":"정치 혼란과 지방 통제 약화 속에서 호족이 성장했습니다."},{"topic":9,"tier":"concept","text":"신라 말 호족을 설명한 것으로 적절한 것은?","options":["토지와 군사를 기반으로 지방에서 독자적 영향력 행사","중앙의 국학 학생만을 가리키는 말","당의 파견 관리 집단","불교 승려만의 모임"],"correct":0,"explain":"호족은 스스로 성주나 장군을 자처하며 지방을 지배했습니다."},{"topic":9,"tier":"concept","text":"신라 말 6두품 세력이 골품제를 비판한 이유는?","options":["신분에 따른 승진과 생활 제한이 있었기 때문에","6두품이 모두 성골 왕이었기 때문에","관직을 세습하는 귀족 권리를 독점해서","당나라가 불교를 금지해서"],"correct":0,"explain":"6두품은 골품제의 신분 제한에 불만을 가졌습니다."},{"topic":9,"tier":"concept","text":"신라 말 교종과 선종의 특징을 바르게 비교한 것은?","options":["교종은 경전·교리, 선종은 참선·수행 강조","교종은 참선만, 선종은 경전만 강조","둘 다 법전 편찬만 중시","둘 다 오직 군사 훈련만 강조"],"correct":0,"explain":"교종은 경전·교리, 선종은 깨달음을 위한 수행을 강조했습니다."},{"topic":9,"tier":"concept","text":"선종이 호족과 백성에게 널리 호응받은 이유는?","options":["신분과 경전 공부에 관계없이 수행으로 깨달을 수 있다고 보아서","왕족만 깨달을 수 있다고 보아서","당에 세금을 납부해야 한다고 가르쳐서","지방의 중요성을 부정해서"],"correct":0,"explain":"선종은 누구나 수행으로 깨달음을 얻을 수 있다고 보았습니다."},{"topic":9,"tier":"concept","text":"풍수지리설이 신라 말 호족의 지지를 받은 이유는?","options":["지방의 자연환경과 지형의 중요성을 강조해서","진골만 지방을 다스려야 한다고 해서","왕궁에서만 수행해야 한다고 해서","모든 산과 강을 없애자고 해서"],"correct":0,"explain":"풍수지리설은 지방의 중요성을 강조하여 호족의 지지를 받았습니다."},{"topic":9,"tier":"inference","text":"신라 말 농민 봉기가 각지로 확산된 원인으로 가장 적절한 것은?","options":["정치 혼란으로 통치가 약해지고 백성의 삶이 어려워져서","왕권이 완전히 안정되어서","유민을 관리로 모두 임명해서","녹읍이 영구히 폐지되어서"],"correct":0,"explain":"정치 혼란과 수탈, 생활의 어려움이 농민 봉기로 이어졌습니다."},{"topic":9,"tier":"inference","text":"6두품 일부가 호족과 손잡고 새로운 사회를 만들려 한 이유는?","options":["골품제의 한계 속에서 중앙 정치의 변화가 어려웠기 때문에","호족이 신라의 골품제를 완전히 강화하려 했기 때문에","6두품은 지방 세력과 관계가 없었기 때문에","신라가 이미 전국을 안정적으로 통치했기 때문에"],"correct":0,"explain":"6두품은 신분적 제약을 극복하려고 호족과 협력하기도 했습니다."},{"topic":9,"tier":"inference","text":"신라 말 선종·풍수지리설의 확산이 정치 변화와도 관련된 까닭은?","options":["중앙 귀족 밖의 호족 세력을 뒷받침하는 사상이 되었기 때문에","무역항이 모두 폐쇄되었기 때문에","진골 왕권을 무조건 강화했기 때문에","국가가 불교를 모두 금지했기 때문에"],"correct":0,"explain":"두 사상은 지방 호족의 성장을 뒷받침하는 사상적 기반이었습니다."},{"topic":10,"tier":"fact","text":"화쟁 사상을 주장하고 불교 대중화에 기여한 승려는?","options":["원효","의상","혜초","도선"],"correct":0,"explain":"원효는 화쟁 사상과 나무아미타불을 통해 불교를 대중화했습니다."},{"topic":10,"tier":"fact","text":"화엄 사상을 전파하고 부석사를 건립한 승려는?","options":["의상","원효","혜초","도선"],"correct":0,"explain":"의상은 당에서 공부하고 화엄 사상을 전파했습니다."},{"topic":10,"tier":"fact","text":"인도와 서역을 여행하고 왕오천축국전을 남긴 승려는?","options":["혜초","원효","의상","도선"],"correct":0,"explain":"혜초는 인도와 서역을 다니며 왕오천축국전을 저술했습니다."},{"topic":10,"tier":"fact","text":"신라 유학생으로 당의 빈공과에 합격한 인물은?","options":["최치원","장보고","장문휴","신문왕"],"correct":0,"explain":"최치원은 당의 빈공과에 합격했습니다."},{"topic":10,"tier":"fact","text":"장보고가 완도에 설치한 해상 무역 거점은?","options":["청해진","상경 용천부","주자감","국학"],"correct":0,"explain":"장보고가 완도에 청해진을 설치했습니다."},{"topic":10,"tier":"fact","text":"발해 사신을 맞이하기 위해 당 산둥반도에 설치한 시설은?","options":["발해관","신라소","소경","청해진"],"correct":0,"explain":"발해관은 당에서 발해 사신을 접대하기 위한 시설입니다."},{"topic":10,"tier":"concept","text":"원효가 나무아미타불을 강조한 것이 불교 대중화에 도움이 된 이유는?","options":["일반 백성도 쉽게 실천할 수 있는 가르침이어서","왕족만 수행할 수 있게 해서","모든 경전을 한문으로 외워야 해서","불교 예술을 금지해서"],"correct":0,"explain":"쉬운 실천을 통해 백성도 불교를 가까이할 수 있었습니다."},{"topic":10,"tier":"concept","text":"불국사와 석굴암이 보여 주는 문화적 특징은?","options":["통일 신라의 불교 예술이 발달함","고려의 청자 제작","조선의 법전 편찬","발해의 5경 설치"],"correct":0,"explain":"불국사와 석굴암은 통일 신라를 대표하는 불교 예술입니다."},{"topic":10,"tier":"concept","text":"신라 말 승탑이 많이 건립된 배경과 관련 깊은 것은?","options":["선종의 유행","과전법 실시","발해의 멸망","서양 문물 유입"],"correct":0,"explain":"신라 말 선종이 유행하며 승려의 사리를 모신 승탑이 늘었습니다."},{"topic":10,"tier":"concept","text":"발해 불교문화의 특징으로 가장 적절한 것은?","options":["고구려의 전통을 계승하면서 당의 영향도 받음","신라의 골품제를 완전히 폐지함","불교를 전혀 받아들이지 않음","고려 말에 처음 등장함"],"correct":0,"explain":"발해 불교는 고구려 문화 전통과 당의 영향을 함께 받았습니다."},{"topic":10,"tier":"concept","text":"산둥반도에 신라방·신라소·신라원이 존재한 까닭은?","options":["당에서 활동하는 신라인이 많았기 때문에","신라가 당을 멸망시켰기 때문에","발해가 신라를 직접 통치해서","당이 신라의 왕을 모두 파견해서"],"correct":0,"explain":"신라인의 거주와 관리, 종교 활동을 위한 시설이 존재했습니다."},{"topic":10,"tier":"concept","text":"장보고가 동아시아 해상 무역의 중심 인물이 된 근거는?","options":["해적을 소탕하고 당·신라·일본 항로를 장악","당의 빈공과를 폐지","상경 용천부로 천도","9서당 창설"],"correct":0,"explain":"청해진을 바탕으로 해적을 막고 해상 무역망을 장악했습니다."},{"topic":10,"tier":"inference","text":"당항성과 울산항이 국제 무역항으로 발전한 까닭은?","options":["신라의 당·일본 등과의 교류가 활발해졌기 때문에","당과의 교류가 모두 중단되어서","신라에서 바다를 이용하지 않았기 때문에","장보고가 산둥반도를 정복해서"],"correct":0,"explain":"국제 교류의 확대는 항구 발전으로 이어졌습니다."},{"topic":10,"tier":"inference","text":"발해 이불 병좌상에서 고구려 전통이 보인다는 사실의 의미는?","options":["발해 문화에 고구려 문화의 계승 요소가 있음을 보여준다","발해가 불교를 전혀 받아들이지 않았음을 보여준다","발해가 통일 신라의 지방이었음을 보여준다","발해의 모든 문화가 당과 무관함을 보여준다"],"correct":0,"explain":"불상의 표현 방식은 발해의 고구려 문화 계승을 보여주는 사례입니다."},{"topic":10,"tier":"inference","text":"발해와 신라가 정치적으로 대립하면서도 신라도를 통해 교류한 사실로 추론할 것은?","options":["정치적 갈등이 있어도 국가 간 교류가 이어질 수 있다","정치적 대립은 항상 교류 중단을 뜻한다","발해와 신라는 같은 수도를 사용했다","발해가 신라의 지방군이었다"],"correct":0,"explain":"학습지는 두 나라가 대립하면서도 교류를 이어 갔다고 설명합니다."}];
+function shuffledQuiz(items){const out=items.slice();for(let i=out.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[out[i],out[j]]=[out[j],out[i]];}return out;}
+// 주제별 사실 6/개념 6/추론 3문항 보유; 한 판 6/6/3, 각 주제 최소 3문항.
+function createQuizDeck(){
+ const topics=shuffledQuiz([7,8,9,10]);
+ const inferred=topics.slice(0,3),excluded=topics[3];
+ const extraFacts=[excluded,topics[0]],extraConcepts=[topics[1],topics[2]];
+ const selections=[];
+ for(const topic of topics){
+  for(const tier of ['fact','concept']){
+   const amount=1+Number((tier==='fact'?extraFacts:extraConcepts).includes(topic));
+   selections.push(...shuffledQuiz(Q.filter(q=>q.topic===topic&&q.tier===tier)).slice(0,amount));
+  }
+  if(inferred.includes(topic))selections.push(shuffledQuiz(Q.filter(q=>q.topic===topic&&q.tier==='inference'))[0]);
+ }
+ if(selections.length!==15||new Set(selections.map(q=>q.text)).size!==15)throw Error('출제 중복 또는 문제은행 부족');
+ return shuffledQuiz(selections).map(q=>{const choices=shuffledQuiz(q.options.map((text,i)=>({text,right:i===q.correct})));return {...q,options:choices.map(c=>c.text),correct:choices.findIndex(c=>c.right)}});
+}
+const DESCS=['1번 막사: 첫 유민을 피신시키고 호위대를 준비하세요.','2번 막사 준비: 추격군의 속도를 늦추며 다음 방어선을 세우세요.','1번 막사 철수: 방어선이 붕괴합니다. 남은 병력을 2번 막사로 이동합니다.','동모산 입구 사수: 마지막 유민의 피난길을 보호하세요.','최종 철수: 모든 유민을 이동시킨 뒤 아군도 철수합니다.'];
+const DEF={shield:{cost:45,hp:100,dmg:10,range:58,rate:1.0},spear:{cost:55,hp:85,dmg:15,range:68,rate:1.1},bow:{cost:65,hp:56,dmg:16,range:175,rate:1.3},horse:{cost:90,hp:110,dmg:21,range:75,rate:.95}};
+const ZONES=[{x:725,y:267},{x:380,y:208},{x:150,y:151}];
+// 막사·푯말의 시각적 위치는 전투 위치(ZONES)와 분리합니다.
+const CAMP_ART=[{x:642,y:182,label:"① 1번 막사"},{x:382,y:110,label:"② 2번 막사"},{x:84,y:74,label:"③ 동모산 입구"}];
+const CONVOY_SIZE=25;
+const S={phase:'story',storyKind:'pro',storyIndex:0,hero:'dae',wave:1,zone:0,coins:240,protect:100,ambush:0,ambushUsed:0,emergencyUsed:false,skillUsed:false,score:0,qGlobal:0,qRound:0,quizDeck:[],units:[],foes:[],spawns:[],uid:1,elapsed:0,move:0,totalEnemy:0,defeated:0,speed:1,carrier:80,caravans:[],caravanNext:0,rescued:0,caravanLost:0,caravanTotal:CONVOY_SIZE,convoyRoster:null,waveRoster:[],totalRescued:0,totalLost:0,retreatDone:false,retreatStartAcknowledged:false,starterGranted:false,quizWard:0,blockadeUntil:0,rearGuardUsed:0,rearGuardReadyAt:0,animations:[],last:0};
+function log(m){let d=document.createElement('div');d.textContent=m;$('#log').prepend(d);while($('#log').children.length>35)$('#log').lastChild.remove()}
+function setBattleMessage(message='',persist=false){const note=$('#battleMessage');if(!note)return;note.textContent=message||'';note.dataset.persist=persist?'1':'0';note.classList.toggle('hide-note',!message||S.phase==='battle'||S.phase==='story');}
+function phase(x){S.phase=x;const qc=$('#quickCommand');if(qc)qc.classList.toggle('hide',!['ready','battle'].includes(x));const qs=$('#quickStartBar');if(qs)qs.classList.toggle('hide',x!=='ready');for(const id of ['heroPanel','quizPanel','readyPanel','battlePanel','resultPanel'])$('#'+id).classList.toggle('hide',!({hero:'heroPanel',quiz:'quizPanel',ready:'readyPanel',battle:'battlePanel',result:'resultPanel'}[x]===id));$('#phaseChip').textContent={story:'역사 이야기',hero:'지휘관 선택',quiz:'학습지 복습',ready:'병력 준비',battle:'전투 진행',result:'전투 결과'}[x]||x;const note=$('#battleMessage');if(note&&x==='battle')note.classList.add('hide-note');if(note&&['ready','hero'].includes(x)&&note.textContent.trim())note.classList.remove('hide-note');ui()}
+function showStory(kind){S.storyKind=kind;S.storyIndex=0;phase('story');$('#storyModal').classList.remove('hide');renderStory();}
+function renderStory(){const arr=S.storyKind==='pro'?PRO:EPI,x=arr[S.storyIndex];$('#storyModal').dataset.theme=S.storyKind==='pro'?'pro':'epi';$('#storyCategory').textContent=S.storyKind==='pro'?'프롤로그 '+(S.storyIndex+1)+'/3':'에필로그 '+(S.storyIndex+1)+'/3';$('#storyTitle').textContent=x[0];$('#storyText').textContent=x[1];$('#storyArt').textContent='';$('#storyArt').style.backgroundImage=`linear-gradient(0deg,#162d3159,transparent 62%),url('visuals/story_${(S.storyKind==='pro'?0:3)+S.storyIndex+1}.webp')`;$('#storySkip').classList.toggle('hide',S.storyKind==='epi');$('#storyNext').textContent=S.storyIndex===2?(S.storyKind==='pro'?'전투 준비 →':'다시 도전 →'):'다음 장면 →'}
+function closeStory(){let k=S.storyKind;$('#storyModal').classList.add('hide');if(k==='pro')phase('hero');else reset();ui()}
+$('#storyNext').onclick=()=>{if(S.storyIndex<2){S.storyIndex++;renderStory()}else closeStory()};$('#storySkip').onclick=closeStory;
+$$('.role').forEach(b=>b.onclick=()=>{S.hero=b.dataset.hero;$$('.role').forEach(x=>x.classList.toggle('selected',x===b));updateHeroSkillLabel()});
+const HERO_SKILL_NAMES={dae:'천문령 역습',biu:'말갈 연합 지원',jung:'유민 결집'};
+function updateHeroSkillLabel(){const img=$('#heroSkillPortrait'),label=$('#heroSkillCardLabel');if(img)img.src='visuals/hero_'+({dae:'dae',jung:'jung',biu:'biu'}[S.hero]||'dae')+'.webp';if(label)label.innerHTML=({dae:'대조영',jung:'걸걸중상',biu:'걸사비우'}[S.hero]||'대조영')+'<small>영웅 기술</small>';const b=$('#useSkill');if(b)b.textContent=HERO_SKILL_NAMES[S.hero]+' (웨이브당 1회)';}
+// v2.0.9: 첫 출전의 기본 호위대. 퀴즈로 얻는 자원과 별개이며 재소환하지 않는다.
+function prepareFirstGuard(){
+ if(S.wave!==1||S.starterGranted)return;
+ S.starterGranted=true;
+ S.units.push({id:S.uid++,type:'shield',zone:0,hp:DEF.shield.hp,max:DEF.shield.hp,cd:0,atk:0});
+ log('🛡 첫 호위 방패병 1부대가 1번 본진에 대기합니다. 역사 퀴즈 보상으로 다른 병력을 보충하세요.');
+ ui();
+}
+$('#chooseHero').onclick=()=>{prepareFirstGuard();quizStart()};
+function quizStart(){if(S.qGlobal===0||!S.quizDeck||S.quizDeck.length!==15)S.quizDeck=createQuizDeck();S.qRound=0;S.quizAnswered=false;phase('quiz');renderQuestion()}
+function renderQuestion(){S.quizAnswered=false;let q=S.quizDeck[S.qGlobal];$('#qCount').textContent='('+ (S.qRound+1)+'/3)';$('#question').textContent=q.text;$('#feedback').textContent='';$('#nextQuiz').classList.add('hide');$('#options').replaceChildren();q.options.forEach((answer,i)=>{let b=document.createElement('button');b.className='option';b.textContent=(i+1)+'. '+answer;b.onclick=()=>{if(S.phase!=='quiz'||S.quizAnswered)return;S.quizAnswered=true;let ok=i===q.correct;if(ok){S.score++;S.coins=Math.min(650,S.coins+68);S.quizWard=Math.min(2,(S.quizWard||0)+1)}else S.coins=Math.min(650,S.coins+24);$('#feedback').textContent=(ok?'정답! ':'오답. ')+q.explain;$$('#options .option').forEach(x=>x.disabled=true);$('#nextQuiz').classList.remove('hide');ui()};$('#options').append(b)})}
+$('#nextQuiz').onclick=()=>{if(S.phase!=='quiz'||!S.quizAnswered)return;S.quizAnswered=false;$('#nextQuiz').classList.add('hide');S.qRound++;S.qGlobal++;if(S.qRound<3){renderQuestion()}else{phase('ready');$('#waveDescription').textContent='웨이브 '+S.wave+' — '+DESCS[S.wave-1]+(S.wave===3?' (색구의 천문령 본전투 참전은 확인되지 않음)':'')}};
+function autoRetreat(){if(S.retreatDone)return;S.retreatDone=true;S.retreatStartAcknowledged=false;let n=0;for(const u of S.units.filter(u=>u.zone===0&&u.hp>0)){u.zone=1;u.hp=Math.max(15,Math.round(u.hp*.88));n++;}S.zone=1;document.querySelectorAll('[data-zone="0"]').forEach(el=>{el.classList.add('camp-abandoned');el.setAttribute('aria-disabled','true')});document.querySelectorAll('.zone-pin[data-zone="1"]').forEach(el=>el.classList.add('retreat-active'));log('📯 역사 이벤트: 장군님! 1번 본진에서는 더 버티기 어렵습니다. 2번 본진으로 후퇴하시죠! 생존 병력 '+n+'부대 자동 철수.');setBattleMessage('1번 막사 철수 완료 — 2번 막사 방어!',true);}
+function renderRetreat(){const panel=$('#retreatPanel');if(panel)panel.classList.toggle('hide',!(S.wave===3&&S.phase==='ready'));}
+// v2.1.0: 학생이 자신이 선택한 거점에서 역할별 병력을 판단하도록 안내한다.
+function tacticalAdvice(){
+ const front=S.wave>=3?1:0;
+ const here=S.units.filter(u=>u.zone===front&&u.hp>0);
+ const shields=here.filter(u=>u.type==='shield').length;
+ const bows=here.filter(u=>u.type==='bow').length;
+ const all=S.units.filter(u=>u.hp>0).length;
+ if(!all)return '방어 병력이 없습니다. 방패병부터 배치하세요.';
+ if(shields<1)return (front+1)+'번 본진에 적의 진격을 막을 방패병이 없습니다. 방패병을 먼저 배치하세요.';
+ if(bows<1)return (front+1)+'번 본진에 방패병이 있습니다. 이제 뒤에서 지원할 궁병을 배치해 보세요.';
+ if(all<4)return '기본 방어가 준비됐습니다. 창병이나 후방 차단병을 추가하면 적을 더 오래 막을 수 있습니다.';
+ return '방어 병력이 준비됐습니다. 전투 중 자원 12가 3초마다 보충됩니다. 위험할 때 무료 긴급 지원을 사용하세요.';
+}
+function updateRetreatReadiness(){
+ const el=$('#retreatReadiness'),txt=$('#retreatReadinessText');if(!el||!txt)return;
+ const show=S.wave===3&&S.phase==='ready'&&S.retreatDone;el.classList.toggle('hide',!show);if(!show)return;
+ const camp=S.units.filter(u=>u.hp>0&&u.zone===1);
+ const n=camp.length, shield=camp.filter(u=>u.type==='shield').length, bow=camp.filter(u=>u.type==='bow').length;
+ const total=S.units.filter(u=>u.hp>0).length;
+ const notes=[];
+ notes.push('철수한 뒤 현재 2번 본진에 '+n+'부대 · 전체 생존 '+total+'부대 · 자원 '+Math.floor(S.coins));
+ if(!n)notes.push('⚠️ 2번 본진에 방어병력이 없습니다. 2번 본진을 선택하여 방패병을 배치하세요.');
+ else if(!shield)notes.push('⚠️ 방패병이 없습니다. 전선을 버틸 방패병을 추천합니다.');
+ else if(!bow)notes.push('🏹 궁병을 추가하면 뒤에서 적군을 공격할 수 있습니다.');
+ else if(n<4)notes.push('🛡 전선이 얇습니다. 4부대 이상으로 보충하거나 전투 중 긴급 지원을 사용하세요.');
+ else notes.push('✅ 2번 본진 기본 방어 준비가 완료됐습니다.');
+ notes.push('역사 퀴즈 후 전투 시작 전까지 병력을 무료로 자동 생성하지 않습니다.');
+ txt.textContent=notes.join(' ');
+}
+$('#selectSecondCamp').onclick=()=>{if(S.phase!=='ready'||S.wave!==3)return;selectZone(1);log('📯 2번 본진을 선택했습니다. 아래 병력 소환에서 보충하세요.');};
+function updateTacticalGuide(){const el=$('#tacticsText');if(el)el.textContent=tacticalAdvice();}
+$('#tacticsRecommend').onclick=()=>{const text=tacticalAdvice();updateTacticalGuide();log('🧭 전술 조언: '+text);};
+function updateBattleHelp(){const el=$('#battleHelp');if(!el||S.phase!=='battle')return;
+ const active=S.units.filter(u=>u.hp>0).length;
+ const affordable=S.coins>=DEF.shield.cost;
+ if(active<=2&&!S.emergencyUsed)el.textContent='🚨 방어 병력 '+active+'부대! 막사를 선택한 뒤 「무료 긴급 방패병」으로 보충하세요. 병력이 전멸하면 실패합니다.';
+ else if(active<=2&&affordable)el.textContent='⚠️ 병력이 '+active+'부대 남았습니다. 병력 소환 메뉴에서 방패병 또는 궁병을 추가하세요.';
+ else if(active<=2)el.textContent='⚠️ 병력이 '+active+'부대 남았습니다. 자원은 3초마다 12씩 들어옵니다. 자원이 모이면 방패병을 소환하세요.';
+ else if(S.coins>=DEF.bow.cost)el.textContent='🪙 자원 '+Math.floor(S.coins)+' — 전투 중에도 궁병·방패병을 추가 배치할 수 있습니다. 긴급 지원은 웨이브당 1회입니다.';
+ else el.textContent='🛡 방어선을 지키세요! 자원은 3초마다 12씩 보급됩니다. 무료 긴급 방패병은 웨이브당 1회 사용 가능합니다.';
+}
+function selectZone(zone){
+ if(S.wave>=3&&zone===0){log('1번 막사는 철수했습니다. 2번 막사 또는 동모산 입구를 선택하세요.');setBattleMessage('📯 1번 본진 철수 완료 — 2번 본진을 선택하세요.',true);return;}
+ S.zone=zone;$$('.spot,.zone-pin,.rear-select').forEach(x=>x.classList.toggle('selected',Number(x.dataset.zone)===zone));
+ if(S.phase==='ready'||S.phase==='hero'){setBattleMessage(['① 1번 본진 선택 — 이 방어선에 병력을 배치합니다.','② 2번 본진 선택 — 후퇴 뒤 이곳에서 추격군을 막습니다.','동모산 입구 선택 — 도주로의 마지막 후방 차단병을 배치합니다.'][zone],true);}
+ ui();
+}
+$$('.spot,.zone-pin,.rear-select').forEach(b=>b.onclick=()=>selectZone(Number(b.dataset.zone)));
+function pulseZone(zone){const b=document.querySelector('.zone-pin[data-zone="'+zone+'"]');if(!b)return;b.classList.remove('pulse');void b.offsetWidth;b.classList.add('pulse');setTimeout(()=>b.classList.remove('pulse'),680)}
+$$('#summons button[data-type]').forEach(b=>b.onclick=()=>{if(!['ready','battle'].includes(S.phase)|| (S.wave>=3&&S.zone===0))return;let t=b.dataset.type,def=DEF[t];if(S.coins<def.cost){log('자원이 부족합니다.');return}if(S.units.filter(x=>x.zone===S.zone&&x.hp>0).length>=8){log('거점당 최대 8부대입니다.');return}S.coins-=def.cost;S.units.push({id:S.uid++,type:t,zone:S.zone,hp:def.hp,max:def.hp,cd:Math.random()*.8,atk:0});pulseZone(S.zone);log(['1번 막사 앞','2번 막사 앞','동모산 입구'][S.zone]+'에 '+({shield:'방패보병',spear:'창병',bow:'궁병',horse:'기병'}[t])+' 배치');ui()});
+function start(){if(S.phase!=='ready')return;if(S.wave===3&&S.retreatDone&&!S.units.some(u=>u.zone===1&&u.hp>0)&&!S.retreatStartAcknowledged){S.retreatStartAcknowledged=true;S.zone=1;log('⚠️ 2번 본진 방어병력이 없습니다. 병력을 배치하거나 전투 시작을 다시 눌러 위험을 감수하세요.');setBattleMessage('⚠️ 2번 본진에 병력이 없습니다. 병력을 보충하거나 다시 전투 시작을 누르세요.',true);ui();return;}if(!S.units.some(u=>u.hp>0)){log('전투 병력이 없습니다. 막사를 선택하고 최소 1부대를 배치하세요.');setBattleMessage('먼저 병력 1부대 이상을 배치하세요.',true);return;}if(S.wave>=3&&!S.retreatDone)autoRetreat();S.battleFinished=false;S.bossDefeated=false;S.jungDamageUntil=0;S.jungEscortUntil=0;S.daeEscortUntil=0;S.elapsed=0;S.move=0;S.ambushUsed=0;S.emergencyUsed=false;S.skillUsed=false;S.defeated=0;let amount=[10,15,19,21,28][S.wave-1];S.totalEnemy=amount;
+ S.spawns=Array.from({length:amount},(_,i)=>({at:(S.wave===1?5:2)+i*(S.wave===1?4.05:S.wave===5?2.35:3.05),type:S.wave===5&&i===amount-1?'boss':S.wave===3&&i===amount-1?'midboss':S.wave===5&&i%5===0?'guard':i%5===0?'horse':i%3===0?'bow':'inf',entry:(S.wave>=3 && i%4!==0)?805:1080}));S.foes=[];S.caravans=[];S.rescued=0;S.caravanLost=0;S.caravanNext=0;S.caravanTotal=CONVOY_SIZE;S.blockadeUntil=0;S.rearGuardUsed=0;S.rearGuardReadyAt=0;
+ if(!S.convoyRoster){S.convoyRoster=Array.from({length:CONVOY_SIZE},(_,id)=>({id,alive:true,hp:3,group:id%2}));}
+ S.waveRoster=Array.from({length:5},(_,i)=>(S.wave-1)*5+i);
+ S.caravanTotal=5;S.totalRescued=S.convoyRoster.filter(c=>c.finalArrived).length;S.finalRetreatAt=null;
+ updateSurvivorRate();
+ if(S.wave===3)log('📯 본진 1을 포기하고 본진 2를 사수합니다. 당군이 점령지와 후속 출발지에서 동시에 추격합니다.');
+ if(S.wave===5)log('📯 이해고와 친위대가 참전! 당군을 섬멸할 필요는 없습니다. 마지막 유민 5무리를 동모산에 들여보내고 12초간 퇴각로를 지키세요.');
+ if(S.hero==='jung'){S.units.filter(u=>u.zone===2).forEach(u=>u.hp=Math.min(u.max,u.hp+22));}phase('battle');setBattleMessage('');log('웨이브 '+S.wave+' 시작: '+DESCS[S.wave-1]);if(S.wave>=3)log('점령된 본진 1에서 당군 선발대가 출발하고, 뒤이어 후속부대가 도착합니다.');ui()}
+$('#startBattle').onclick=start;
+function showBossAlert(label,src){const el=$('#bossAlert');$('#bossArt').src=src;$('#bossAnnounce').textContent=label;el.classList.remove('hide');setTimeout(()=>el.classList.add('hide'),3200);}
+function enemyMake(spawn){const t=typeof spawn==='string'?spawn:spawn.type;const entry=typeof spawn==='string'?1080:spawn.entry;const isBoss=t==='boss',isMid=t==='midboss';const hp=isBoss?510:isMid?305:t==='horse'?99:t==='guard'?143:t==='bow'?72:88;S.foes.push({id:S.uid++,type:t,x:entry,y:refugeePathY(entry)+(Math.random()-.5)*24,hp,max:hp,spd:isBoss?29:isMid?32:t==='horse'?48:t==='guard'?37:t==='bow'?34:36,cd:1.2,atk:0,flank:t==='horse'&&S.wave>=2,pinnedUntil:0});if(isMid){log('중간 보스 색구 등장! 3웨이브는 천문령 이전 추격전을 각색했습니다.');showBossAlert('색구 · 추격전','sprite_assets/tang/midboss.webp');}if(isBoss){log('최종 보스 이해고의 추격군 지휘관 등장!');showBossAlert('이해고 · 천문령 결전','sprite_assets/tang/boss.webp');}}
+function attackers(u){return S.foes.filter(f=>f.hp>0&&!(f.flank&&u.zone===0)&&Math.abs(f.x-ZONES[u.zone].x)<(u.type==='bow'?180:90))}
+function coverageBonus(u,f){return f.flank?(u.zone===1&&u.type==='bow'?1.6:u.zone===2?1.3:1):1}
+/* v0.8.2: 산길을 따라 이동하는 5개 유민 무리. 적군이 뒤쫓아 접근하면 보호율 감소. */
+const ESCAPE_X=86, CARAVAN_START=1030, CARAVAN_INTERVAL=6.8;
+const CAMP_DESTINATIONS=[77,77,77,77,77];
+const CAMP_STARTS=[1030,1030,1030,1030,1030];
+function destinationX(){return CAMP_DESTINATIONS[S.wave-1];}
+// 호송대 20개 무리의 실제 생존 수만 보호율에 반영한다. 안전선 돌파는 무리 1개에 피해를 준다.
+function applyCivilianLoss(amount,why){
+ const activeIds=new Set((S.caravans||[]).filter(c=>!c.arrived&&c.hp>0).map(c=>c.id));
+ const alive=(S.convoyRoster||[]).filter(c=>c.alive && !c.finalArrived && activeIds.has(c.id));
+ if(!alive.length)return;
+ // 안전선 돌파 피해는 생존 행렬 하나에 적용하고, 무리 체력이 0이면 탈락 처리
+ const target=alive[Math.floor(Math.random()*alive.length)];
+ target.hp=Math.max(0,target.hp-1);
+ const traveling=S.caravans.find(c=>c.id===target.id);
+ if(traveling)traveling.hp=Math.min(traveling.hp,target.hp);
+ if(target.hp<=0){target.alive=false;S.totalLost++;if(traveling)traveling.arrived=true;}
+ updateSurvivorRate();
+ if(why)log(why+' · '+(target.alive?'호송 무리 피해':'유민 무리 1개 상실')+' · 보호율 '+S.protect+'%');
+}
+// v0.9.1: 매 유민 무리는 등장 뒤 7초 동안 호위 대열을 형성합니다.
+// 이 시간에도 적군은 전진하며 병력과 교전하지만, 유민 접촉에 따른 즉시 피해만 잠시 막습니다.
+const ESCORT_ASSEMBLY_SECONDS=4, ESCORT_INITIAL_SECONDS=4;
+// v0.9.4: 후방 거점에 병사를 배치하면 일정 간격으로 접근하는 추격군을 저지한다.
+// 무한 보호를 막기 위해 웨이브당 3회, 최소 8초 간격으로 적용한다.
+const REAR_GUARD_LIMIT=2, REAR_GUARD_COOLDOWN=12;
+function rearGuardReady(){
+ return S.rearGuardUsed<REAR_GUARD_LIMIT && S.elapsed>=S.rearGuardReadyAt &&
+        S.units.some(u=>u.zone===2 && u.hp>0);
+}
+function interceptRearGuard(pursuer,reason){
+ if(!rearGuardReady())return false;
+ S.rearGuardUsed++;
+ S.rearGuardReadyAt=S.elapsed+REAR_GUARD_COOLDOWN;
+ pursuer.x=Math.min(1090,pursuer.x+85);
+ pursuer.pinnedUntil=Math.max(pursuer.pinnedUntil||0,S.elapsed+2.5);
+ pursuer.hp-=12;
+ log('후방 호위병이 '+reason+' 차단! ('+S.rearGuardUsed+'/'+REAR_GUARD_LIMIT+'회)');
+ return true;
+}
+function refugeePathY(x){
+ // v2.2.1: 배경 이미지 1774×887을 전장 1120×385에 중앙 cover했을 때의 산길 중심선.
+ // 배경의 실제 S자 길을 따라 유민과 당군이 같은 좌표를 공유합니다.
+ const knots=[[77,130],[145,151],[221,179],[300,186],[380,208],[446,260],[505,287],[591,279],[660,269],[725,267],[785,288],[855,311],[930,329],[1005,336],[1080,337]];
+ for(let i=1;i<knots.length;i++){
+  const [x1,y1]=knots[i-1],[x2,y2]=knots[i];
+  if(x<=x2){const t=Math.max(0,Math.min(1,(x-x1)/(x2-x1)));const e=t*t*(3-2*t);return y1+(y2-y1)*e;}
+ }
+ return 337;
+}
+function updateSurvivorRate(){
+ const alive=(S.convoyRoster||[]).filter(c=>c.alive).length;
+ S.protect=Math.round(100*alive/CONVOY_SIZE);
+}
+function refugeeStep(dt){
+ const survivors=(S.waveRoster||[]);
+ while(S.caravanNext<survivors.length && S.elapsed>=2+S.caravanNext*6.8){
+  const entry=S.convoyRoster[survivors[S.caravanNext++]];
+  if(!entry.alive || entry.finalArrived)continue;
+  const x=CAMP_STARTS[S.wave-1];
+  S.caravans.push({id:entry.id,x,y:refugeePathY(x),hp:entry.hp,hitCd:0,group:entry.group,shieldUntil:S.elapsed+ESCORT_ASSEMBLY_SECONDS,arrived:false});
+  if(S.caravanNext===1)log('🚶 유민 5무리가 도주로에 등장! 본진 1 → 본진 2 → 동모산 입구로 이동합니다.');
+ }
+ for(const c of S.caravans){
+  if(c.arrived || c.hp<=0 || !S.convoyRoster[c.id].alive)continue;
+  c.hitCd=Math.max(0,c.hitCd-dt);
+  c.x=Math.max(destinationX(),c.x-dt*(S.wave>=3?27:25));c.y=refugeePathY(c.x);
+  const pursuer=S.foes.find(f=>f.hp>0&&Math.abs(f.x-c.x)<49&&Math.abs(f.y-c.y)<62);
+  if(pursuer && c.hitCd<=0){
+   // 방어선에 남은 전투 병력이 충분하다면 유민을 향한 추격군을 실제로 차단한다.
+   // 무제한 무적이 아니라 행렬별 재사용 대기시간이 있는 전투 지원 효과다.
+   const frontZone=S.wave<=2?0:1;
+   const escortGuards=S.units.filter(u=>u.hp>0&&u.zone===frontZone).length;
+   if(escortGuards>=4 && S.elapsed>=(c.escortReadyAt||0)){
+     const guardPower=Math.min(escortGuards,8);
+     c.hitCd=2.0+(guardPower-4)*.4;
+     c.escortReadyAt=S.elapsed+(guardPower>=6?5.4:11);
+     pursuer.x=Math.min(1090,pursuer.x+26+guardPower*5);
+     pursuer.pinnedUntil=Math.max(pursuer.pinnedUntil||0,S.elapsed+1.0);
+     pursuer.hp-=guardPower>=6?13:7;
+     log('🛡 본진 호위병이 유민을 향한 당군을 저지했습니다.');
+     continue;
+   }
+   if(S.elapsed<ESCORT_INITIAL_SECONDS||S.elapsed<c.shieldUntil){c.hitCd=1.5;pursuer.x=Math.min(1090,pursuer.x+48);pursuer.pinnedUntil=Math.max(pursuer.pinnedUntil||0,S.elapsed+1.4);}
+   else if(interceptRearGuard(pursuer,'유민을 향한 추격군을'))c.hitCd=1.5;
+   else if(S.hero==='biu'&&S.blockadeUntil>S.elapsed){c.hitCd=1.5;pursuer.x=Math.min(1090,pursuer.x+55);}
+   else if(S.hero==='dae'&&S.daeEscortUntil>S.elapsed){c.hitCd=1.6;pursuer.x=Math.min(1090,pursuer.x+34);}
+   else if(S.hero==='jung'&&S.jungEscortUntil>S.elapsed){c.hitCd=2;pursuer.x=Math.min(1090,pursuer.x+38);}
+   else if(S.quizWard>0){S.quizWard--;c.hitCd=2.2;pursuer.x=Math.min(1090,pursuer.x+45);}
+   else {c.hp--;S.convoyRoster[c.id].hp=Math.min(S.convoyRoster[c.id].hp,c.hp);c.hitCd=1.6;pursuer.x=Math.min(1090,pursuer.x+26);log('유민 행렬 '+(c.id+1)+'번이 추격군의 공격을 받았습니다.');}
+  }
+  if(c.hp<=0){const entry=S.convoyRoster[c.id];entry.alive=false;S.caravanLost++;S.totalLost++;c.arrived=true;log('⚠️ '+(c.id+1)+'번 유민 무리가 호송 중 희생되었습니다.');}
+  else if(c.x<=destinationX()){c.arrived=true;S.rescued++;const entry=S.convoyRoster[c.id];entry.hp=c.hp;S.totalRescued++;entry.finalArrived=true;}
+ }
+ S.caravans=S.caravans.filter(c=>!c.arrived&&c.hp>0);
+ updateSurvivorRate();
+}
+
+function tick(dt){if(S.phase!=='battle')return;S.elapsed+=dt;S.move+=dt;for(const u of S.units)u.atk=Math.max(0,(u.atk||0)-dt);for(const f of S.foes)f.atk=Math.max(0,(f.atk||0)-dt);while(S.spawns.length&&S.spawns[0].at<S.elapsed){enemyMake(S.spawns.shift())}if(S.move>=3){S.move-=3;S.coins=Math.min(650,S.coins+12)}
+for(const u of S.units){u.cd-=dt;const candidates=attackers(u).sort((a,b)=>Math.abs(a.x-ZONES[u.zone].x)-Math.abs(b.x-ZONES[u.zone].x));if(u.cd<=0&&candidates.length){const t=candidates[0],d=DEF[u.type];let mult=u.type==='bow'&&u.zone===1?1.45:u.type==='shield'&&u.zone===0?1.1:u.type==='horse'&&u.zone===2?1.35:1; if(S.wave>=3&&u.zone===1&&(['shield','spear'].includes(u.type)))mult*=1.20;t.hp-=d.dmg*mult*coverageBonus(u,t)*(S.hero==='jung'&&S.jungDamageUntil>S.elapsed?1.25:1);if(t.flank&&u.zone===1&&u.type==='bow')t.pinnedUntil=Math.max(t.pinnedUntil||0,S.elapsed+1.8);u.atk=.44;u.cd=d.rate;S.ambush=Math.min(100,S.ambush+(u.zone===1?5:3));S.animations.push({x:t.x,y:t.y,until:S.elapsed+.22,type:u.type});}}
+for(const f of S.foes){if(f.hp<=0)continue;let nearby=S.units.filter(u=>u.hp>0&&!(f.flank&&u.zone===0)&&Math.abs(ZONES[u.zone].x-f.x)<80).sort((a,b)=>Math.abs(ZONES[a.zone].x-f.x)-Math.abs(ZONES[b.zone].x-f.x));f.cd-=dt;if(nearby.length){if(f.cd<=0){const t=nearby[0];t.hp-=Math.round((f.type==='boss'?21:f.type==='midboss'?17:f.type==='horse'?10:8)*(S.wave===1?.88:1));f.atk=.4;f.cd=f.type==='boss'?.9:f.type==='midboss'?1.05:1.22}}else f.x-=f.spd*dt*(S.slowUntil>S.elapsed?.3:1)*(f.flank?1.28:1)*(f.pinnedUntil>S.elapsed?.55:1)*(S.hero==='biu'&&S.blockadeUntil>S.elapsed&&f.flank?.22:1);
+f.y=refugeePathY(f.x);if(f.x<=95){if(S.elapsed<4){f.x=180;f.pinnedUntil=Math.max(f.pinnedUntil||0,S.elapsed+2);if(!f.initialBlocked){log('호위대가 초기 안전선 돌파를 저지했습니다.');f.initialBlocked=true;}}else if(interceptRearGuard(f,'후방 안전선 돌파를')){log('후방 거점 병력이 안전선을 사수했습니다.');}else{if((S.convoyRoster||[]).some(c=>c.alive&&!c.finalArrived)&&S.wave<=5){applyCivilianLoss(f.type==='boss'?10:f.type==='midboss'?8:f.type==='horse'?6:4,'추격군이 후방 안전선을 돌파했습니다');}else{log('유민 호송 완료 후 추격군의 안전선 진입: 보호율 피해 없음');}f.hp=0;}}}
+refugeeStep(dt);S.units=S.units.filter(x=>x.hp>0);S.foes=S.foes.filter(x=>{if(x.hp<=0){if(x.x>95){S.defeated++;if(x.type==='boss')S.bossDefeated=true;}return false}return true});S.animations=S.animations.filter(x=>x.until>S.elapsed);
+if(S.protect<=20){finish(false,'살아남은 유민이 너무 적어 새로운 나라를 세울 기반이 사라졌습니다.');return}
+// v2.0.5: 방어 병력이 모두 쓰러졌다면 적군이 격파되었더라도 해당 방어선은 무너진 것입니다.
+// 이를 확인하지 않으면 유민이 무사히 길을 통과했다는 이유만으로 빈 방어선이 성공 처리됩니다.
+if(S.units.length===0 && (S.totalEnemy>0 || S.wave>=1)){
+ finish(false,'방어선 붕괴! 아군 병력이 모두 전멸하여 당군의 추격을 막을 수 없었습니다. 병력을 다시 배치해 유민을 보호하세요.');return;
+}
+if(S.elapsed>175){finish(false,'철수가 늦어 추격군에게 포위당했습니다.');return}
+// 5웨이브: 남은 유민이 도착한 뒤 12초간 최종 철수로를 버티면 승리. 추격군 전멸은 요구하지 않는다.
+if(S.wave===5 && S.caravanNext>=S.caravanTotal && S.caravans.length===0 && S.spawns.length===0){
+ if(S.finalRetreatAt===null){S.finalRetreatAt=S.elapsed;log('📯 유민 대피 완료! 12초 동안 퇴각로를 사수한 뒤 철수합니다.');}
+ if(S.elapsed-S.finalRetreatAt>=12 && S.units.length>0){finish(true,'유민을 동모산으로 이동시키고 12초간 퇴각로를 지킨 뒤 아군도 철수했습니다.');return;}
+}
+if(S.wave<5 && S.units.length>0 && S.caravanNext>=S.caravanTotal && S.caravans.length===0 && S.spawns.length===0 && S.foes.length===0){
+ finish(true,'유민 호송과 방어선 정비를 마쳤습니다.');
+}}
+// v2.0.6: 웨이브별 구출 실적과 전체 탈출 결과를 분리해 표시합니다.
+function waveRescueStats(){
+ const ids=S.waveRoster||[];
+ const rescued=ids.filter(id=>S.convoyRoster?.[id]?.finalArrived).length;
+ const lost=ids.filter(id=>S.convoyRoster?.[id] && !S.convoyRoster[id].alive).length;
+ return {rescued,lost,pending:Math.max(0,ids.length-rescued-lost),total:ids.length};
+}
+function finish(win,why){
+ if(S.phase!=='battle'||S.battleFinished)return;
+ // 모든 웨이브의 유민 이동이 끝나도 전체 구조 실적이 최소 기준을 넘지 못하면 실패입니다.
+ if(win&&S.wave===5&&(S.totalRescued||0)<=CONVOY_SIZE*.20){win=false;why='동모산까지 탈출한 유민이 전체의 20% 이하입니다. 건국 기반을 지키지 못했습니다.';}
+ const stats=waveRescueStats();
+ const rate=Math.round(S.protect);
+ const finalEscaped=S.totalRescued||0;
+ S.battleFinished=true;phase('result');
+ const waveTitle=stats.rescued>=4?'호송 성공':stats.rescued>=2?'호송 일부 성공':'호송 피해 심각';
+ $('#resultTitle').textContent=win?(S.wave===5?(finalEscaped>=23?'🏆 동모산 대승리':finalEscaped>=15?'⭐ 발해 건국의 길 확보':'🛡️ 힘겨운 철수 성공'):'웨이브 '+S.wave+' — '+waveTitle):(rate<=20||S.wave===5&&finalEscaped<=5?'⚠️ 가상 역사: 발해 건국 실패':'유민 호위 실패');
+ const detail='이번 웨이브 구조 '+stats.rescued+'/'+stats.total+'무리 · 손실 '+stats.lost+'무리'+(stats.pending?' · 미도착 '+stats.pending+'무리':'');
+ const total='전체 누적 구조 '+finalEscaped+'/'+CONVOY_SIZE+'무리 · 현재 생존 '+rate+'%';
+ const historical=!win&&(rate<=20||S.wave===5&&finalEscaped<=5)?' · 이 엔딩은 게임 속 가상 역사입니다. 실제로 발해는 동모산 일대에서 건국되었습니다.':'';
+ $('#resultDesc').textContent=why+historical;
+ $('#scoreWave').textContent=stats.rescued+'/'+stats.total;
+ $('#scoreLost').textContent=stats.lost;
+ $('#scoreTotal').textContent=finalEscaped+'/'+CONVOY_SIZE;
+ $('#scoreRate').textContent=rate+'%';
+ $('#resultMeaning').textContent=!win?'방어에 실패했습니다. 병력의 배치와 긴급 지원 시점을 바꿔 다시 도전하세요.':S.wave===5?'최종 호송 결과입니다. 구조율에 따라 다른 결말을 확인하세요.':stats.rescued>=4?'유민 호송 성과가 좋습니다. 다음 웨이브에 대비해 병력을 보충하세요.':stats.rescued>=2?'방어선을 지켰지만 유민 손실이 있었습니다. 다음 웨이브에서는 후방 호위를 강화하세요.':'방어선은 유지했지만 유민 손실이 큽니다. 후방 차단병과 호위 기술을 활용하세요.';
+ const debrief=$('#finalHistoryDebrief');debrief.classList.toggle('hide',!(S.wave===5||!win));
+ $('#finalHistoryReflect').textContent=win?'25무리 가운데 '+finalEscaped+'무리를 구했습니다. 어느 방어선과 기술이 유민을 보호하는 데 도움이 되었나요?':'실패한 원인은 무엇인가요? 방패병 배치, 후방 차단, 지휘관 기술 사용 시점을 바꿔 볼까요?';
+ $('#nextWave').classList.toggle('hide',!win);
+ $('#retry').classList.toggle('hide',win);
+ $('#nextWave').textContent=win&&S.wave===5?'발해 건국 이야기 보기 →':'다음 웨이브 →';
+ log($('#resultTitle').textContent+' / '+detail);
+}
+function advanceWave(){S.wave++;S.coins=Math.min(650,S.coins+90);S.units.forEach(x=>x.hp=Math.min(x.max,x.hp+(S.units.filter(u=>u.hp>0).length<=4?42:34)));quizStart();}
+$('#nextWave').onclick=()=>{if(S.phase!=='result'||!S.battleFinished)return;if(S.wave===5){S.battleFinished=false;showStory('epi');return}if(S.wave===2){$('#retreatStoryModal').classList.remove('hide');return}S.battleFinished=false;advanceWave()};
+$('#confirmRetreat').onclick=()=>{if(S.wave!==2||S.phase!=='result')return;$('#retreatStoryModal').classList.add('hide');advanceWave();autoRetreat();S.zone=1;log('📯 철수 명령 완료! 1번 본진을 포기하고 2번 본진에 방어선을 구축했습니다.');ui()};$('#retry').onclick=reset;
+function reset(){$('#retreatStoryModal').classList.add('hide');$('#finalHistoryDebrief').classList.add('hide');$('#speed').textContent='속도 ×1';Object.assign(S,{quizAnswered:false,battleFinished:false,phase:'hero',hero:'dae',wave:1,zone:0,coins:240,protect:100,ambush:0,ambushUsed:0,emergencyUsed:false,skillUsed:false,score:0,qGlobal:0,qRound:0,quizDeck:[],units:[],foes:[],spawns:[],uid:1,elapsed:0,move:0,totalEnemy:0,defeated:0,speed:1,carrier:80,caravans:[],caravanNext:0,rescued:0,caravanLost:0,caravanTotal:CONVOY_SIZE,convoyRoster:null,waveRoster:[],totalRescued:0,totalLost:0,retreatDone:false,retreatStartAcknowledged:false,starterGranted:false,quizWard:0,blockadeUntil:0,rearGuardUsed:0,rearGuardReadyAt:0,slowUntil:0,daeEscortUntil:0,jungEscortUntil:0,jungDamageUntil:0,animations:[],last:0});document.querySelectorAll('[data-zone="0"]').forEach(el=>{el.classList.remove('camp-abandoned');el.removeAttribute('aria-disabled');});document.querySelectorAll('.zone-pin[data-zone="1"]').forEach(el=>el.classList.remove('retreat-active'));phase('hero');$$('.role').forEach(b=>b.classList.toggle('selected',b.dataset.hero===S.hero));updateHeroSkillLabel();renderRetreat();setBattleMessage('해당 위치를 눌러 방어선을 선택하세요.',true);ui()}
+$('#emergency').onclick=()=>{if(S.phase!=='battle'||S.emergencyUsed||(S.wave>=3&&S.zone===0))return;const existing=S.units.filter(u=>u.zone===S.zone&&u.hp>0).length;if(existing>=8){log('선택 거점이 가득 찼습니다. 다른 거점을 선택하세요.');return;}S.emergencyUsed=true;const t='shield',d=DEF[t];S.units.push({id:S.uid++,type:t,zone:S.zone,hp:Math.round(d.hp*.72),max:Math.round(d.hp*.72),cd:.6,atk:0});pulseZone(S.zone);log('무료 긴급 지원: '+(['1번 막사','2번 막사','동모산 후방'][S.zone])+'에 방패 보병 1부대 도착 (웨이브당 1회)');ui()};
+$('#useAmbush').onclick=()=>{if(S.phase!=='battle'||S.ambush<100||S.ambushUsed>=2)return;S.ambush=0;S.ambushUsed++;S.slowUntil=S.elapsed+7;for(const f of S.foes)f.hp-=40;log('산악 매복! 추격군 이동 지연 및 피해');ui()};
+function activateHeroSkill(){if(S.phase!=='battle'||S.skillUsed)return;S.skillUsed=true;S.animations.push({type:'heroSkill',hero:S.hero,x:560,y:192,start:S.elapsed,until:S.elapsed+1.25});if(S.hero==='dae'){S.foes.forEach(x=>x.hp-=70);S.coins=Math.min(650,S.coins+35);S.daeEscortUntil=S.elapsed+28;S.foes.forEach(f=>{f.pinnedUntil=Math.max(f.pinnedUntil||0,S.elapsed+3)});log('대조영: 천문령 역습! 28초 퇴각 엄호 · 추격 지연 · 군량 35 확보')}if(S.hero==='jung'){S.jungDamageUntil=S.elapsed+50;S.jungEscortUntil=S.elapsed+24;S.coins=Math.min(650,S.coins+50);S.units.forEach(x=>x.hp=Math.min(x.max,x.hp+24));log('걸걸중상: 유민 결집! 호위 강화 · 자원 50 · 병력 치료 · 50초 공격력 25% 상승 · 24초 유민 호위 (게임용 각색)')}if(S.hero==='biu'){S.ambush=100;S.blockadeUntil=S.elapsed+18;S.foes.forEach(x=>{x.hp-=42;if(x.flank)x.pinnedUntil=Math.max(x.pinnedUntil||0,S.elapsed+10)});S.quizWard=Math.min(2,(S.quizWard||0)+1);S.coins=Math.min(650,S.coins+45);S.units.forEach(x=>x.hp=Math.min(x.max,x.hp+24));log('걸사비우: 18초 추격 차단진! 우회 기병 둔화 · 유민 호위 · 매복 준비 (게임용 각색)')}ui()}
+$('#speed').onclick=()=>{S.speed=S.speed===1?2:1;$('#speed').textContent='속도 ×'+S.speed};
+$('#useSkill').onclick=activateHeroSkill;$('#heroSkillCard').onclick=activateHeroSkill;
+function ui(){const hud=$('#battleHud');if(hud){const zone=S.retreatDone?1:0;$('#hudLine').textContent=S.retreatDone?'2번 막사 방어':'1번 막사 방어';$('#hudTroops').textContent='아군 '+S.units.filter(u=>u.hp>0&&u.zone===zone).length+'부대';$('#hudConvoy').textContent='구조 '+(S.totalRescued||0)+'/25';hud.classList.toggle('hide',S.phase==='story');}updateTacticalGuide();updateBattleHelp();updateRetreatReadiness();$('#protect').textContent=Math.round(S.protect);$('#rescued').textContent=(S.totalRescued);$('#coins').textContent=Math.floor(S.coins);$('#ambush').textContent=Math.floor(S.ambush);$('#wave').textContent=S.wave;$('#quizscore').textContent=S.score;$('#protectBar').style.width=S.protect+'%';$('#enemyBar').style.width=(S.totalEnemy?Math.max(0,100*(S.spawns.length+S.foes.length)/S.totalEnemy):100)+'%';$('#enemyInfo').textContent='남은 추격군 '+(S.spawns.length+S.foes.length)+' · 격파 '+S.defeated;$('#battleInfo').textContent='경과 '+Math.floor(S.elapsed)+'초'+(S.phase==='battle'&&S.elapsed<ESCORT_INITIAL_SECONDS?' · 🛡 초기 호위 정비 '+Math.ceil(ESCORT_INITIAL_SECONDS-S.elapsed)+'초':'')+' · 후방 차단 '+(REAR_GUARD_LIMIT-(S.rearGuardUsed||0))+'/'+REAR_GUARD_LIMIT+'회 · 적군 '+(S.spawns.length+S.foes.length)+' · 매복 '+S.ambushUsed+'/2회 · 퀴즈 호위 '+(S.quizWard||0)+'회'+(S.hero==='biu'&&S.blockadeUntil>S.elapsed?' · 🛡 차단진 '+Math.ceil(S.blockadeUntil-S.elapsed)+'초':'');['1번 막사','2번 막사','동모산 입구'].forEach((x,i)=>$('#z'+i).textContent=(i===0&&S.retreatDone?'철수 완료':'부대 '+S.units.filter(u=>u.zone===i).length));$('#selectedZone').textContent=['1번 막사','2번 막사','동모산 입구'][S.zone];
+ for(let i=0;i<3;i++){$('#pin'+i).textContent=S.units.filter(u=>u.zone===i).length+'부대';}
+ $$('.zone-pin,.rear-select').forEach(b=>b.classList.toggle('selected',Number(b.dataset.zone)===S.zone));const note=$('#battleMessage');if(note){const shouldShow=(['ready','hero'].includes(S.phase)&&note.textContent.trim());note.classList.toggle('hide-note',!shouldShow);}$('#stage').classList.toggle('battle-compact',S.phase==='battle');$$('#summons button[data-type]').forEach(b=>{const count=S.units.filter(u=>u.zone===S.zone&&u.hp>0).length;const blocked=!['ready','battle'].includes(S.phase)||S.coins<DEF[b.dataset.type].cost||count>=8||(S.wave>=3&&S.zone===0);b.disabled=blocked;b.title=count>=8?'현재 거점에는 최대 8부대만 배치할 수 있습니다.':S.coins<DEF[b.dataset.type].cost?'자원이 부족합니다.':'';});$('#useAmbush').disabled=S.phase!=='battle'||S.ambush<100||S.ambushUsed>=2;$('#useSkill').disabled=S.phase!=='battle'||S.skillUsed;const hc=$('#heroSkillCard');if(hc){const ready=S.phase==='battle'&&!S.skillUsed;hc.disabled=!ready;hc.classList.toggle('hero-ready',ready);hc.classList.toggle('hero-used',S.phase==='battle'&&S.skillUsed);$('#heroSkillStatus').textContent=S.phase==='battle'?(S.skillUsed?'사용 완료':'⚡ 기술 사용'):'전투 대기';}$('#emergency').disabled=S.phase!=='battle'||S.emergencyUsed;}
+const cnv=$('#fieldCanvas'),ctx=cnv.getContext('2d');const bossImgs={};[['boss','sprite_assets/tang/boss.webp'],['midboss','sprite_assets/tang/midboss.webp']].forEach(([key,url])=>{let im=new Image();im.src=url;bossImgs[key]=im;});const troopImages={};
+const RENEWAL_IMG={};
+for(const nation of ['balhae','tang'])for(const unit of ['shield','bow','horse','strategist'])for(let k=0;k<10;k++){
+ const key=nation+'_'+unit+'_'+k;const image=new Image();image.src='sprite_assets/'+nation+'/'+unit+'/'+String(k).padStart(2,'0')+'.webp';RENEWAL_IMG[key]=image;
+}
+function newBattleSprite(team,type,attack){
+ const nation=team==='ally'?'balhae':'tang';
+ const unit=type==='bow'?'bow':type==='horse'?'horse':type==='shield'||type==='inf'?'shield':type==='spear'?'shield':null;
+ if(!unit)return null;
+ // v3.3: 생성된 시트의 02~07칸은 몸이 잘린 합성 조각이므로 전신 프레임만 사용합니다.
+ const frame=unit==='shield'?Math.floor(S.elapsed*2.4)%2:unit==='bow'?Math.floor(S.elapsed*2.4)%2:0;
+ const img=RENEWAL_IMG[nation+'_'+unit+'_'+frame];return img&&img.complete&&img.naturalWidth?img:null;
+}
+
+const refugeeGroupArts=['visuals/refugees_group_1.webp','visuals/refugees_group_2.webp'].map(src=>{const im=new Image();im.src=src;return im});
+const unitArt={
+ ally:{shield:'ally_shield',spear:'ally_spear',bow:'ally_bow',horse:'ally_horse'},
+ enemy:{inf:'enemy_inf',bow:'enemy_bow',horse:'enemy_horse'},
+ refugee:{refugee:'refugee'}
+};
+for(const key of Object.values(unitArt).flatMap(x=>Object.values(x))){
+ const im=new Image();im.src='visuals/'+key+'.webp';troopImages[key]=im;
+}
+function renderSprite(x,y,img,attack,scale=1,kind='inf',team='ally'){
+ const attackPower=Math.min(1,Math.max(0,attack/.44));
+ const segment=attackPower>.65?1:attackPower>.28?2:0;
+ const isRange=kind==='bow';const isHorse=kind==='horse';
+ let lunge=0,tilt=0,squash=1;
+ if(segment===1){lunge=-5;tilt=isRange?-.09:-.15;squash=.96;}
+ else if(segment===2){lunge=isRange?4:isHorse?16:11;tilt=isRange?.08:.13;squash=1.07;}
+ ctx.save();ctx.translate(x+(team==='enemy'?-lunge:lunge),y);ctx.scale((team==='enemy'?-1:1)*scale*squash,scale);ctx.rotate(tilt);
+ const ratio=Math.min(1,68/img.width,80/img.height);
+ const iw=img.width*ratio,ih=img.height*ratio;
+ ctx.drawImage(img,-iw/2,-ih+23,iw,ih);
+ ctx.restore();
+ if(segment===2){ctx.save();ctx.globalAlpha=.8;ctx.strokeStyle=isRange?'#d8f6ff':'#ffe6a2';ctx.lineWidth=isRange?2:4;ctx.beginPath();const dir=team==='enemy'?-1:1;ctx.arc(x+17*dir,y-14,isRange?10:18,dir<0?2.6:-1.4,dir<0?4.5:.55);ctx.stroke();ctx.restore();}
+}
+function drawUnit(x,y,team,type,hp,max,atk,scale=1){
+ const boss=(type==='boss'||type==='midboss');
+ const bossImg=boss?bossImgs[type]:null;
+ const spriteKey=(type==='refugee'?'refugee':unitArt[team]?.[type]);const art=spriteKey?troopImages[spriteKey]:null;const renewalArt=!boss&&type!=='refugee'?newBattleSprite(team,type,atk):null;
+ ctx.save();ctx.translate(x,y);ctx.scale(scale,scale);
+ ctx.fillStyle='#191e244f';ctx.beginPath();ctx.ellipse(0,26,19,5,0,0,Math.PI*2);ctx.fill();ctx.restore();
+ if(boss&&bossImg?.complete&&bossImg.naturalWidth){
+   renderSprite(x,y,bossImg,atk,scale,'horse',team);
+ }else if(renewalArt?.complete&&renewalArt.naturalWidth){
+   renderSprite(x,y,renewalArt,atk,scale,type,team);
+ }else if(art?.complete&&art.naturalWidth){
+   renderSprite(x,y,art,atk,scale,type,team);
+ }else{
+   ctx.save();ctx.translate(x,y);ctx.scale(scale,scale);ctx.fillStyle=team==='ally'?'#37628a':'#9d4542';ctx.fillRect(-11,-15,22,33);ctx.beginPath();ctx.arc(0,-23,10,0,Math.PI*2);ctx.fill();ctx.restore();
+ }
+ // Unit bars stay anchored to battlefield, separate from animated sprite.
+ const width=boss?70:44;
+ if(type==='refugee')return;
+ ctx.fillStyle='#1a2733';ctx.fillRect(x-width/2-1,y-(boss?85:64),width+2,8);
+ const frac=Math.max(0,Math.min(1,hp/max));ctx.fillStyle=frac<.3?'#e34a46':frac<.65?'#f0bc4f':team==='ally'?'#66d793':'#f29d72';ctx.fillRect(x-width/2,y-(boss?84:63),width*frac,6);
+ if(boss){ctx.font='bold 14px sans-serif';ctx.lineWidth=3;ctx.strokeStyle='#172532';const name=type==='boss'?'이해고':'색구';ctx.strokeText(name,x-20,y-111);ctx.fillStyle='#fff4c3';ctx.fillText(name,x-20,y-111)}
+}
+// v3.6 — 배경은 cover로 보이므로 원본 그림의 깃발 좌표를 캔버스 기준으로 보정한다.
+function flagCanvasPoint(sx,sy){
+ const imageW=1774,imageH=887,canvasW=cnv.width,canvasH=cnv.height;
+ const scale=Math.max(canvasW/imageW,canvasH/imageH);
+ return {x:(sx*scale-(imageW*scale-canvasW)/2),y:(sy*scale-(imageH*scale-canvasH)/2)};
+}
+function paintFlagCharacter(sx,sy,hanja,team){
+ const pos=flagCanvasPoint(sx,sy);
+ ctx.save();ctx.translate(pos.x,pos.y);
+ const red=team==='balhae';const bg=red?'#bc1427':'#183f9e';
+ // 기존 그림의 깃발 무늬만 가리고 테두리/천의 펄럭임은 보존한다.
+ ctx.fillStyle=bg;ctx.fillRect(-6.0,-9.5,12.0,19.0);
+ ctx.font='bold 17px serif';ctx.textAlign='center';ctx.textBaseline='middle';
+ ctx.lineWidth=2;ctx.strokeStyle=red?'#802128':'#0c2862';ctx.strokeText(hanja,0,1);
+ ctx.fillStyle=red?'#ffe17b':'#fff1bc';ctx.fillText(hanja,0,1);
+ ctx.restore();
+}
+function drawCampFlagGlyphs(){
+ // 천문령 배경 원본: 붉은 깃발 세 곳, 파란 깃발 한 곳.
+ paintFlagCharacter(58,268,'震','balhae');
+ paintFlagCharacter(583,376,'震','balhae');
+ paintFlagCharacter(978,476,'震','balhae');
+ paintFlagCharacter(1665,585,'唐','tang');
+}
+function drawHeroSkillEffect(fx){
+ const duration=Math.max(.01,fx.until-fx.start),t=Math.max(0,Math.min(1,(S.elapsed-fx.start)/duration));
+ const fade=Math.max(0,Math.min(1,(1-t)*1.6));
+ const isDae=fx.hero==='dae',isJung=fx.hero==='jung';
+ const main=isDae?'#ffd36d':isJung?'#90ffb6':'#95d6ff';
+ const legend=isDae?'대조영 · 천문령 역습':isJung?'걸걸중상 · 유민 결집':'걸사비우 · 추격 차단진';
+ ctx.save();
+ ctx.globalAlpha=.12*fade;ctx.fillStyle=main;ctx.fillRect(0,0,cnv.width,cnv.height);
+ // 양군별 효과가 전장 위치에 생기게 구성. 전투 판정에는 영향을 주지 않는다.
+ const marks=(isJung?S.units.map(u=>({x:ZONES[u.zone].x,y:refugeePathY(ZONES[u.zone].x),id:u.id}))
+    :S.foes.map(f=>({x:f.x,y:refugeePathY(f.x),id:f.id}))).slice(0,25);
+ if(!marks.length)marks.push({x:isJung?400:790,y:215,id:1});
+ for(let i=0;i<marks.length;i++){
+   const m=marks[i],offset=((i*13)%17)/17,local=Math.max(0,Math.min(1,(t-offset*.2)/.8));
+   ctx.globalAlpha=fade*(.55+.35*Math.sin(local*Math.PI));
+   ctx.strokeStyle=main;ctx.lineWidth=isDae?4:isJung?3:5;
+   ctx.beginPath();ctx.arc(m.x,m.y-16,7+local*(isJung?31:43),0,Math.PI*2);ctx.stroke();
+   if(isDae){ctx.beginPath();ctx.moveTo(m.x-23+local*27,m.y-42);ctx.lineTo(m.x+15+local*18,m.y+7);ctx.stroke();}
+   else if(isJung){ctx.fillStyle='#e6fff1';ctx.fillRect(m.x-3,m.y-29-local*20,6,20);ctx.fillRect(m.x-10,m.y-22-local*20,20,6);}
+   else{ctx.setLineDash([9,5]);ctx.beginPath();ctx.arc(m.x,m.y-16,13+local*38,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);}
+ }
+ // 전장 중앙을 가로지르는 큰 파동으로 효과 발생 여부를 즉시 인지한다.
+ ctx.globalAlpha=.82*fade;ctx.strokeStyle=main;ctx.lineWidth=7;
+ ctx.beginPath();ctx.ellipse(560,190,45+t*310,20+t*110,0,0,Math.PI*2);ctx.stroke();
+ ctx.globalAlpha=Math.max(0,1-t*1.05);
+ ctx.textAlign='center';ctx.font='900 23px Malgun Gothic, sans-serif';ctx.lineWidth=5;
+ ctx.strokeStyle='#182d38';ctx.strokeText(legend,560,56);
+ ctx.fillStyle='#fffcef';ctx.fillText(legend,560,56);
+ ctx.restore();
+}
+function drawRoadsideMarkers(){return;}
+// v2.1.6 산악 흙길: 이동 충돌 좌표(refugeePathY)를 그대로 따라가는 불규칙한 땅길.
+// 정적 장식은 프레임별 난수가 아닌 좌표 기반 함수로 생성해 화면 떨림과 성능 낭비를 방지합니다.
+function trailHash(n){const v=Math.sin(n*127.1+19.37)*43758.5453;return v-Math.floor(v)}
+function trailWidth(x){return 25+3.0*Math.sin(x*.019)+2.4*Math.sin(x*.061+1.4)}
+function drawTrail(){
+ const left=ESCAPE_X-25,right=1120,step=5;
+ function edge(sign,extra=0){for(let x=left;x<=right;x+=step){const y=refugeePathY(Math.max(86,Math.min(1080,x)));const ripple=2.1*Math.sin(x*.113+sign*2.8)+1.4*Math.sin(x*.31+sign*1.3);const w=trailWidth(x)+ripple+extra;if(x===left)ctx.moveTo(x,y+sign*w);else ctx.lineTo(x,y+sign*w)}}
+ ctx.save();ctx.lineJoin='round';ctx.lineCap='round';
+ // 습한 산지의 흙과 잔풀로 된 외곽: 대칭적 포장도로 가장자리 사용 금지.
+ ctx.beginPath();edge(-1,5);for(let x=right;x>=left;x-=step){const y=refugeePathY(Math.max(86,Math.min(1080,x)));ctx.lineTo(x,y+trailWidth(x)+5+2*Math.sin(x*.107))}ctx.closePath();ctx.fillStyle='rgba(58,64,39,.72)';ctx.fill();
+ ctx.beginPath();edge(-1);for(let x=right;x>=left;x-=step){const y=refugeePathY(Math.max(86,Math.min(1080,x)));ctx.lineTo(x,y+trailWidth(x)+2.1*Math.sin(x*.095+2))}ctx.closePath();ctx.fillStyle='rgba(173,137,91,.91)';ctx.fill();
+ // 길 가운데는 발자국에 다져진 흙. 중앙 차선이나 점선은 그리지 않음.
+ ctx.beginPath();for(let x=left;x<=right;x+=step){const y=refugeePathY(Math.max(86,Math.min(1080,x)));if(x===left)ctx.moveTo(x,y-15-1.7*Math.sin(x*.11));else ctx.lineTo(x,y-15-1.7*Math.sin(x*.11))}for(let x=right;x>=left;x-=step){const y=refugeePathY(Math.max(86,Math.min(1080,x)));ctx.lineTo(x,y+14+2*Math.cos(x*.086))}ctx.closePath();ctx.fillStyle='rgba(211,178,125,.31)';ctx.fill();
+ // 자잘한 돌, 바닥 마모, 가장자리 풀. 캐릭터를 가리지 않게 작게 그림.
+ for(let i=0;i<144;i++){const x=left+trailHash(i+11)*(right-left),y0=refugeePathY(Math.max(86,Math.min(1080,x))),offset=(trailHash(i+351)*2-1)*trailWidth(x)*.9;const y=y0+offset;const r=1.0+trailHash(i+737)*2.7;ctx.fillStyle=i%3===0?'rgba(95,80,57,.34)':'rgba(240,209,158,.35)';ctx.beginPath();ctx.ellipse(x,y,r*1.6,r*.65,trailHash(i+119)*1.2,0,Math.PI*2);ctx.fill()}
+ for(let i=0;i<115;i++){const x=left+trailHash(i+1901)*(right-left),y0=refugeePathY(Math.max(86,Math.min(1080,x)));const side=i%2?1:-1;const y=y0+side*(trailWidth(x)+6+trailHash(i+2222)*14);ctx.strokeStyle=i%3===0?'rgba(48,87,47,.73)':'rgba(96,114,54,.70)';ctx.lineWidth=1.1;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-2,y-3-trailHash(i+302)*3);ctx.moveTo(x,y);ctx.lineTo(x+2,y-4);ctx.stroke()}
+ ctx.restore();
+}
+function render(){const w=cnv.width,h=cnv.height;ctx.clearRect(0,0,w,h);
+ // 배경 이미지에 산길이 이미 있으므로 두 번째 길을 그리지 않습니다.
+ ctx.font='bold 15px sans-serif';ctx.fillStyle='#fffbe9';ctx.strokeStyle='#294b43';ctx.lineWidth=3;
+ // 동모산 방향 표시는 길 옆 나무 푯말 하나만 사용합니다.
+ // 길 바깥의 시설만 표시합니다. 전투 병사는 ZONES의 길 위에 그립니다.
+ drawRoadsideMarkers();
+ drawCampFlagGlyphs();
+ // 그룹마다 남녀노소가 섞인 별도 행렬 그림. 발걸음과 무리 간 간격에 미세한 변화를 줍니다.
+ for(const c of S.caravans){
+  const sprite=refugeeGroupArts[c.group||0];
+  const bob=Math.sin(S.elapsed*7+c.id*1.65)*1.8;
+  const width=128, height=53;
+  ctx.save();ctx.fillStyle='rgba(14,26,24,.30)';ctx.beginPath();
+  ctx.ellipse(c.x,c.y+6,51,7,0,0,Math.PI*2);ctx.fill();ctx.restore();
+  if(sprite?.complete&&sprite.naturalWidth){
+   ctx.drawImage(sprite,c.x-width/2,c.y-height+bob,width,height);
+  }else{
+   for(let j=0;j<3;j++)drawUnit(c.x+(j-1)*17,c.y+(j%2)*7,'ally','refugee',1,1,0,.61);
+  }
+ }for(const u of S.units){const z=ZONES[u.zone];const peers=S.units.filter(p=>p.zone===u.zone&&p.hp>0);const rank=Math.max(0,peers.findIndex(p=>p.id===u.id));const dx=(rank%4-1.5)*32;const x=z.x+dx;const row=Math.floor(rank/4);const y=refugeePathY(x)+(row?14:-9);drawUnit(x,y,'ally',u.type,u.hp,u.max,u.atk,.9)}for(const f of S.foes){drawUnit(f.x,refugeePathY(f.x),'enemy',f.type,f.hp,f.max,f.atk,f.type==='boss'?1.45:f.type==='midboss'?1.25:1)}for(const fx of S.animations){
+ const type=fx.type||'shield';
+ if(type==='heroSkill'){drawHeroSkillEffect(fx);continue;}
+ const duration=Math.max(.22,fx.until-(fx.start??(fx.until-.22)));
+ const life=Math.max(0,Math.min(1,(fx.until-S.elapsed)/duration));ctx.save();ctx.globalAlpha=life;
+ ctx.lineCap='round';ctx.lineJoin='round';
+ if(type==='bow'){
+  ctx.strokeStyle='#fff5c7';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(fx.x+22,fx.y-13);ctx.lineTo(fx.x-19,fx.y-4);ctx.stroke();
+  ctx.fillStyle='#fdf3d6';ctx.beginPath();ctx.moveTo(fx.x-23,fx.y-3);ctx.lineTo(fx.x-14,fx.y-9);ctx.lineTo(fx.x-15,fx.y+1);ctx.fill();
+ }else if(type==='horse'){
+  ctx.strokeStyle='#ffe9ac';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(fx.x+28,fx.y-22);ctx.lineTo(fx.x-22,fx.y+6);ctx.stroke();
+  ctx.strokeStyle='#f7bc60';ctx.lineWidth=3;ctx.beginPath();ctx.arc(fx.x,fx.y-10,27,-1.6,1.1);ctx.stroke();
+ }else if(type==='spear'){
+  ctx.strokeStyle='#fff9ce';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(fx.x+31,fx.y-7);ctx.lineTo(fx.x-19,fx.y-7);ctx.stroke();
+  ctx.fillStyle='#fff7bf';ctx.beginPath();ctx.moveTo(fx.x-28,fx.y-7);ctx.lineTo(fx.x-14,fx.y-14);ctx.lineTo(fx.x-14,fx.y);ctx.fill();
+ }else{
+  ctx.strokeStyle='#ffe4a2';ctx.lineWidth=5;ctx.beginPath();ctx.arc(fx.x,fx.y-9,22,-1.7,.7);ctx.stroke();
+  ctx.strokeStyle='#fffaf0';ctx.lineWidth=2;ctx.beginPath();ctx.arc(fx.x,fx.y-9,16,-1.7,.7);ctx.stroke();
+ }
+ ctx.restore();}}
+let last=0,uiClock=0;function frame(t){let dt=Math.min(.06,(t-last)/1000||0);last=t;if(S.phase==='battle'){for(let i=0;i<S.speed;i++)tick(dt);uiClock+=dt;if(uiClock>=.15){ui();uiClock=0}}render();requestAnimationFrame(frame)}requestAnimationFrame(frame);log('천문령 전투 프롤로그를 시작합니다.');updateHeroSkillLabel();showStory('pro');setBattleMessage('해당 위치를 눌러 방어선을 선택하세요.',true);ui();
+</script></body></html>
+<!-- v2.2.0: 중복 캔버스 산길 제거, 사용자 제작 배경 그대로 표시 -->

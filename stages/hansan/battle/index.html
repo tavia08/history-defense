@@ -1,0 +1,726 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>역사디펜스 v3.8.4.3 | 한산도 대첩</title><style>
+:root{--ink:#254b62;--blue:#237fa3;--light:#f9fdff;--gold:#f3c968}*{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#bfebfa,#e6edfd 50%,#fae8e6);font-family:system-ui,'Malgun Gothic',sans-serif;color:var(--ink)}button{font:inherit;border:0;cursor:pointer;border-radius:12px;padding:10px 13px;font-weight:800;background:#e2f2f1;color:#28516b}button:disabled{opacity:.42;cursor:not-allowed}button:focus-visible{outline:3px solid #eaa742}h1{margin:2px 0;font-size:clamp(23px,3vw,32px)}h2{margin:0 0 12px;font-size:19px}p{line-height:1.55}.wrap{max-width:1160px;margin:auto;padding:13px}.top{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.muted{color:#69818d;font-size:13px}.panel{background:#ffffffed;border:2px solid white;box-shadow:0 6px 21px #4c8b9b23;border-radius:20px;padding:16px}.badges{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}.badge{background:#e4f5ee;border-radius:30px;padding:8px 12px;font-size:13px;font-weight:800}.field{height:305px;border:4px solid white;border-radius:21px;overflow:hidden;position:relative;background:linear-gradient(#a6e3fc 0%,#ddf2fa 48%,#75cade 49%,#298bac 100%)}.sun{position:absolute;right:18%;top:15%;width:55px;height:55px;border-radius:50%;background:#fff7cc;box-shadow:0 0 50px 15px #fff4cc9a}.islands{position:absolute;inset:0 0 35%;background:linear-gradient(150deg,transparent 64%,#80b5a1 64% 74%,transparent 75%),linear-gradient(32deg,transparent 5%,#8ebca5 6% 18%,transparent 19%);opacity:.65}.water{position:absolute;inset:48% 0 0;background:repeating-linear-gradient(176deg,transparent 0px,transparent 22px,#c0f8fa75 23px,#c0f8fa75 25px,transparent 27px,transparent 42px);animation:flow 6s linear infinite}@keyframes flow{to{background-position:0 65px}}.flagship{position:absolute;left:1%;bottom:30px;font-size:61px;z-index:2;filter:drop-shadow(0 3px 2px #245a7755)}.ship{position:absolute;bottom:38px;width:62px;transform:translateX(-50%);text-align:center;pointer-events:none;filter:drop-shadow(0 3px 2px #224c5b77)}.ship .sprite{font-size:42px;line-height:50px}.ship.enemy .sprite{transform:scaleX(-1)}.ship .hp{height:6px;background:#9b6b5f;border:1px solid white;border-radius:5px;overflow:hidden}.ship .hp i{display:block;background:#65d9ae;height:100%}.ship.enemy .hp i{background:#f6a56b}.fire{position:absolute;font-size:26px;z-index:4;transform:translate(-50%,-50%);pointer-events:none}.float{position:absolute;z-index:6;font-weight:900;color:#b85043;text-shadow:1px 1px white;animation:rise .55s forwards}@keyframes rise{to{transform:translateY(-37px);opacity:0}}.bodygrid{display:grid;grid-template-columns:minmax(0,1fr) 292px;gap:13px;margin-top:13px}.hide{display:none!important}.heroes{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.hero{display:flex;align-items:center;gap:10px;text-align:left;border:2px solid #b7d8e3;min-height:100px}.hero.on{border-color:#2483a9;background:#d9f5ff}.hero em{font-style:normal;font-size:38px}.hero small{display:block;font-weight:500;line-height:1.4}.opts{display:grid;grid-template-columns:1fr 1fr;gap:9px}.opts button{text-align:left;background:#f0f7f8;border:2px solid transparent}.opts button.good{background:#c7eed8;border-color:#5bba88}.opts button.bad{background:#faddd5;border-color:#d47d69}.quest{background:#f1f9f4;padding:13px;border-radius:15px}.feedback{background:#fff3d4;padding:12px;border-radius:12px;margin-top:10px;line-height:1.55}.primary{background:#278fb0;color:white}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.fleet{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.fleet button{display:flex;flex-direction:column;gap:3px;align-items:center;padding:9px 3px;border:2px solid #b7dcd8}.fleet .pic{font-size:31px}.fleet small{font-size:12px}.log{max-height:150px;overflow:auto;background:#edf5f1;padding:10px;border-radius:9px;font-size:13px;line-height:1.6}.portrait{display:flex;align-items:center;gap:12px}.portrait img{width:70px;height:82px;object-fit:contain}.skill{background:#f3d080;width:100%;margin-top:10px}.summary{max-height:240px;overflow:auto}.summary li{margin-bottom:9px}.meter{height:10px;background:#d7e9e8;border-radius:10px;overflow:hidden;margin-top:8px}.meter i{display:block;height:100%;width:0;background:#70b5ab}.hero-token{position:absolute;left:13%;bottom:17px;background:#ffffffbb;border-radius:20px;padding:4px 9px;font-size:12px;font-weight:900}.hint{font-size:13px;color:#5c7889}footer{text-align:center;font-size:12px;color:#577789;margin:18px 0}@media(max-width:780px){.bodygrid{grid-template-columns:1fr}.field{height:235px}.ship .sprite{font-size:34px}.opts{grid-template-columns:1fr}.wrap{padding:8px}.panel{padding:12px}.fleet button{font-size:12px}.heroes{grid-template-columns:1fr}}
+
+.boss-hud{max-width:1160px;margin:12px auto 0;padding:12px 16px;background:#fff2e5;border:2px solid #e4ab85;border-radius:16px;color:#854735}.boss-hud>div:first-child{display:flex;justify-content:space-between;align-items:center}.boss-track{height:12px;margin:8px 0;background:#f0cfbf;border-radius:10px;overflow:hidden}.boss-track i{display:block;width:100%;height:100%;background:linear-gradient(90deg,#d85b56,#eb985c)}.boss-toast{position:absolute;top:15%;left:50%;transform:translateX(-50%);width:min(88%,500px);text-align:center;background:#fff4dcf5;border:3px solid #de8858;color:#9b4b36;border-radius:14px;padding:11px;z-index:12;font-weight:900;box-shadow:0 4px 20px #442d2444}.ship.boss .sprite{font-size:58px;filter:drop-shadow(0 0 5px #ffe19b)}
+.ship.ally{cursor:pointer;pointer-events:auto}.ship.selected .sprite{filter:drop-shadow(0 0 8px #ffe56c)}.ship .level{font-size:11px;font-weight:900;color:#ffeb86;text-shadow:1px 1px #264959}.upgrade-panel{margin-top:12px;padding:12px;border:2px solid #b7dcd8;border-radius:14px;background:#ecf8ff}.upgrade-panel button{margin-top:8px;background:#f7ce77}.ship{transition:bottom .12s}.ship .sprite{transition:transform .12s}.ship.enemy .sprite{transform:scaleX(-1)}.ship.ally .hp i{background:#3fc39c}.manage-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px}.manage-ship{background:#fff;border:2px solid #c5dfe3;border-radius:12px;padding:9px 5px;display:flex;flex-direction:column;align-items:center;gap:3px;min-height:96px}.manage-ship.chosen{border-color:#278fb0;background:#dbf4ff;box-shadow:0 0 0 2px #9cdbed}.manage-ship .big{font-size:24px}.manage-ship .mini{font-size:11px;color:#54768a}.manage-empty{font-size:13px;color:#66808b;margin-top:9px}.manage-title{font-size:14px;font-weight:900;margin-top:12px}.ship.ally.preparing{transition:left .4s ease,bottom .4s ease}@media(max-width:470px){.manage-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}.ship.basic{opacity:.83;filter:saturate(.65);pointer-events:none}.ship.basic .sprite{font-size:23px}.enemy-base{position:absolute;right:3px;bottom:60px;font-size:23px;opacity:.78;pointer-events:none}.ship.basic .hp{opacity:.55}.ship.adaptive .sprite{filter:drop-shadow(0 0 5px #b875e5)}.ship.adaptive .level{color:#ffc6ed}.repair-button{margin-left:8px!important;background:#bcebd3!important;color:#245e48!important}.manage-ship{min-width:0}
+/* v3.0 — visuals only: game rules remain v2.8 */
+.ship .sprite{height:56px;display:flex;align-items:center;justify-content:center;line-height:1}
+.ship .sprite img{display:block;width:75px;height:56px;object-fit:contain;filter:drop-shadow(0 2px 2px #113c5355)}
+.ship.enemy .sprite{transform:none}
+.ship.enemy .sprite img{transform:scaleX(-1)}
+.ship.basic .sprite img{width:49px;height:38px;opacity:.8}
+.ship.boss .sprite img{width:92px;height:70px;filter:drop-shadow(0 0 6px #ffd887)}
+.ship.selected .sprite img{filter:drop-shadow(0 0 8px #fff079)}
+.ship.adaptive .sprite img{filter:drop-shadow(0 0 5px #e6b7ff)}
+.ship.adaptive:after{content:'◆';position:absolute;right:0;top:-15px;font-size:12px;color:#8c50b3}
+.ship.boss:after{content:'⚔';position:absolute;right:0;top:-22px;font-size:16px;color:#be4d42}
+.fleet .pic img,.manage-ship .big img{width:55px;height:43px;object-fit:contain;vertical-align:middle}
+.fleet .pic{min-height:45px;display:flex;align-items:center;justify-content:center}
+.manage-ship .big{display:flex;align-items:center;justify-content:center;height:43px}
+.hero em img{width:44px;height:44px;object-fit:contain}
+.boss-hud{box-shadow:0 0 16px #d86e4e22}
+.field{background:linear-gradient(#a3e3fc 0%,#dbf2fa 48%,#76c9dd 49%,#278ba9 100%)}
+@media(max-width:780px){.ship .sprite img{width:60px;height:47px}.ship.basic .sprite img{width:40px;height:32px}}
+
+/* v3.3 artwork integration: visual-only changes, no battle constants touched */
+.field{background:#65b8d5 url('visuals/hansando_background.webp') center 57%/cover no-repeat}
+.field::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 0%,#e6f8fa0a 37%,#124c6a27 100%);pointer-events:none}
+.field .sun,.field .islands,.field .water{display:none}
+.ship{width:82px}.ship .sprite{height:62px}.ship .sprite img{width:91px;height:62px;object-fit:contain}
+.ship.basic .sprite img{width:62px;height:44px}.ship.boss .sprite img{width:119px;height:86px}
+.ship.enemy .sprite img{transform:scaleX(-1)}.ship .hp{box-shadow:0 1px 3px #183e60aa}
+.fleet .pic img,.manage-ship .big img{height:56px;width:79px;object-fit:contain}
+.fleet button{min-height:118px}.fleet .pic{font-size:initial;min-height:60px}
+.manage-ship .big{font-size:initial}.manage-ship{min-height:115px}
+.commander-card{display:flex;gap:10px;align-items:center;background:#f4f8f4;border-radius:11px;padding:7px;margin:9px 0}
+.commander-card img{width:83px;height:104px;object-fit:contain;flex:none}
+.fire.graphic-impact{height:62px;width:78px;background-size:contain;background-position:center;background-repeat:no-repeat;filter:drop-shadow(0 0 5px #eaa751);animation:impactBurst .37s ease-out}
+@keyframes impactBurst{from{transform:translate(-50%,-50%) scale(.5);opacity:.95}to{transform:translate(-50%,-50%) scale(1.3);opacity:0}}
+@media(max-width:780px){.ship .sprite img{width:72px;height:54px}.ship.basic .sprite img{width:47px;height:36px}.ship.boss .sprite img{width:98px;height:70px}.commander-card img{height:90px;width:68px}}
+
+/* v3.8.4.1: reliable cost display and type badges (no emoji font dependency) */
+.fleet .ship-cost{display:flex;align-items:center;justify-content:center;gap:5px;font-size:12px;font-weight:850;color:#30516b;white-space:nowrap;line-height:1.4}
+.fleet .resource-coin{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;background:linear-gradient(140deg,#ffed9b,#e8a934);border:1.5px solid #bd8530;color:#8e5d19;font-size:9px;box-shadow:inset 0 1px 1px #fff8}
+.fleet .pic{position:relative;width:100%}
+.fleet .pic:after{position:absolute;right:0;bottom:1px;border-radius:7px;padding:2px 5px;background:#fffdf0eb;border:1px solid #accbd3;font-size:10px;font-weight:900;color:#30516b}
+.fleet .ship-pic-guard:after{content:'호위'}
+.fleet .ship-pic-archer:after{content:'궁시'}
+.fleet .ship-pic-cannon:after{content:'화포'}
+.fleet .ship-pic-fast:after{content:'돌격'}
+
+.ui-icon{display:inline-block;width:18px;height:18px;border-radius:6px;vertical-align:-3px;margin-right:6px;position:relative;box-shadow:inset 0 0 0 1.5px rgba(43,83,112,.12),0 1px 2px rgba(0,0,0,.08);background:#dfeef7}
+.ui-icon:before,.ui-icon:after{content:"";position:absolute}
+.icon-logo{width:28px;height:28px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#8de0ff 0 28%,#1c9bd1 29% 62%,#145a88 63% 100%);margin-right:10px;vertical-align:-7px}
+.icon-logo:before{left:6px;top:8px;width:15px;height:8px;border:3px solid #fff;border-top:none;border-radius:0 0 14px 14px;transform:rotate(-18deg)}
+.icon-back{background:linear-gradient(180deg,#dff0f4,#c8e5ec)}
+.icon-back:before{left:4px;top:8px;width:9px;height:2px;background:#2b7f9e}
+.icon-back:after{left:4px;top:6px;width:6px;height:6px;border-left:2px solid #2b7f9e;border-bottom:2px solid #2b7f9e;transform:rotate(45deg)}
+.icon-phase{background:linear-gradient(180deg,#f6e7c8,#e8d2a6)}
+.icon-phase:before{left:4px;top:4px;width:10px;height:10px;border-radius:50%;border:2px solid #9f7c28}
+.icon-castle{background:linear-gradient(180deg,#ffe4e8,#ffd1d8)}
+.icon-castle:before{left:4px;top:3px;width:10px;height:12px;background:#d94a63;clip-path:polygon(50% 0,100% 18%,100% 68%,50% 100%,0 68%,0 18%)}
+.icon-castle:after{left:7px;top:6px;width:4px;height:6px;background:#fff3f5;border-radius:0 0 3px 3px}
+.icon-enemybase{background:linear-gradient(180deg,#efe7fb,#dfd2f5)}
+.icon-enemybase:before{left:3px;top:5px;width:10px;height:8px;background:#5a3a7f;border-radius:2px;box-shadow:4px -3px 0 -1px #7a57a6}
+.icon-enemybase:after{left:12px;top:3px;width:2px;height:11px;background:#5a3a7f;box-shadow:-8px 2px 0 #5a3a7f}
+.icon-coin{background:linear-gradient(180deg,#fff2ba,#ffe17a)}
+.icon-coin:before{left:4px;top:4px;width:8px;height:8px;border-radius:50%;background:#d9ab22;box-shadow:3px 2px 0 #f0c54b,inset 0 0 0 2px rgba(255,243,193,.55)}
+.icon-wave{background:linear-gradient(180deg,#dcf7ff,#bfeafc)}
+.icon-wave:before{left:3px;bottom:4px;width:12px;height:6px;border:2px solid #2497c9;border-color:#2497c9 transparent transparent transparent;border-radius:50%/100% 100% 0 0}
+.icon-wave:after{left:10px;top:4px;width:2px;height:7px;background:#2497c9;box-shadow:2px 1px 0 #2497c9}
+.icon-book{background:linear-gradient(180deg,#f4f1ff,#e2dcff)}
+.icon-book:before{left:4px;top:3px;width:10px;height:12px;background:#6d61c7;border-radius:2px 2px 5px 5px;clip-path:polygon(12% 0,100% 0,100% 100%,12% 100%,0 82%,0 18%)}
+.icon-book:after{left:6px;top:5px;width:6px;height:1.5px;background:#f6f4ff;box-shadow:0 3px 0 #f6f4ff,0 6px 0 #f6f4ff}
+.icon-star{background:linear-gradient(180deg,#fff2c5,#ffe38b)}
+.icon-star:before{left:5px;top:3px;width:8px;height:10px;background:#d8a521;clip-path:polygon(50% 0,61% 34%,98% 35%,68% 57%,79% 91%,50% 71%,21% 91%,32% 57%,2% 35%,39% 34%)}
+.icon-star:after{left:4px;bottom:2px;width:10px;height:4px;background:#e1b94e;border-radius:0 0 6px 6px}
+.icon-start{background:linear-gradient(180deg,#e4f8ef,#c8efd8)}
+.icon-start:before{left:5px;top:4px;width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:8px solid #2b9e63}
+.icon-pause{background:linear-gradient(180deg,#ebf0ff,#d8e1ff)}
+.icon-pause:before{left:5px;top:4px;width:3px;height:10px;background:#506fc0;box-shadow:5px 0 0 #506fc0}
+.icon-speed{background:linear-gradient(180deg,#fff1dd,#ffe0ae)}
+.icon-speed:before{left:4px;top:5px;width:10px;height:2px;background:#d98b24;transform:rotate(-28deg);box-shadow:2px 4px 0 #d98b24}
+.icon-restart{background:linear-gradient(180deg,#eef4f7,#d9e8ef)}
+.icon-restart:before{left:4px;top:4px;width:8px;height:8px;border:2px solid #4f7d90;border-right-color:transparent;border-radius:50%}
+.icon-restart:after{left:3px;top:3px;width:0;height:0;border-top:4px solid transparent;border-bottom:4px solid transparent;border-right:5px solid #4f7d90}
+.icon-map{background:linear-gradient(180deg,#e2fbf6,#c5f0e7)}
+.icon-map:before{left:3px;top:4px;width:12px;height:9px;background:linear-gradient(90deg,#54b89d 0 32%,#7dd1b8 32% 66%,#54b89d 66% 100%);clip-path:polygon(0 10%,30% 0,70% 10%,100% 0,100% 100%,70% 90%,30% 100%,0 90%)}
+.icon-pack{background:linear-gradient(180deg,#ffe4ef,#ffd4e4)}
+.icon-pack:before{left:4px;top:5px;width:10px;height:8px;background:#d85279;border-radius:3px 3px 5px 5px}
+.icon-pack:after{left:6px;top:2px;width:6px;height:6px;border:2px solid #d85279;border-bottom:none;border-radius:4px 4px 0 0}
+.icon-skill{background:linear-gradient(180deg,#fff1bf,#ffe083)}
+.icon-skill:before{left:4px;top:4px;width:10px;height:10px;background:#d1a31f;clip-path:polygon(50% 0,61% 34%,98% 35%,68% 57%,79% 91%,50% 71%,21% 91%,32% 57%,2% 35%,39% 34%)}
+.icon-log{background:linear-gradient(180deg,#fff2df,#ffe0ba)}
+.icon-log:before{left:4px;top:4px;width:10px;height:10px;background:#c58b42;border-radius:2px}
+.icon-log:after{left:6px;top:6px;width:6px;height:1.5px;background:#fff6e8;box-shadow:0 3px 0 #fff6e8,0 6px 0 #fff6e8}
+.section-icon{display:inline-block;width:24px;height:24px;margin-right:8px;border-radius:8px;vertical-align:-5px;position:relative;box-shadow:inset 0 0 0 1px rgba(43,83,112,.15),0 1px 2px rgba(0,0,0,.06)}
+.section-icon:before,.section-icon:after{content:"";position:absolute}
+.sec-hero{background:linear-gradient(180deg,#e6f5ff,#d2eaf7)}
+.sec-hero:before{left:5px;top:5px;width:6px;height:12px;background:#2b7f9e;transform:rotate(45deg);border-radius:2px;box-shadow:8px 0 0 #2b7f9e;transform-origin:center}
+.sec-hero:after{left:7px;top:6px;width:10px;height:10px;border-left:2px solid #8fc9de;border-bottom:2px solid #8fc9de;transform:rotate(45deg)}
+.sec-guard{background:linear-gradient(180deg,#fff0f5,#ffe0ea)}
+.sec-guard:before{left:6px;top:3px;width:12px;height:15px;background:#d8517a;clip-path:polygon(50% 0,100% 18%,100% 68%,50% 100%,0 68%,0 18%)}
+.sec-guard:after{left:10px;top:8px;width:4px;height:4px;background:#fff5f8;border-radius:50%;box-shadow:0 5px 0 -1px #fff5f8}
+.sec-log{background:linear-gradient(180deg,#fff5e7,#ffe7c4)}
+.sec-log:before{left:6px;top:5px;width:12px;height:10px;background:#c58545;border-radius:2px;clip-path:polygon(0 16%,18% 0,82% 0,100% 16%,100% 84%,82% 100%,18% 100%,0 84%)}
+.sec-log:after{left:9px;top:8px;width:6px;height:1.5px;background:#fff7eb;box-shadow:0 3px 0 #fff7eb,0 6px 0 #fff7eb}
+.inline-icon{display:inline-block;width:18px;height:18px;border-radius:6px;vertical-align:-3px;margin-right:6px;position:relative;background:#eef5ff;box-shadow:inset 0 0 0 1px rgba(43,83,112,.15)}
+.inline-icon:before,.inline-icon:after{content:"";position:absolute}
+.inl-fleet:before{left:3px;top:6px;width:12px;height:6px;background:#5b7ea0;border-radius:10px 10px 2px 2px}.inl-fleet:after{left:8px;top:2px;width:2px;height:8px;background:#2b7f9e}
+.inl-up:before{left:8px;top:3px;width:2px;height:10px;background:#3e9c64}.inl-up:after{left:5px;top:3px;width:8px;height:8px;border-top:2px solid #3e9c64;border-right:2px solid #3e9c64;transform:rotate(-45deg)}
+.inl-repair:before{left:4px;top:8px;width:10px;height:2px;background:#5f7e8f;transform:rotate(30deg)}.inl-repair:after{left:3px;top:4px;width:4px;height:4px;border:2px solid #5f7e8f;border-right:none;border-bottom:none;transform:rotate(30deg)}
+
+/* v3.8.4.5 — 함선 준비 설명 가독성 개선 */
+.fleet-prep-brief{background:#fff6e5;border:1px solid #ead6aa;border-radius:11px;padding:11px 13px;line-height:1.55;color:#38556c;font-size:13px;margin:9px 0 7px}
+.fleet-prep-sub{font-size:12px;line-height:1.5;color:#507385;background:#e9f5f0;border-radius:10px;padding:9px 12px;margin:0 0 12px}
+
+/* Hansan v3.9 – Gwiju/Cheonmunryeong-style shared quick command panel */
+#quickDock{background:#fffdf5;border:2px solid #94bcb9;border-radius:15px;padding:10px 12px;margin:8px 0 0;box-shadow:0 5px 15px #2b637222}
+#quickDock h2{font-size:15px;margin:0 0 5px}
+#quickDock .fleet{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;align-items:stretch}
+#quickDock .fleet button{min-width:0;min-height:91px!important;padding:5px 2px!important;font-size:11px;line-height:1.16}
+#quickDock .fleet .pic img{max-width:100%;width:72px;height:53px;object-fit:contain}
+#quickHero,#quickHeroPrepare{order:20;background:#fff3d1;border:2px solid #c59d50;color:#765321;position:relative}
+#quickHero img,#quickHeroPrepare img{height:54px;max-width:100%;object-fit:contain}
+#quickHero b,#quickHeroPrepare b{font-size:11px;line-height:1.1;display:block}
+#quickHero:disabled img,#quickHeroPrepare:disabled img{filter:grayscale(1);opacity:.45}
+#quickHero.skill-ready{border-color:#eebc3e;box-shadow:0 0 7px #ffd87baa;background:#fff4c9}
+#quickHero.skill-used{background:#e8eaed;border-color:#a5aeb6}
+#quickActions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px}
+#quickActions button{padding:8px 14px;min-height:38px}
+#quickDock .fleet.hide{display:none!important}
+#quickDock.hide{display:none!important}
+.bodygrid .heroes{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:7px}
+.bodygrid .hero{padding:7px!important;gap:5px!important;min-height:80px}
+.bodygrid .hero em{min-width:45px!important}
+.bodygrid .hero em img{width:45px!important;height:62px!important}
+.bodygrid .hero b{font-size:11px!important}.bodygrid .hero small{font-size:10px!important;line-height:1.3}
+#preparePanel{display:flex;flex-direction:column}#preparePanel #upgradePrepare{order:0}#preparePanel #enemyPreview{order:1}#preparePanel .fleet-prep-brief,#preparePanel .fleet-prep-sub{order:2}#preparePanel .fleet-prep-brief,#preparePanel .fleet-prep-sub{font-size:12px;line-height:1.35;margin:5px 0}
+#battlePanel > p.hint{display:none}
+#battlePanel #upgradeBattle{margin-top:7px}
+#quickDock .dock-note{font-size:11px;color:#587784;margin:0 0 5px}
+#quickDock .action-label{font-weight:900;font-size:12px}
+#sidebarCard>.portrait,#sidebarCard>.commander-card,#sidebarCard>#skill,#sidebarCard>.meter,#sidebarCard>.hint,#sidebarCard>hr,#sidebarCard>.oldguard{display:none!important}
+#sidebarCard h3{margin:0 0 8px}#sidebarCard .log{max-height:300px;min-height:140px}
+@media(max-width:780px){#quickDock{padding:7px 8px}#quickDock .fleet{grid-template-columns:repeat(5,minmax(0,1fr))}#quickDock .fleet button{min-height:74px!important;font-size:10px!important;padding:3px 1px!important}#quickDock .fleet .pic img{width:48px;height:39px}#quickHero img,#quickHeroPrepare img{height:42px}#quickHero b,#quickHeroPrepare b{font-size:10px}.bodygrid .heroes{grid-template-columns:repeat(3,minmax(0,1fr))!important}.bodygrid .hero{flex-direction:column!important;text-align:center!important}.bodygrid .hero em img{height:52px!important}}
+</style><style>
+.heroes{grid-template-columns:repeat(2,minmax(0,1fr))}.hero em{min-width:52px}.hero em img{width:54px;height:68px;object-fit:contain}.hero-skill-overlay{position:absolute;z-index:40;inset:0;background:linear-gradient(95deg,#062d4dca,#1e5475ad 55%,#05254435);display:flex;align-items:center;gap:25px;padding:12px 9%;color:#fff;pointer-events:none;animation:heroFlash 1.45s ease-out forwards}.hero-skill-overlay img{max-height:94%;width:26%;object-fit:contain;filter:drop-shadow(0 0 14px #fff6)}.hero-skill-overlay strong{font-size:clamp(20px,3vw,42px);display:block;text-shadow:0 2px 7px #123}.hero-skill-overlay span{display:block;font-weight:900;font-size:clamp(15px,2.5vw,29px);color:#ffe7ac}@keyframes heroFlash{0%{opacity:0;transform:translateX(-10px)}16%{opacity:1;transform:none}78%{opacity:1}100%{opacity:0}}@media(max-width:650px){.heroes{grid-template-columns:1fr}}
+</style><style>
+/* v3.3 unified ship artwork */
+.fleet .pic img{width:95px;height:67px;max-width:100%;object-fit:contain;filter:drop-shadow(0 3px 3px #1e364555)}
+.fleet .pic{min-height:70px}.manage-ship .big img{width:100px;height:67px;max-width:100%;object-fit:contain}
+.manage-ship .big{height:70px}.manage-ship{min-height:127px}
+.field .base-sprite{position:absolute;z-index:5;font-size:initial;bottom:13px;width:118px;height:100px;pointer-events:none;filter:drop-shadow(0 5px 3px #122a4288)}
+.field .flagship.base-sprite{left:0.2%;}.field .enemy-base.base-sprite{right:0.2%;left:auto;}
+.field .base-sprite img{display:block;width:100%;height:100%;object-fit:contain}
+.field .base-sprite.damaged img{animation:baseShake .19s linear 2}
+@keyframes baseShake{0%{transform:translateX(-2px)}50%{transform:translateX(2px)}100%{transform:none}}
+@media(max-width:780px){.field .base-sprite{width:89px;height:78px;bottom:8px}.fleet .pic img{width:68px;height:54px}}
+
+/* v3.5 attack visual layer — animated FX never change combat values */
+#effects{pointer-events:none;overflow:hidden;z-index:25}
+.fx-shot{position:absolute;z-index:28;pointer-events:none;transform:translate(-50%,-50%);will-change:left,top,opacity,transform;filter:drop-shadow(0 1px 2px #19314f8c)}
+.fx-shot.arrow{width:31px;height:3px;background:linear-gradient(90deg,#65462f 0%,#e5d5a3 70%,#fff4cb);border-radius:3px;box-shadow:0 0 2px #2f2417}
+.fx-shot.arrow::after{content:'';position:absolute;right:-3px;top:-4px;border-left:9px solid #e4e8e8;border-top:5px solid transparent;border-bottom:5px solid transparent}
+.fx-shot.arrow.enemy-shot{background:linear-gradient(90deg,#6c2220,#cb774b)}
+.fx-shot.arrow.enemy-shot::after{border-left-color:#d9b7a3}
+.fx-shot.cannonball{width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 30% 27%,#e9e9d8,#666c72 45%,#252d37 85%);box-shadow:0 0 7px #ffad54, -5px 0 8px #f8d5ad}
+.fx-shot.smallshot{width:9px;height:9px;border-radius:50%;background:radial-gradient(circle at 30% 20%,#fff9cf,#986b4b 68%,#4f3528)}
+.fx-shot.ram{height:16px;width:46px;border-radius:55%;background:linear-gradient(90deg,transparent,#c1faff99,#f3ffffbb);box-shadow:0 0 9px #a3eafb;opacity:.9}
+.fx-hit{position:absolute;z-index:29;pointer-events:none;transform:translate(-50%,-50%);animation:fxHit .34s ease-out forwards}
+.fx-hit.arrow-hit{width:27px;height:22px;border:2px solid #f6e3a5;border-radius:50%;box-shadow:0 0 7px #fff3a7}
+.fx-hit.cannon-hit{width:65px;height:55px;background:url('visuals/effect_impact.webp') center/contain no-repeat;filter:drop-shadow(0 0 5px #ee924c)}
+.fx-hit.ram-hit{width:77px;height:45px;border-radius:50%;border-top:7px solid #f5fbff;border-bottom:5px solid #a5eff7;box-shadow:0 0 8px #e2fbff}
+.fx-hit.small-hit{width:30px;height:30px;background:radial-gradient(circle,#fff1b7 5%,#ffd08b88 30%,transparent 70%)}
+.fx-muzzle{position:absolute;z-index:26;pointer-events:none;width:36px;height:31px;transform:translate(-50%,-50%);animation:fxHit .24s ease-out forwards;background:url('visuals/effect_cannon.webp') center/contain no-repeat}
+@keyframes fxHit{0%{opacity:1;transform:translate(-50%,-50%) scale(.6)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.35)}}
+@media(prefers-reduced-motion:reduce){.fx-shot{transition:none!important}.fx-hit,.fx-muzzle{animation:none;opacity:.65}}
+
+.unit-card{position:relative}
+.role-badge{display:inline-flex;align-items:center;justify-content:center;margin-bottom:6px;padding:3px 8px;border-radius:999px;font-size:11px;font-weight:900;letter-spacing:-.2px;box-shadow:inset 0 0 0 1px #ffffff88}
+.role-guard{background:#e8f4ff;color:#285b88}
+.role-archer{background:#eef7e7;color:#4d6f2e}
+.role-cannon{background:#fff0e1;color:#9c5c1b}
+.role-fast{background:#f3ebff;color:#6545a5}
+.fleet .unit-guard,.manage-ship.unit-guard{background:linear-gradient(180deg,#f4fbff 0%,#e7f5ff 100%);border-color:#9ccae7}
+.fleet .unit-archer,.manage-ship.unit-archer{background:linear-gradient(180deg,#f8fff2 0%,#eef8e7 100%);border-color:#bad79f}
+.fleet .unit-cannon,.manage-ship.unit-cannon{background:linear-gradient(180deg,#fff8ef 0%,#fff0df 100%);border-color:#e4c08a}
+.fleet .unit-fast,.manage-ship.unit-fast{background:linear-gradient(180deg,#faf5ff 0%,#f1e9ff 100%);border-color:#c3b0ef}
+.fleet button.unit-card:hover,.manage-ship:hover{transform:translateY(-1px)}
+.manage-ship .mini{display:block;margin-top:2px}
+</style><style>
+/* v3.5 cinematic flagship bases: intentionally larger than regular units */
+.field .base-sprite{width:238px;height:194px;bottom:5px;z-index:4;overflow:visible;filter:drop-shadow(0 7px 5px #12304e99);transition:filter .35s ease}
+.field .flagship.base-sprite{left:-2.8%;right:auto}
+.field .enemy-base.base-sprite{right:-2.8%;left:auto}
+.field .base-sprite img{width:100%;height:100%;display:block;object-fit:contain;transform-origin:center bottom}
+.field .enemy-base.base-sprite img{transform:scaleX(-1)}
+.field .base-sprite.base-smoke::after,.field .base-sprite.base-fire::after{content:'';position:absolute;left:29%;top:18%;width:50%;height:46%;pointer-events:none;opacity:.68;background:radial-gradient(ellipse at 50% 70%,#555a6273,transparent 67%);animation:baseSmoke35 1.9s ease-in-out infinite alternate}
+.field .base-sprite.base-fire::after{background:radial-gradient(ellipse at 50% 65%,#ff8d18b4,#ffda4440 42%,#48484845 67%,transparent 80%);animation:baseFire35 .75s ease-in-out infinite alternate}
+.field .base-sprite.base-collapse{filter:drop-shadow(0 5px 9px #4a3228aa)}
+.field .base-sprite.base-collapse img{animation:baseCollapse35 1.4s ease-out both}
+.field .base-sprite.damaged img{animation:baseHit35 .32s ease-in-out}
+.field .enemy-base.base-sprite.damaged img{animation:baseHitEnemy35 .32s ease-in-out}
+.field .base-sprite.base-collapse.damaged img{animation:baseCollapse35 1.4s ease-out both}
+@keyframes baseSmoke35{from{opacity:.24;transform:translateY(8px) scale(.78)}to{opacity:.7;transform:translateY(-6px) scale(1.2)}}
+@keyframes baseFire35{from{opacity:.45;transform:scale(.8)}to{opacity:.95;transform:scale(1.2)}}
+@keyframes baseHit35{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}65%{transform:translateX(5px)}}
+@keyframes baseHitEnemy35{0%,100%{transform:scaleX(-1) translateX(0)}25%{transform:scaleX(-1) translateX(-6px)}65%{transform:scaleX(-1) translateX(5px)}}
+@keyframes baseCollapse35{0%{opacity:1;translate:0 0;rotate:0deg}100%{opacity:.94;translate:0 15px;rotate:-7deg}}
+@media(max-width:780px){.field .base-sprite{width:175px;height:145px;bottom:2px}.field .flagship.base-sprite{left:-5%}.field .enemy-base.base-sprite{right:-5%}}
+@media(max-width:460px){.field .base-sprite{width:137px;height:118px;bottom:1px}.field .flagship.base-sprite{left:-7%}.field .enemy-base.base-sprite{right:-7%}}
+@media(prefers-reduced-motion:reduce){.field .base-sprite::after,.field .base-sprite img{animation:none!important}}
+
+/* v3.6 — base siege UI, visually stable health gauges */
+.field .base-sprite{z-index:3;opacity:1!important}
+.field #ships{z-index:7}
+.field #effects{z-index:27}
+.base-health{position:absolute;z-index:16;top:12px;width:23%;max-width:180px;min-width:95px;display:flex;flex-direction:column;gap:3px;padding:6px 9px;border:1px solid #b8d2deaa;border-radius:9px;background:#ecf9ffdf;box-shadow:0 2px 6px #173c5066;color:#204b60;font-size:11px;font-weight:800;pointer-events:none}
+.base-health.ally-health{left:7px}.base-health.enemy-health{right:7px;text-align:right}
+.base-track{display:block;width:100%;height:10px;background:#293e5160;border-radius:7px;overflow:hidden}
+.base-track i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#55b69c,#a1e3a5);border-radius:7px;transition:width .2s}
+.enemy-health .base-track i{background:linear-gradient(90deg,#ec7a65,#f4c26a)}
+.siege-message{position:absolute;z-index:31;top:36%;left:16%;width:68%;padding:10px 12px;text-align:center;border:2px solid #e8bd69;border-radius:12px;background:#173c5fdd;color:#fff5d6;font-size:clamp(12px,1.9vw,21px);font-weight:900;box-shadow:0 5px 18px #223b58bb;pointer-events:none;animation:siegePulse 1.7s infinite alternate}
+.siege-message.hide{display:none!important}
+@keyframes siegePulse{from{opacity:.85;transform:scale(.98)}to{opacity:1;transform:scale(1.02)}}
+@media(max-width:460px){.base-health{top:3px;padding:3px 5px;min-width:80px;font-size:9px}.base-track{height:6px}}
+.fleet-readiness{margin:8px 0;padding:9px 12px;background:#e8f5f5;color:#22546a;border:1px solid #b7dfe2;border-radius:9px;font-size:13px;font-weight:700}.fleet-readiness.empty-fleet{background:#fff0d9;color:#954b2c;border-color:#ecc286}.fleet-readiness:empty{display:none}</style><style id="unified-defense-ui">
+/* v2.5: Preserve original battle mechanics and battlefield art. UI shell only. */
+body{background:linear-gradient(145deg,#251a12,#4b3421 45%,#191611)!important;color:#f7e6c7!important}
+.wrap{background:transparent!important}
+header,.panel,.learning-panel,.upgrade-panel{border-color:#b28a57!important;background-color:#2b2119!important;color:#f6e2bf!important;box-shadow:0 4px 15px #130d0988!important}
+header h1,header h2,.panel h2,.panel h3{color:#ffdf9b!important;text-shadow:0 1px 1px #160f0a}
+header button,.panel button,.upgrade-panel button{border-color:#b78b53!important}
+#defense-lobby-return{position:fixed;right:12px;top:9px;z-index:99998;text-decoration:none;color:#fff0c8;background:linear-gradient(180deg,#744a2e,#332318);border:2px solid #e1b579;border-radius:9px;padding:9px 13px;font:800 14px 'Malgun Gothic',sans-serif;box-shadow:0 4px 12px #0007}
+#defense-lobby-return:focus-visible{outline:3px solid #ffda73}
+</style></head><body><a id="defense-lobby-return" href="../../../index.html">↩ 전투 지휘소</a><div class="wrap"><div class="top"><div><a href="../index.html" style="font-weight:800;color:#2b7f9e;text-decoration:none"><span class="ui-icon icon-back"></span>역사 방어선 지도</a><h1><span class="ui-icon icon-logo"></span>역사디펜스 <small style="font-size:14px">v4.2 해상 전투 안정화</small></h1><div class="muted">4단원 전체 복습 · 한산도 대첩 모티브 해전 · 실제 함종 명칭 적용</div></div><span class="badge" id="phase"><span class="ui-icon icon-phase"></span>영웅 선택</span></div><div class="badges"><span class="badge"><span class="ui-icon icon-castle"></span>지휘선 <span id="castle">100</span>/100</span><span class="badge"><span class="ui-icon icon-enemybase"></span>적 본진 <span id="enemyCastle">100</span>/100</span><span class="badge"><span class="ui-icon icon-coin"></span>자원 <span id="coins">70</span></span><span class="badge"><span class="ui-icon icon-wave"></span>웨이브 <span id="wave">1</span>/5</span><span class="badge"><span class="ui-icon icon-book"></span>정답 <span id="correct">0</span>/<span id="answered">0</span></span><span class="badge"><span class="ui-icon icon-star"></span>최고 기록 <span id="best">없음</span></span></div><div id="field" class="field" aria-label="하나의 바닷길에서 조선 수군과 왜선이 맞서는 전투"><div class="sun"></div><div class="islands"></div><div class="water"></div><div class="flagship base-sprite" id="allyBase" title="조선 수군 지휘선"><img src="visuals/base_ally_0.webp" alt="아군 지휘선"></div><div class="base-health ally-health"><b>조선 지휘선</b><span class="base-track"><i id="allyBaseHealth"></i></span></div><div class="base-health enemy-health"><b>일본군 본진</b><span class="base-track"><i id="enemyBaseHealth"></i></span></div><div class="siege-message hide" id="siegeMessage">적 본진 집중 포격! 최종 승리를 완성하세요.</div><div class="hero-token" id="heroToken">영웅 대기</div><div id="ships"></div><div class="enemy-base base-sprite" id="enemyBase" title="일본 수군 본진"><img src="visuals/base_enemy_0.webp" alt="적군 본진"></div><div id="bossToast" class="boss-toast hide" role="status"></div><div id="effects"></div></div><div id="bossHud" class="boss-hud hide" role="status"><div><strong id="bossName">적 지휘선</strong><span id="bossPercent">100%</span></div><div class="boss-track"><i id="bossHealth"></i></div><small id="bossHint">적군의 기술을 주의하세요</small></div><section id="quickDock" class="hide" aria-label="해전 즉시 조작"><h2>⚓ 함선 즉시 소환 · 영웅 기술</h2><p class="dock-note">준비·전투 중 함선 소환 가능 · 영웅 기술은 웨이브당 1회</p><div id="quickFleetSlot"></div><div id="quickActions"></div></section><div class="bodygrid"><main class="panel"><h2 id="panelTitle"><span class="section-icon sec-hero"></span>출전 영웅 선택</h2><section id="heroPanel"><p class="hint">공격형 지휘관 3명 중 한 명을 선택하세요. 광역 포격·집중 타격·함대 화력 강화 중 플레이 방식에 맞게 선택할 수 있습니다. 모든 기술은 게임용 각색입니다.</p><div class="heroes"><button class="hero on" data-hero="sunshin"><em><img src="visuals/hero_sunshin.webp" alt=""></em><span><b>이순신 · 전투 지휘</b><small>학익진 포격 / 화포 공격력 +6%</small></span></button><button class="hero" data-hero="eokgi"><em><img src="visuals/hero_eokgi.webp" alt=""></em><span><b>이억기 · 전투 지휘</b><small>강한 적 집중·연쇄 포격 / 호위선 체력 +10%</small></span></button><button class="hero" data-hero="na"><em><img src="visuals/hero_na.webp" alt=""></em><span><b>나대용 · 화력 지원</b><small>즉시 포격·12초 화력 강화 / 수리 회복량 +15%</small></span></button></div><div class="actions"><button class="primary" id="pick">영웅 확정 → 문제 풀기</button></div></section><section id="quizPanel" class="hide"><p class="hint">4단원 전체에서 사실·개념·추론 문제를 섞어 냅니다. 전투 전에 3문제를 풀어 병력을 준비합니다.</p><div class="quest"><div class="hint" id="qmeta"></div><h3 id="question"></h3><div class="opts" id="options"></div><div id="feedback" class="feedback hide"></div></div><div class="actions"><button class="primary hide" id="nextQ">다음 문제 →</button></div></section><section id="preparePanel" class="hide"><p class="hint" id="enemyPreview"></p><p class="fleet-prep-brief">함선을 선택해 배치·강화·수리하세요. <strong>동시 출전은 최대 6척</strong>이며, 전투 중에도 함선을 보충할 수 있습니다. 준비 중에는 적이 공격하지 않습니다.</p><p id="fleetReadiness" class="fleet-readiness" role="status" aria-live="polite"></p><p class="fleet-prep-sub">생존 함선은 다음 웨이브에도 유지됩니다. 3웨이브에 선봉 지휘관, 5웨이브에 와키자카가 등장합니다.</p><div class="fleet" id="fleetPrepare"></div><div id="upgradePrepare" class="upgrade-panel"></div><div class="actions"><button id="start" class="primary"><span class="ui-icon icon-start"></span>전투개시</button></div></section><section id="battlePanel" class="hide"><p class="hint">본진 앞에는 접근 제한 구역이 있으며, 마지막 웨이브에서는 본진을 향한 포격 궤적이 보입니다. 5웨이브 최종 함대 격퇴 후 일본군 본진을 파괴해야 승리합니다. 함대는 겹쳐서 이동할 수 있고 사거리 안의 적을 동시에 공격합니다. 전투 중 영웅 기술과 함선 강화를 활용하세요. 양측 무료 지원선은 7초마다 3척씩 계속 출전합니다. 5초마다 2자원씩 보급됩니다. 고급 함선이 전멸한 뒤 5초가 지나면 웨이브당 1회 긴급 보급 45자원을 받습니다. 5웨이브 최종 보스 등장 시 30자원을 추가 보급합니다. 적 본진에 가까이 접근하면 본진 방어 포격을 받습니다.</p><div class="fleet" id="fleetBattle"></div><div id="upgradeBattle" class="upgrade-panel"></div><div class="actions"><button id="pause"><span class="ui-icon icon-pause"></span>정지</button><button id="speed"><span class="ui-icon icon-speed"></span>기본 1.5배 · 2배속 전환</button></div></section><section id="resultPanel" class="hide"><h2 id="resultHeading"></h2><p id="resultText"></p><div class="summary" id="review"></div><div class="actions"><button class="primary" id="nextWave">다음 웨이브 →</button><button id="restart"><span class="ui-icon icon-restart"></span>다시 도전</button><button id="map"><span class="ui-icon icon-map"></span>지도</button></div></section></main><aside class="panel" id="sidebarCard"><h2 class="oldguard" style="display:none"><span class="section-icon sec-guard"></span>역사 수호대</h2><div class="portrait"><img id="avatar" alt="시간탐험대 캐릭터"><div><b id="avatarName">수호대원</b><div class="muted">시간탐험대 캐릭터 재활용</div></div></div><hr style="border:0;border-top:1px solid #dbe9eb"><div class="commander-card"><img id="commanderPortrait" src="visuals/hero_sunshin.webp" alt="선택한 조선 수군 장수"><div id="heroInfo" class="hint">출전 영웅을 선택해주세요.</div></div><button id="skill" class="skill" disabled><span class="ui-icon icon-skill"></span>영웅 기술</button><div class="meter"><i id="skillMeter"></i></div><p class="hint">영웅 기술은 전투 중에만 사용합니다. 한 웨이브당 1회 사용할 수 있습니다. 3·5웨이브에서는 적 영웅 등장 시점을 살펴보세요.</p><h3><span class="section-icon sec-log"></span>작전 기록</h3><div id="log" class="log" aria-live="polite">한산도 해전을 준비하고 있습니다.</div><p class="hint">게임 기록은 현재 브라우저에만 저장됩니다. 통합 로그인은 미연결 상태입니다.</p></aside></div><footer>본진 체력바와 최종 5웨이브 파괴 연출을 지원합니다. 본진은 일반 함선보다 크게 표시되며, 체력에 따라 전용 일러스트의 손상·화재·침몰 단계가 표현됩니다. 실제 역사적 전투와는 다른 학습용 가상 전투입니다. 판옥선·거북선·협선은 실제 선박 명칭이며 괄호 속 역할은 게임용 분류입니다. 협선의 직접 교전과 거북선의 기동 수치는 게임적 각색입니다.</footer></div>
+<script>
+(function(){
+const slot=document.getElementById('quickFleetSlot'),acts=document.getElementById('quickActions');
+if(!slot||!acts)return;
+for(const id of ['fleetPrepare','fleetBattle']){const x=document.getElementById(id);if(x)slot.appendChild(x);}
+const skillCard=document.createElement('button');skillCard.type='button';skillCard.id='quickHero';skillCard.disabled=true;skillCard.innerHTML='<img id="quickHeroPortrait" src="visuals/hero_sunshin.webp" alt="선택한 영웅"><b id="quickHeroName">영웅 기술</b><small id="quickHeroState">전투 중 사용</small>';
+for(const fleet of [document.getElementById('fleetPrepare'),document.getElementById('fleetBattle')]){
+  if(!fleet)continue;const card=skillCard.cloneNode(true);if(fleet.id==='fleetBattle'){card.id='quickHero';card.querySelector('img').id='quickHeroPortrait';card.querySelector('b').id='quickHeroName';card.querySelector('small').id='quickHeroState';}else{card.id='quickHeroPrepare';card.querySelector('img').removeAttribute('id');card.querySelector('b').removeAttribute('id');card.querySelector('small').removeAttribute('id');}
+  fleet.appendChild(card);
+}
+for(const id of ['start','pause','speed']){const x=document.getElementById(id);if(x)acts.appendChild(x);}
+const q=document.getElementById('quickHero');if(q)q.onclick=()=>document.getElementById('skill').click();
+})();
+</script>
+<script>
+'use strict';
+const BANK=[{"type":"fact","topic":"건국·제도","q":"조선을 건국한 인물은?","opts":["이성계","이방원","정도전","최영"],"correct":0,"explain":"이성계는 1392년 조선을 건국했습니다."},{"type":"fact","topic":"건국·제도","q":"조선 건국 과정에 관한 설명으로 옳은 것은?","opts":["신진 사대부와 신흥 무인 세력이 건국에 참여하였다.","조선은 거란의 지원으로 건국되었다.","조선 건국 후 고려의 통치 제도가 모두 그대로 유지되었다.","조선 건국을 주도한 인물은 묘청이었다."],"correct":0,"explain":"이성계와 신진 사대부 세력이 협력하여 새 왕조를 세웠습니다."},{"type":"fact","topic":"건국·제도","q":"조선의 새 도읍으로 정해진 곳은?","opts":["한양","개경","평양","경주"],"correct":0,"explain":"태조 때 한양으로 천도했습니다."},{"type":"fact","topic":"건국·제도","q":"조선의 기본 법전으로 성종 때 완성된 것은?","opts":["경국대전","대전회통","고려사","동국통감"],"correct":0,"explain":"경국대전은 성종 때 완성된 통치 법전입니다."},{"type":"fact","topic":"건국·제도","q":"조선의 최고 교육 기관은?","opts":["성균관","서원","서당","향약"],"correct":0,"explain":"성균관은 조선의 최고 교육 기관입니다."},{"type":"fact","topic":"건국·제도","q":"6조 가운데 관리의 임명과 인사를 담당한 곳은?","opts":["이조","호조","예조","공조"],"correct":0,"explain":"이조는 관리의 인사 등을 담당했습니다."},{"type":"fact","topic":"건국·제도","q":"조선 시대 지방 수령을 감독하기 위해 파견한 관리는?","opts":["관찰사","정승","대간","집현전 학사"],"correct":0,"explain":"관찰사는 도를 관할하면서 수령을 감독했습니다."},{"type":"fact","topic":"세종·문화","q":"훈민정음을 창제한 왕은?","opts":["세종","태종","성종","선조"],"correct":0,"explain":"세종은 1443년에 훈민정음을 창제했습니다."},{"type":"fact","topic":"세종·문화","q":"훈민정음을 반포한 주요 목적은 무엇인가요?","opts":["백성이 자신의 뜻을 글로 쉽게 표현하도록 하기 위해","과거 시험에서 한문 사용을 금지하기 위해","관리들이 외국어를 배우도록 하기 위해","양반만 문자를 사용하도록 하기 위해"],"correct":0,"explain":"훈민정음은 백성이 자신의 뜻을 쉽게 표현할 수 있도록 창제·반포되었습니다."},{"type":"fact","topic":"세종·문화","q":"세종 때 학문 연구에 활용한 기관은?","opts":["집현전","규장각","교정도감","비변사"],"correct":0,"explain":"집현전은 세종 때 학문 연구에 중요한 역할을 했습니다."},{"type":"fact","topic":"세종·문화","q":"세종 때 6진 개척에 기여한 인물은?","opts":["김종서","강감찬","서희","김유신"],"correct":0,"explain":"김종서는 두만강 유역의 6진 개척에 기여했습니다."},{"type":"fact","topic":"세종·문화","q":"세종 때 4군 설치에 기여한 인물은?","opts":["최윤덕","최무선","이순신","권율"],"correct":0,"explain":"최윤덕은 압록강 유역의 4군 설치에 기여했습니다."},{"type":"fact","topic":"세종·문화","q":"강우량을 측정하는 기구는?","opts":["측우기","혼천의","앙부일구","자격루"],"correct":0,"explain":"측우기는 강우량을 측정하는 기구입니다."},{"type":"fact","topic":"사림·왜란","q":"사림이 주로 지방에서 학문과 교육 활동의 거점으로 삼은 곳은?","opts":["서원","시전","객주","포구"],"correct":0,"explain":"서원은 지방의 사립 교육 기관이자 사림의 활동 거점이었습니다."},{"type":"fact","topic":"사림·왜란","q":"임진왜란 초기에 조선 수군이 거둔 승리가 중요했던 까닭은?","opts":["왜군의 해상 보급과 진격에 제약을 주었기 때문에","왜군의 모든 육상 부대가 곧바로 항복했기 때문에","일본이 조선의 수도를 지켜 주었기 때문에","조선이 다른 나라의 지원을 완전히 거부했기 때문에"],"correct":0,"explain":"조선 수군의 승리는 일본군의 해상 보급과 작전에 큰 제약을 주었습니다."},{"type":"fact","topic":"사림·왜란","q":"한산도 대첩에서 조선 수군을 지휘한 인물은?","opts":["이순신","강감찬","을지문덕","김좌진"],"correct":0,"explain":"이순신은 1592년 한산도 대첩에서 조선 수군을 지휘했습니다."},{"type":"fact","topic":"사림·왜란","q":"행주대첩에서 조선군을 지휘한 인물은?","opts":["권율","원균","정문부","이억기"],"correct":0,"explain":"권율은 행주대첩에서 조선군을 지휘했습니다."},{"type":"fact","topic":"사림·왜란","q":"임진왜란 때 육지에서 자발적으로 일어난 항전 부대는?","opts":["의병","별무반","훈련도감","삼별초"],"correct":0,"explain":"의병은 각지에서 자발적으로 일어나 왜군에 저항했습니다."},{"type":"fact","topic":"사림·왜란","q":"임진왜란 때 조선 수군의 주요 전투선은?","opts":["판옥선","거북차","비격진천뢰","신기전"],"correct":0,"explain":"판옥선은 조선 수군의 대표적 전투선이었습니다."},{"type":"fact","topic":"건국·제도","q":"정책을 논의하고 왕의 명령을 6조에 전달하던 최고 관부는?","opts":["의정부","성균관","의금부","승문원"],"correct":0,"explain":"의정부는 조선 전기 국정 운영의 중심 관부였습니다."},{"type":"concept","topic":"건국·제도","q":"의정부 서사제의 특징으로 적절한 것은?","opts":["의정부가 정무를 심의한 뒤 왕에게 아뢰었다","6조가 왕을 거치지 않고 독립했다","지방 수령이 모든 정책을 결정했다","신하의 의논을 금지했다"],"correct":0,"explain":"의정부 서사제는 의정부가 정무를 심의해 왕에게 아뢰는 방식입니다."},{"type":"concept","topic":"건국·제도","q":"6조 직계제의 특징은?","opts":["6조가 왕에게 직접 업무를 보고했다","왕이 정치를 모두 중단했다","의정부가 국왕을 대신해 외교를 전담했다","지방이 독자적인 군대를 운영했다"],"correct":0,"explain":"6조 직계제에서는 6조가 국왕에게 직접 보고했습니다."},{"type":"concept","topic":"건국·제도","q":"조선의 유교 정치 이념이 중시한 가치는?","opts":["유교적 질서와 도덕에 따른 통치","불교 사원의 독자적 지배","신분 구분의 즉각적 폐지","전국 관청의 해산"],"correct":0,"explain":"조선은 성리학을 정치와 사회의 주요 이념으로 삼았습니다."},{"type":"concept","topic":"건국·제도","q":"삼사의 역할로 가장 적절한 것은?","opts":["언론과 관리 감찰 및 학문 자문","토지 개간만 전담","외국 상인 통제만 담당","군함 건조만 담당"],"correct":0,"explain":"사헌부·사간원·홍문관은 언론·감찰·학문 자문 등의 기능을 맡았습니다."},{"type":"concept","topic":"건국·제도","q":"과거제의 주요 목적은?","opts":["관리 선발","군선 제작","화폐 주조","왕실 혼인 결정"],"correct":0,"explain":"과거제는 국가 운영에 필요한 관리를 선발하는 제도입니다."},{"type":"concept","topic":"세종·문화","q":"훈민정음 창제와 민본 정치의 관계는?","opts":["백성이 자신의 뜻을 더 쉽게 표현하도록 했다","관리 수를 줄이려 했다","외국어 사용을 의무화했다","한문 교육을 전면 금지했다"],"correct":0,"explain":"훈민정음은 백성이 자신의 뜻을 표현하는 데 도움을 주려 했다는 점에서 민본 정치와 연결됩니다."},{"type":"concept","topic":"세종·문화","q":"4군과 6진 설치가 추구한 바는?","opts":["북방 개척과 국경 안정","남해 항로 개척","왜구와의 해상 무역 독점","수도 이전"],"correct":0,"explain":"4군 6진은 북방 영토 개척과 국경 안정에 관련됩니다."},{"type":"concept","topic":"세종·문화","q":"조선이 북방 지역에 주민을 이주시킨 주된 이유는?","opts":["개척 지역의 방어와 정착을 안정시키기 위해","중앙의 관청을 폐지하기 위해","수군을 해산하기 위해","농사를 금지하기 위해"],"correct":0,"explain":"사민 정책 등은 개척 지역의 정착과 방어를 도왔습니다."},{"type":"concept","topic":"세종·문화","q":"앙부일구의 용도로 적절한 것은?","opts":["해의 그림자를 이용해 시간을 알렸다","비의 양을 측정했다","화약을 제조했다","천문 관측 결과를 책으로 인쇄했다"],"correct":0,"explain":"앙부일구는 해시계입니다."},{"type":"concept","topic":"세종·문화","q":"자격루가 보여 주는 기술은?","opts":["자동으로 시간을 알리는 물시계 기술","활자 주조 기술","지도 제작만을 위한 기술","화약 제조 기술"],"correct":0,"explain":"자격루는 물의 흐름을 이용해 자동으로 시간을 알리는 장치였습니다."},{"type":"concept","topic":"사림·왜란","q":"향약을 보급하려던 사림의 목적은?","opts":["향촌 사회에서 유교 윤리를 실천하기 위해","무역항을 확대하기 위해","군사 지휘권을 장악하기 위해","세금을 없애기 위해"],"correct":0,"explain":"향약은 향촌에서 유교 윤리를 실천하는 규약이었습니다."},{"type":"concept","topic":"사림·왜란","q":"사화가 일어난 주요 배경은?","opts":["훈구와 사림 사이의 정치적 갈등","왜군의 해상 침입","고려 귀족의 저항","서양 열강의 개항 요구"],"correct":0,"explain":"사화는 사림과 기존 정치 세력 사이의 갈등 속에서 일어났습니다."},{"type":"concept","topic":"사림·왜란","q":"붕당이 형성된 배경으로 적절한 것은?","opts":["사림 내부의 학연과 정치적 입장 차이","귀족 신분의 폐지","전국의 화폐 통일","대외 무역의 중단"],"correct":0,"explain":"붕당은 사림이 정권에 진출한 이후 정치적 입장 차이 등을 배경으로 형성되었습니다."},{"type":"concept","topic":"사림·왜란","q":"임진왜란 때 수군의 활약이 지닌 의의는?","opts":["왜군의 해상 보급에 타격을 주었다","왜군의 모든 육상 이동을 즉시 막았다","명군이 철수하도록 만들었다","조선의 수도를 일본으로 옮겼다"],"correct":0,"explain":"조선 수군의 승리는 왜군의 해상 수송과 보급에 큰 타격을 주었습니다."},{"type":"concept","topic":"사림·왜란","q":"한산도 대첩에서 활용된 전술은?","opts":["학익진","배수진","장사진","학소대"],"correct":0,"explain":"학익진은 적을 포위하듯 공격하는 진형으로 알려져 있습니다."},{"type":"concept","topic":"사림·왜란","q":"임진왜란 때 조선과 함께 왜군에 맞서 싸운 나라는?","opts":["명","청","수","원"],"correct":0,"explain":"명은 임진왜란 당시 조선에 원군을 파견했습니다."},{"type":"concept","topic":"사림·왜란","q":"훈련도감이 설치된 배경은?","opts":["임진왜란 과정에서 군사 체제를 정비하기 위해","거란의 침입에 대비하기 위해","신라의 삼국 통일을 위해","청산리 전투를 준비하기 위해"],"correct":0,"explain":"훈련도감은 임진왜란 중 군사 체제 정비를 위해 설치되었습니다."},{"type":"concept","topic":"건국·제도","q":"경국대전 편찬의 의미는?","opts":["통치 제도와 법령의 기준을 정비했다","왕위를 선거로 정했다","외국의 법을 그대로 사용했다","군사 조직을 모두 폐지했다"],"correct":0,"explain":"경국대전은 조선 통치의 기본 규범을 정비했습니다."},{"type":"concept","topic":"사림·왜란","q":"서원과 향약의 차이를 바르게 설명한 것은?","opts":["서원은 교육·제향, 향약은 향촌 생활 규약이다","둘 다 해상 방어 시설이다","서원은 조세 제도, 향약은 군사 제도다","둘 다 중앙의 최고 관부다"],"correct":0,"explain":"서원과 향약은 사림이 지방에서 영향력을 넓히는 기반이었습니다."},{"type":"concept","topic":"세종·문화","q":"집현전 활용이 의미하는 정치 방식은?","opts":["학문 연구와 정책 자문을 중시했다","왕이 모든 관청을 없앴다","모든 결정을 지방에 맡겼다","군사 문제만 다뤘다"],"correct":0,"explain":"집현전 학자들은 학문 연구와 정책 자문에 참여했습니다."},{"type":"reason","topic":"건국·제도","q":"왕이 6조의 업무를 직접 보고받으면 생기기 쉬운 변화는?","opts":["국왕이 정책 결정에 더 직접 관여한다","의정부가 왕을 선출한다","지방 수령이 중앙 법을 폐지한다","과거 시험이 사라진다"],"correct":0,"explain":"6조 직계제는 국왕의 직접적인 업무 장악과 연결됩니다."},{"type":"reason","topic":"건국·제도","q":"법전을 체계적으로 정리하는 일이 국가 운영에 중요한 이유는?","opts":["관리들이 공통된 법적 기준을 적용할 수 있기 때문에","모든 갈등이 자동으로 사라지기 때문에","관리가 없어지기 때문에","모든 백성이 같은 직업을 갖기 때문에"],"correct":0,"explain":"통일된 법 규범은 행정 운영의 예측 가능성과 일관성을 높입니다."},{"type":"reason","topic":"세종·문화","q":"훈민정음이 만들어졌어도 백성의 문자 생활이 곧바로 모두 바뀌었다고 단정할 수 없는 까닭은?","opts":["문자가 퍼지고 사용되는 데 시간이 필요하기 때문에","문자가 만들어지지 않았기 때문에","훈민정음은 소리 표기가 불가능했기 때문에","모든 백성이 한문을 완전히 버렸기 때문에"],"correct":0,"explain":"문자 창제와 실제 사회적 확산은 구분해야 합니다."},{"type":"reason","topic":"세종·문화","q":"북방 개척을 평가할 때 함께 고려할 사항으로 가장 적절한 것은?","opts":["국경 방어의 성과와 주민 이주 부담을 함께 본다","영토 크기만 본다","장수의 이름만 외운다","옛 지도 색깔만 비교한다"],"correct":0,"explain":"정책의 성과와 그 과정에서 발생한 부담을 함께 살펴야 합니다."},{"type":"reason","topic":"사림·왜란","q":"사림이 서원과 향약을 활용할 때 나타날 수 있는 변화는?","opts":["향촌에 대한 사림의 영향력이 커질 수 있다","왕실 군사력이 곧 사라진다","전국의 신분제가 즉시 폐지된다","무역만 크게 성장한다"],"correct":0,"explain":"교육과 향촌 규약은 사림의 지방 사회 영향력 확대와 관련됩니다."},{"type":"reason","topic":"사림·왜란","q":"조선 수군의 승리가 전쟁 전체에 영향을 준 까닭은?","opts":["왜군의 보급과 해상 작전에 제약을 주었기 때문에","일본의 모든 군대가 즉시 항복했기 때문에","조선의 모든 육상 전투가 끝났기 때문에","조선이 명과의 외교를 중단했기 때문에"],"correct":0,"explain":"수군의 승리는 왜군의 해상 보급 작전에 어려움을 주었습니다."},{"type":"reason","topic":"사림·왜란","q":"전쟁을 이해할 때 전투 승패 외에 확인해야 할 것은?","opts":["민간인의 피해와 사회 변화","장수의 옷 색깔만","전투 그림의 크기만","승리 횟수만"],"correct":0,"explain":"전쟁은 민간인과 사회 구조에도 큰 영향을 미칩니다."},{"type":"reason","topic":"사림·왜란","q":"전쟁 중 의병 활동을 통해 알 수 있는 점은?","opts":["국가의 정규군 외에도 주민이 항전에 참여했다","정부군이 전혀 존재하지 않았다","전쟁이 모두 바다에서만 벌어졌다","의병이 모두 외국 군대였다"],"correct":0,"explain":"의병은 민간의 자발적인 항전 사례입니다."},{"type":"reason","topic":"건국·제도","q":"조선의 중앙 정치 제도를 분석할 때 의정부와 6조를 함께 살펴야 하는 이유는?","opts":["왕과 신하 사이의 정책 결정 구조를 이해할 수 있어서","지방의 곡식 가격만 파악할 수 있어서","조선의 해안선 길이를 알 수 있어서","군함의 정확한 수를 알 수 있어서"],"correct":0,"explain":"정치 기관 사이의 관계는 국정 운영 방식을 이해하는 근거가 됩니다."},{"type":"reason","topic":"사림·왜란","q":"사화와 붕당 형성을 단순히 선과 악의 대립으로만 설명하기 어려운 이유는?","opts":["다양한 이해관계와 정치적 입장이 얽혀 있기 때문에","항상 한쪽 인물만 존재했기 때문에","정치적 논쟁이 없었기 때문에","역사 자료가 전혀 없기 때문에"],"correct":0,"explain":"정치 갈등은 여러 세력과 맥락을 함께 고려해야 합니다."}];
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const SHIPS={guard:{name:'판옥선 (호위형)',emoji:'🚢',cost:45,hp:240,dmg:10,range:52,velocity:16,rate:1.1},archer:{name:'판옥선 (궁시 지원형)',emoji:'⛵',cost:55,hp:105,dmg:17,range:180,velocity:13,rate:1.05},cannon:{name:'판옥선 (화포형)',emoji:'🛳️',cost:75,hp:125,dmg:37,range:155,velocity:9,rate:1.8},fast:{name:'거북선 (돌격형)',emoji:'🚤',cost:85,hp:135,dmg:24,range:55,velocity:31,rate:.75}};
+const ENEMIES={boat:{name:'왜선',emoji:'⛵',hp:90,dmg:12,range:39,velocity:18,rate:1.2,bounty:7},fast:{name:'기동 왜선',emoji:'🛶',hp:80,dmg:14,range:38,velocity:29,rate:1.0,bounty:8},heavy:{name:'대형 왜선',emoji:'🚢',hp:210,dmg:18,range:45,velocity:10,rate:1.5,bounty:12},ranged:{name:'원거리 왜선',emoji:'⛵',hp:110,dmg:15,range:142,velocity:13,rate:1.3,bounty:10},boss:{name:'와키자카 야스하루 · 최종 지휘선',emoji:'🚩',hp:580,dmg:20,range:74,velocity:10,rate:1.15,bounty:35},wakizaka:{name:'일본군 선봉 지휘선 · 마나베 사마노조',emoji:'🏴',hp:300,dmg:16,range:80,velocity:12,rate:1.2,bounty:24}};
+const WAVES=[
+ ['boat','boat','fast','boat','fast','boat','ranged','boat'],
+ ['boat','fast','boat','fast','ranged','boat','boat','fast','boat','ranged','fast','boat'],
+ ['boat','fast','ranged','boat','fast','heavy','boat','ranged','wakizaka','fast','boat','heavy','boat','fast','ranged'],
+ ['fast','boat','heavy','ranged','boat','fast','heavy','boat','ranged','fast','heavy','boat','fast','heavy','boat','ranged','fast','boat','ranged'],
+ ['boat','fast','heavy','ranged','boat','fast','heavy','ranged','boat','fast','heavy','ranged','heavy','fast','ranged','boat','heavy','boss','fast','ranged','heavy','fast']
+];
+// 생존한 조선 고급 함선 수와 강화 단계를 반영하는 대응 왜선 (2~5웨이브 한정)
+const ADAPTIVE_HP_RATIO=.72, ADAPTIVE_DMG_RATIO=.80;
+const ADAPTIVE_NAMES={guard:'대응 호위 왜선',archer:'대응 원거리 왜선',cannon:'대응 화포 왜선',fast:'대응 기동 왜선'};
+const MILITIA={ally:{name:"협선 (무료 지원선)",emoji:"🛶",hp:58,dmg:7,range:58,velocity:18,rate:1.45},enemy:{name:"왜군 기본 지원선",emoji:"⛵",hp:58,dmg:7,range:58,velocity:18,rate:1.45,bounty:3}};
+
+function roleLabel(type){return ({guard:'근접 방어',archer:'원거리 지원',cannon:'화포 집중',fast:'돌격 기동'})[type]||'전투 함선'}
+const BASIC_BATCH=3, BASIC_INTERVAL=7, PASSIVE_INTERVAL=5;
+// 선발 함대는 아군 진격 전에 전장에 배치하고, 남은 정규 적군은 묶음으로 출전한다.
+const INITIAL_FLEET=[3,4,6,7,8], REINFORCEMENT_FLEET=[3,4,4,5,5];
+// 적 본진은 아군의 실제 전진 한계(x=730) 안쪽까지 포격한다.
+const ENEMY_BASE_RANGE_START=565, ENEMY_BASE_INTERVAL=3;
+const ENEMY_BASE_DAMAGE=[6,9,12,12,10];
+const ALLY_BASE_INTERVAL=4, ALLY_BASE_DAMAGE=7;
+const ENEMY_DEPLOY_PROTECTION=2, ENEMY_DEPLOY_DAMAGE_MULTIPLIER=.5;
+// v3.7.2 실험: 3웨이브만 일반/보스/호위 왜선의 HP 증가폭을 38%에서 25%로 줄인다.
+const WAVE3_TRIAL_HP_MULTIPLIER=1.25;
+function waveEnemyHpMultiplier(){return state.wave===3?WAVE3_TRIAL_HP_MULTIPLIER:state.wave===4?1.37:state.wave===5?1.39:1+(state.wave-1)*.19;}
+// 목표 전투 시간은 실제 시간 기준. 문제 풀이 시간은 별도이며 종료는 적 격침 기준이다.
+const WAVE_BATTLE_TARGET=[22,32,42,52,62];
+const reward={fact:40,concept:60,reason:90};const LIMIT=900;const RESOURCE_CAP=240;const SHIP_CAP=6;
+const shuffled=a=>{let b=a.slice();for(let i=b.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b};
+function questionSet(){let quotas={fact:6,concept:6,reason:3},result=[];for(let [type,n] of Object.entries(quotas)){let pool=shuffled(BANK.filter(q=>q.type===type));let topics=[...new Set(pool.map(q=>q.topic))];let picked=[];for(let topic of shuffled(topics)){let match=pool.find(q=>q.topic===topic&&!picked.includes(q));if(match&&picked.length<n)picked.push(match)}for(let q of pool){if(picked.length>=n)break;if(!picked.includes(q))picked.push(q)}result.push(...picked.slice(0,n))}return shuffled(result).map(q=>{let indexed=shuffled(q.opts.map((t,i)=>({text:t,orig:i})));return {...q,opts:indexed.map(v=>v.text),correct:indexed.findIndex(v=>v.orig===q.correct)}})}
+
+const HEROES={
+ sunshin:{name:'이순신',label:'지휘',skill:'학익진 집중 포격',desc:'적 전체에 즉시 피해 / 화포형 공격력 +6%',portrait:'sunshin'},
+ eokgi:{name:'이억기',label:'집중',skill:'적 기함 집중 타격',desc:'가장 강한 적 집중 포격 + 주변 4척 연쇄 타격 / 전체 함선 체력 +15%',portrait:'eokgi'},
+ na:{name:'나대용',label:'화력',skill:'군선 화력 총동원',desc:'적 함대 선제 포격 + 14초간 화포·돌격 공격력 강화 / 수리 효율 +15%',portrait:'na'}
+};
+function heroPassiveShip(u){if(u.basic)return; if(state.hero==='eokgi'&&!u.heroHpApplied){u.max*=1.15;u.hp*=1.15;u.heroHpApplied=true;}}
+function heroSkillVisual(){const h=HEROES[state.hero],field=$('#field'),box=document.createElement('div');box.className='hero-skill-overlay';const photo=document.createElement('img');photo.src='visuals/hero_'+h.portrait+'.webp';photo.alt=h.name;const title=document.createElement('div');title.innerHTML='<strong>'+h.name+'</strong><span>'+h.skill+'</span>';box.append(photo,title);field.append(box);setTimeout(()=>box.remove(),1450);if(state.hero==='sunshin'){[240,420,600,770].forEach((x,i)=>setTimeout(()=>fx(x,'💥'),i*95));}else if(state.hero==='eokgi'){[560,680,770].forEach((x,i)=>setTimeout(()=>fx(x,'💥'),i*110));}else{[330,460,600,750].forEach((x,i)=>setTimeout(()=>fx(x,'💨'),i*110));}}
+
+let state={phase:'hero',hero:'sunshin',wave:1,coins:70,castle:100,correct:0,answered:0,questions:questionSet(),qIndex:0,done:[],locked:false,ships:[],enemies:[],spawn:[],spawnClock:0,paused:false,speed:1.5,skillUsed:false,selectedShip:null,shieldTime:0,elapsed:0,phaseClock:0,bossWarn:null,bossWarnTime:0,bossAbilityDone:false,bossRepeat:0,bossAppear:false,waveRealTime:0,regularSpawned:0,spawnTimes:[],basicAllyClock:7,basicEnemyClock:7,supplyClock:5,enemyCastle:100,baseAllyCD:0,baseEnemyCD:0,siegeMode:false,siegeElapsed:0,baseAttackClock:0,allyBaseAttackClock:0};let ident=0,last=0;
+function phase(name){state.phase=name;const dock=$('#quickDock');if(dock){dock.classList.toggle('hide',!['prepare','battle'].includes(name));$('#fleetPrepare').classList.toggle('hide',name!=='prepare');$('#fleetBattle').classList.toggle('hide',name!=='battle');$('#start').classList.toggle('hide',name!=='prepare');$('#pause').classList.toggle('hide',name!=='battle');$('#speed').classList.toggle('hide',name!=='battle');}const panels={hero:'heroPanel',quiz:'quizPanel',prepare:'preparePanel',battle:'battlePanel',result:'resultPanel'};Object.values(panels).forEach(id=>$('#'+id).classList.add('hide'));$('#'+panels[name]).classList.remove('hide');$('#phase').innerHTML='<span class="ui-icon icon-phase"></span>'+({hero:'영웅 선택',quiz:'역사 문제',prepare:'함선 준비',battle:'해전 진행',result:'전투 결과'}[name]);$('#panelTitle').innerHTML='<span class="section-icon sec-hero"></span>'+({hero:'출전 영웅 선택',quiz:'단원 전체 복습',prepare:'함선 소환',battle:'해전 방어',result:'결과 확인'}[name]);hud();draw()}
+function log(t){let node=document.createElement('div');node.textContent='• '+t;$('#log').prepend(node);while($('#log').children.length>13)$('#log').lastChild.remove()}
+function avatar(){let ids={heecheol:[34,'희철'],miyoung:[40,'미영'],seonggyu:[46,'성규'],yunseo:[52,'윤서']},k='seonggyu';try{k=localStorage.getItem('hd_demo_char')||k}catch{}let [num,name]=ids[k]||ids.seonggyu;$('#avatar').src='../assets/asset_'+String(num).padStart(3,'0')+'.png';$('#avatarName').textContent=name}
+function hud(){const fleetReady=$('#fleetReadiness');if(fleetReady){const count=state.ships.filter(u=>u.hp>0&&!u.basic).length;const affordable=Object.values(SHIPS).some(u=>state.coins>=u.cost);fleetReady.textContent=state.phase==='prepare'?(count===0?(affordable?'⚠️ 출전 함선 0척: 위 소환 카드에서 함선을 1척 이상 배치한 후 해전을 시작하세요.':'⚠️ 출전 함선 0척: 현재 자원으로 함선을 소환할 수 없습니다. 퀴즈 보상과 자원을 확인하세요.'):(count>=SHIP_CAP?`⚓ 출전 함선 ${count}/${SHIP_CAP}척 · 정원 도달 · 남은 자원 ${state.coins} · 함선을 강화하거나 수리하세요.`:`⚓ 출전 함선 ${count}/${SHIP_CAP}척 · 남은 자원 ${state.coins} · 함선 소환·강화·수리 가능`)):'';fleetReady.classList.toggle('empty-fleet',count===0);}for(let [id,v] of Object.entries({castle:Math.max(0,Math.ceil(state.castle)),coins:state.coins,wave:state.wave,enemyCastle:Math.max(0,Math.ceil(state.enemyCastle)),correct:state.correct,answered:state.answered}))$('#'+id).textContent=v;const hero=HEROES[state.hero];$('#heroToken').textContent=hero.label+' · '+hero.name;$('#commanderPortrait').src='visuals/hero_'+hero.portrait+'.webp';$('#heroInfo').textContent=hero.name+' · '+hero.desc;let active=state.phase==='battle'&&!state.paused&&!state.skillUsed;$('#skill').disabled=!active;$('#skill').innerHTML='<span class="ui-icon icon-skill"></span>'+hero.skill;$('#skillMeter').style.width=active?'100%':'0%';const quick=$('#quickHero');if(quick){quick.disabled=!active;quick.classList.toggle('skill-ready',active);quick.classList.toggle('skill-used',state.skillUsed);$('#quickHeroPortrait').src='visuals/hero_'+hero.portrait+'.webp';$('#quickHeroName').textContent=hero.name+' · '+hero.skill;$('#quickHeroState').textContent=state.skillUsed?'사용 완료':'⚡ 기술 사용';}const prepHero=$('#quickHeroPrepare');if(prepHero){prepHero.disabled=true;const img=prepHero.querySelector('img');if(img)img.src='visuals/hero_'+hero.portrait+'.webp';const b=prepHero.querySelector('b');if(b)b.textContent=hero.name+' · '+hero.skill;}$('#allyBaseHealth').style.width=Math.max(0,state.castle)+'%';$('#enemyBaseHealth').style.width=Math.max(0,state.enemyCastle)+'%';const fleetFull=state.ships.filter(u=>u.hp>0&&!u.basic).length>=SHIP_CAP;$$('.fleet button[data-cost]').forEach(b=>{b.disabled=fleetFull||state.coins<Number(b.dataset.cost)||!['prepare','battle'].includes(state.phase);b.title=fleetFull?'함선 정원 6척이 모두 배치됐습니다.':state.coins<Number(b.dataset.cost)?'자원이 부족합니다.':'함선 소환';});}
+function showQuestion(){let q=state.questions[state.done.length];$('#qmeta').textContent=`웨이브 ${state.wave} · ${state.done.length%3+1}/3 · ${q.topic} · ${q.type==='fact'?'사실':q.type==='concept'?'개념':'추론'} (${reward[q.type]}자원)`;$('#question').textContent=q.q;$('#feedback').classList.add('hide');$('#nextQ').classList.add('hide');state.locked=false;$('#options').replaceChildren();q.opts.forEach((o,i)=>{let b=document.createElement('button');b.textContent=`${i+1}. ${o}`;b.onclick=()=>answer(i);$('#options').append(b)});hud()}
+function answer(i){if(state.locked)return;state.locked=true;let q=state.questions[state.done.length],ok=i===q.correct;let gain=ok?reward[q.type]:15;state.coins=Math.min(RESOURCE_CAP,state.coins+gain);state.correct+=Number(ok);state.answered++;state.done.push({...q,chosen:i,ok});$$('#options button').forEach((b,n)=>{b.disabled=true;if(n===q.correct)b.classList.add('good');else if(n===i)b.classList.add('bad')});$('#feedback').textContent=(ok?'정답! ':'오답! ')+`자원 +${gain} · `+q.explain;$('#feedback').classList.remove('hide');$('#nextQ').textContent=state.done.length%3?'다음 문제 →':'함선 준비 →';$('#nextQ').classList.remove('hide');hud()}
+$('#nextQ').onclick=()=>{if(state.done.length%3===0){const counts={};WAVES[state.wave-1].forEach(x=>counts[x]=(counts[x]||0)+1);$('#enemyPreview').textContent=`정찰 보고 · 웨이브 ${state.wave} 적선 총 ${WAVES[state.wave-1].length}척 (선발 함대 + 집단 증원): `+Object.entries(counts).map(([k,n])=>`${ENEMIES[k].name} ${n}척`).join(' · ')+` | 현재 생존 아군 ${state.ships.filter(x=>x.hp>0).length}척 (체력 유지) · 대응 고급 왜선 선발 ${state.wave===1?0:Math.ceil(Math.min(6,state.ships.filter(x=>x.hp>0&&!x.basic).length)/2)}척 예상 + 중반 재평가`;organizeFleet();phase('prepare');renderUpgrade()}else showQuestion()};
+function fleetUI(id){let el=$('#'+id);Object.entries(SHIPS).forEach(([key,s])=>{let b=document.createElement('button');b.className='unit-card unit-'+key;b.dataset.cost=s.cost;b.innerHTML=`<span class="role-badge role-${key}">${roleLabel(key)}</span><span class="pic ship-pic-${key}"><img src="visuals/ally_${key}.webp" alt="${s.name}"></span><b>${s.name}</b><small class="ship-cost" aria-label="건조 비용 ${s.cost} 자원"><span class="resource-coin" aria-hidden="true">◆</span><span>${s.cost} 자원</span></small>`;b.onclick=()=>summon(key);el.append(b)})}
+function summon(type){if(!['prepare','battle'].includes(state.phase))return;let s=SHIPS[type];if(state.coins<s.cost)return;const existing=state.ships.filter(x=>x.hp>0&&!x.basic),start=80;if(existing.length>=SHIP_CAP){log('최대 6척까지만 출전할 수 있습니다. 함선 조합을 조정하세요.');return;}state.coins-=s.cost;if(state.phase==='battle')state.emergencyEligible=true;const newShip={id:++ident,type,x:Math.max(78,start-existing.length*3),hp:s.hp,max:s.hp,cd:0,level:1,team:'ally'};heroPassiveShip(newShip);state.ships.push(newShip);log(`${s.name} 출전`);if(state.phase==='prepare')organizeFleet();hud();draw();renderUpgrade()}
+function fx(x,emoji){let el=document.createElement('div');el.className='fire';el.textContent=emoji; if(emoji==='💥'||emoji==='🔥'||emoji==='💨'){el.classList.add('graphic-impact');el.style.backgroundImage='url(visuals/effect_'+(emoji==='💨'?'cannon':'impact')+'.webp)';el.textContent='';} el.style.left=x/LIMIT*100+'%';el.style.top= '60%';$('#effects').append(el);setTimeout(()=>el.remove(),370)}
+// v3.5: all shots are cosmetic; battle damage is still computed immediately.
+const SHOT_FX_LIMIT=60;
+function attackFX(attacker,victim){
+ const host=$('#effects');if(!host||state.phase!=='battle')return;
+ if(host.querySelectorAll('.fx-shot,.fx-hit,.fx-muzzle').length>SHOT_FX_LIMIT)return;
+ const isAlly=attacker.team==='ally';
+ const kind=attacker.basic?'small':attacker.type==='archer'||attacker.type==='ranged'?'arrow':attacker.type==='fast'?'ram':attacker.type==='cannon'||['heavy','boss','wakizaka'].includes(attacker.type)?'cannon':'small';
+ const idN=attacker.id||0, hitN=victim.id||0;
+ // Horizontal values use precisely the same game-coordinate system as the vessels.
+ const startX=attacker.x/LIMIT*100, endX=victim.x/LIMIT*100;
+ const startY=64-(idN%4)*5, endY=64-(hitN%4)*5;
+ const dot=document.createElement('div');dot.className='fx-shot '+(kind==='small'?'smallshot':kind==='arrow'?'arrow':kind==='cannon'?'cannonball':'ram')+(isAlly?'':' enemy-shot');
+ dot.style.left=startX+'%';dot.style.top=startY+'%';
+ if(endX<startX&&kind==='arrow')dot.style.transform='translate(-50%,-50%) rotate(180deg)';
+ host.append(dot);
+ const duration=kind==='arrow'?310:kind==='ram'?190:kind==='cannon'?260:235;
+ if(kind==='cannon'){
+  const smoke=document.createElement('div');smoke.className='fx-muzzle';smoke.style.left=startX+'%';smoke.style.top=startY+'%';host.append(smoke);setTimeout(()=>smoke.remove(),260);
+ }
+ // Animation is not coupled to dt/speed and does not postpone any attack effects.
+ requestAnimationFrame(()=>{if(!dot.isConnected)return;dot.style.transition=`left ${duration}ms linear, top ${duration}ms ease-in-out, opacity ${duration}ms linear`;dot.style.left=endX+'%';dot.style.top=endY+'%';});
+ setTimeout(()=>{
+   dot.remove();if(state.phase!=='battle')return;
+   const h=document.createElement('div');h.className='fx-hit '+(kind==='arrow'?'arrow-hit':kind==='cannon'?'cannon-hit':kind==='ram'?'ram-hit':'small-hit');h.style.left=endX+'%';h.style.top=endY+'%';host.append(h);setTimeout(()=>h.remove(),390);
+ },duration);
+}
+// v3.7.3: 피해 분류용 계측. 전투 피해량과 판정은 변경하지 않는다.
+let __diagAttacker=null;
+function damageDiagnostic(v,amount,source){
+  if(!window.hdDamageDiagnostics) return;
+  const d=window.hdDamageDiagnostics;
+  const wave=state.wave;
+  const w=d[wave]||(d[wave]={});
+  w[source]=(w[source]||0)+amount;
+}
+function dmg(v,damage,showImpact=true){
+  if(v.team==='ally' && __diagAttacker && __diagAttacker.team==='enemy'){
+    const kind=__diagAttacker.basic?'적 기본 지원선':__diagAttacker.adaptive?'대응 고급 왜선':['wakizaka','boss'].includes(__diagAttacker.type)?'적 지휘선·보스':'일반 정규 왜선';
+    damageDiagnostic(v,Math.min(damage,Math.max(0,v.hp)),kind);
+  }
+
+  // 정규 왜선(보스 제외)은 생성 후 2초 동안 받는 모든 피해가 절반으로 감소한다.
+  // 자동 지원선에는 적용되지 않아 양쪽 기본 병력의 흐름은 유지한다.
+  if(v.team==='enemy'&&!v.basic&&v.type!=='wakizaka'&&v.type!=='boss'&&
+      Number.isFinite(v.protectedUntil)&&state.elapsed<v.protectedUntil){
+    damage*=ENEMY_DEPLOY_DAMAGE_MULTIPLIER;
+  }
+  v.hp-=damage;if(showImpact)fx(v.x,'💥');
+}
+
+function bossUnit(){return state.enemies.find(e=>e.hp>0&&(e.type==='wakizaka'||e.type==='boss'))}
+function bossNotice(message){$('#bossToast').textContent=message;$('#bossToast').classList.remove('hide');state.bossWarn=message;state.bossWarnTime=2.6;log(message)}
+function bossHud(){let b=bossUnit(),panel=$('#bossHud');panel.classList.toggle('hide',!b||state.phase!=='battle');if(!b)return;let per=Math.max(0,Math.ceil(100*b.hp/b.max));$('#bossName').textContent=ENEMIES[b.type].name;$('#bossPercent').textContent=per+'%';$('#bossHealth').style.width=per+'%';$('#bossHint').textContent=b.type==='wakizaka'?'선봉 지휘선: 빠른 왜선 증원·돌격 강화':'와키자카: 호위 함대 호출·집중 사격'}
+function spawnBossEscort(types){for(const type of types){const sp=ENEMIES[type],hp=Math.round(sp.hp*waveEnemyHpMultiplier());state.enemies.push({id:++ident,type,x:855+Math.random()*34,hp,max:hp,cd:.4,team:'enemy',rush:0,fury:0,protectedUntil:state.elapsed+ENEMY_DEPLOY_PROTECTION});}}
+function bossTick(dt){let b=bossUnit();if(state.bossWarnTime>0){state.bossWarnTime-=dt;if(state.bossWarnTime<=0){$('#bossToast').classList.add('hide');if(state.bossWarn==='ability'&&b){if(b.type==='wakizaka'){spawnBossEscort(['fast','boat']);state.enemies.filter(e=>e.hp>0).forEach(e=>e.rush=Math.max(e.rush||0,5));log('선봉 지휘관: 증원 + 함대 돌격!')}else{spawnBossEscort(['ranged','fast']);state.enemies.filter(e=>e.hp>0).forEach(e=>e.fury=Math.max(e.fury||0,5));log('와키자카: 호위 함대 + 집중 사격!')}state.bossAbilityDone=true}state.bossWarn=null;}}if(!b||state.bossAbilityDone||state.bossWarnTime>0)return;state.bossRepeat+=dt;if(state.bossRepeat>=2.1){state.bossRepeat=0;bossNotice(b.type==='wakizaka'?'⚠️ 선봉 지휘선이 돌격을 지시합니다!':'⚠️ 와키자카가 집중 공격을 준비합니다!');state.bossWarn='ability';}}
+function upgradeCost(u){return u.level===1?55:90}
+function repairShip(){
+  if(state.phase!=='prepare')return;
+  const u=state.ships.find(s=>s.id===state.selectedShip&&s.hp>0&&!s.basic);
+  if(!u||u.hp>=u.max||state.coins<20)return;
+  state.coins-=20;const recovered=Math.min(state.hero==='na'?Math.round(45*1.15):45,u.max-u.hp);u.hp+=recovered;
+  log(`${SHIPS[u.type].name} 수리: 체력 +${Math.ceil(recovered)} (자원 20 사용)`);
+  hud();draw();renderUpgrade();
+}
+function upgradeShip(){if(!['prepare','battle'].includes(state.phase))return;let u=state.ships.find(s=>s.id===state.selectedShip&&s.hp>0);if(!u||u.level>=3)return;let price=upgradeCost(u);if(state.coins<price){log('강화 자원이 부족합니다.');return}state.coins-=price;let oldMax=u.max;u.level++;u.max=Math.round(SHIPS[u.type].hp*(1+(u.level-1)*.25));u.hp=Math.min(u.max,u.hp+(u.max-oldMax));log(`${SHIPS[u.type].name} Lv.${u.level} 강화!`);hud();draw();renderUpgrade()}
+function organizeFleet(){
+  // 웨이브 사이에 생존 함선의 전투 좌표만 정렬한다. 체력·레벨·종류는 보존한다.
+  const alive=state.ships.filter(u=>u.hp>0&&!u.basic).sort((a,b)=>a.id-b.id);
+  alive.forEach((u,i)=>{u.x=96+i*67;u.parkSlot=i});
+  draw();
+}
+function chooseShip(id){
+  state.selectedShip=id;
+  draw();renderUpgrade();
+}
+function renderUpgrade(){
+  const alive=state.ships.filter(u=>u.hp>0&&!u.basic).sort((a,b)=>a.id-b.id);
+  const u=alive.find(s=>s.id===state.selectedShip);
+  for(const id of ['upgradePrepare','upgradeBattle']){
+    const el=$('#'+id);if(!el)continue;el.replaceChildren();
+    const head=document.createElement('div');head.className='manage-title';head.innerHTML='<span class="inline-icon inl-fleet"></span>내 함대 관리 · 생존 '+alive.length+'/6척 (무료 지원선 별도)';el.append(head);
+    if(!alive.length){const empty=document.createElement('div');empty.className='manage-empty';empty.textContent='아직 출전한 함선이 없습니다. 위의 함선 소환 버튼을 눌러주세요.';el.append(empty);continue;}
+    const grid=document.createElement('div');grid.className='manage-grid';
+    alive.forEach((ship,i)=>{
+      const spec=SHIPS[ship.type],b=document.createElement('button');
+      b.type='button';b.className='manage-ship unit-'+ship.type+(ship.id===state.selectedShip?' chosen':'');
+      b.setAttribute('aria-pressed',String(ship.id===state.selectedShip));
+      const pic=document.createElement('span');pic.className='big';pic.innerHTML=`<img src="visuals/ally_${ship.type}.webp" alt="">`;
+      const badge=document.createElement('span');badge.className='role-badge role-'+ship.type;badge.textContent=roleLabel(ship.type);
+      const name=document.createElement('strong');name.textContent=(i+1)+'. '+spec.name;
+      const info=document.createElement('span');info.className='mini';info.textContent='Lv.'+ship.level+' · 체력 '+Math.ceil(ship.hp)+'/'+ship.max;
+      b.append(pic,badge,name,info);b.onclick=()=>chooseShip(ship.id);grid.append(b);
+    });
+    el.append(grid);
+    const txt=document.createElement('div');txt.style.marginTop='10px';txt.textContent=u?`선택: ${SHIPS[u.type].name} · Lv.${u.level}/3 · 체력 ${Math.ceil(u.hp)}/${u.max} · 공격력 ${Math.round(SHIPS[u.type].dmg*(1+(u.level-1)*.35))}`:'강화할 함선 카드를 선택하세요.';el.append(txt);
+    if(u){const b=document.createElement('button');b.type='button';b.innerHTML=u.level>=3?'<span class="inline-icon inl-up"></span>최대 강화 완료':`<span class="inline-icon inl-up"></span>${upgradeCost(u)} 자원 · Lv.${u.level+1} 강화`;b.disabled=u.level>=3||state.coins<upgradeCost(u);b.onclick=upgradeShip;el.append(b);
+      if(state.phase==='prepare'){
+        const r=document.createElement('button');r.type='button';r.className='repair-button';
+        r.innerHTML=`<span class="inline-icon inl-repair"></span>20자원으로 체력 최대 45 수리`;
+        r.disabled=u.hp>=u.max||state.coins<20;r.onclick=repairShip;el.append(r);
+      }
+    }
+  }
+}
+function battleStats(u,sp){if(u.adaptive)return u.adaptiveStats;if(u.team!=='ally'||u.basic)return sp;let level=u.level||1;return {...sp,dmg:sp.dmg*(1+(level-1)*.35),range:sp.range+(level===3?18:0),rate:sp.rate*(level===3?.8:1)}}
+function priorityTarget(u,opponents,sp){
+  const eligible=opponents.filter(v=>v.hp>0&&Math.abs(v.x-u.x)<=sp.range);
+  if(!eligible.length)return null;
+  if(u.team==='enemy')return eligible.sort((a,b)=>Math.abs(a.x-u.x)-Math.abs(b.x-u.x))[0];
+  const score=v=>{
+    const d=Math.abs(v.x-u.x);
+    if(u.type==='archer')return v.hp/v.max*135 + d*.18;
+    if(u.type==='fast')return (v.type==='ranged'?-110:0)+(['wakizaka','boss'].includes(v.type)?-75:0)+d*.22;
+    if(u.type==='cannon')return -opponents.filter(e=>e.hp>0&&Math.abs(e.x-v.x)<85).length*38+d*.21;
+    return d+(v.x<180?-38:0);
+  };
+  return eligible.sort((a,b)=>score(a)-score(b))[0];
+}
+// 웨이브 시작 시 대응 함선의 절반, 전투 중반에는 현재 생존 전력으로 나머지를 재평가한다.
+function adaptiveSecondTime(){return state.wave===3?23:18;}
+function deployAdaptiveFleet(survivors,offset=0){
+  if(state.wave<2 || !survivors.length)return 0;
+  survivors.forEach((ally,i)=>{
+    const original=SHIPS[ally.type],level=ally.level||1;
+    const allyCombat=battleStats(ally,original);
+    const max=Math.max(1,Math.round(original.hp*(1+(level-1)*.25)*ADAPTIVE_HP_RATIO));
+    const adaptiveStats={name:ADAPTIVE_NAMES[ally.type]+' Lv.'+level,
+      emoji:ally.type==='guard'?'🚢':ally.type==='archer'?'⛵':ally.type==='cannon'?'🛳️':'🛶',
+      hp:max,dmg:allyCombat.dmg*ADAPTIVE_DMG_RATIO,range:allyCombat.range,
+      velocity:allyCombat.velocity,rate:allyCombat.rate,bounty:6};
+    const slot=i+offset;
+    state.enemies.push({id:++ident,type:'adaptive',adaptive:true,adaptiveStats,
+      counterpart:ally.type,x:735+(slot%3)*24+Math.floor(slot/3)*12,
+      hp:max,max,cd:.5+i*.08,level,team:'enemy',rush:0,fury:0,
+      protectedUntil:state.elapsed+ENEMY_DEPLOY_PROTECTION});
+  });
+  log(`⚔️ 적 대응 고급 함선 ${survivors.length}척 출전 (현재 아군 전력 반영)`);
+  return survivors.length;
+}
+function startAdaptiveFleet(){
+  const alive=state.ships.filter(u=>u.hp>0&&!u.basic).slice(0,SHIP_CAP);
+  state.adaptiveMidPending=state.wave>=2;
+  state.adaptiveOpeningCount=state.wave>=2?Math.ceil(alive.length/2):0;
+  return deployAdaptiveFleet(alive.slice(0,state.adaptiveOpeningCount));
+}
+function adaptiveMidTick(){
+  if(!state.adaptiveMidPending||state.waveRealTime<adaptiveSecondTime())return;
+  state.adaptiveMidPending=false;
+  const now=state.ships.filter(u=>u.hp>0&&!u.basic).slice(0,SHIP_CAP);
+  // 시작 전력이 많았더라도 손실이 발생하면 추가 대응 함선도 함께 줄어든다.
+  const maxSecond=Math.max(0,SHIP_CAP-state.adaptiveOpeningCount);
+  const add=Math.min(maxSecond,Math.floor(now.length/2));
+  if(add)deployAdaptiveFleet(now.slice(0,add),state.adaptiveOpeningCount);
+  else log('⚓ 적 증원 재평가: 생존 아군 전력 감소로 대응 고급 함선 추가 출전 없음');
+}
+// v3.7: 장기 교착 완화. 무제한 지원선 출전 규칙과 기본 능력치는 유지한다.
+// 정규 증원 종료 후 교전이 너무 길어질 때 살아 있는 지원선이 남은 정규 적선에 협동 포격한다.
+function endStalemateTick(dt){
+  if(state.siegeMode)return;
+  const regular=state.enemies.filter(u=>u.hp>0&&!u.basic);
+  const allies=state.ships.filter(u=>u.hp>0&&!u.basic);
+  const support=state.ships.filter(u=>u.hp>0&&u.basic);
+  if(!regular.length||allies.length||!support.length||state.spawn.length||state.adaptiveMidPending){
+    state.stalemateClock=0;state.focusClock=0;state.focusAnnounced=false;return;
+  }
+  state.stalemateClock=(state.stalemateClock||0)+dt;
+  // 기존 1척 잔여 시 15초. 여러 적선이 남아 있으면 충분히 교전할 시간을 준다.
+  const threshold=regular.length===1?15:45;
+  if(state.stalemateClock<threshold)return;
+  state.focusClock=(state.focusClock||0)+dt;
+  if(!state.focusAnnounced){state.focusAnnounced=true;log('⚓ 지원선 협동 포격! 남은 정규 적선에 화력을 집중합니다.');}
+  if(state.focusClock>=2.5){
+    state.focusClock-=2.5;
+    const target=regular.sort((a,b)=>a.hp-b.hp)[0];
+    dmg(target,Math.min(14,6+support.length*2));
+    fx(target.x,'🎯');
+  }
+}
+// v2.8: 자원 지원은 웨이브당 전멸 1회 및 최종 보스 등장 1회만 지급한다.
+const EMERGENCY_WAIT_SECONDS=5, EMERGENCY_GRANT=45, BOSS_GRANT=30;
+function grantResources(amount,message){
+  const before=state.coins;
+  state.coins=Math.min(RESOURCE_CAP,state.coins+amount);
+  const actual=state.coins-before;
+  log(`${message} · 자원 +${actual} (보유 ${state.coins}/${RESOURCE_CAP})`);
+  hud();
+}
+function emergencySupplyTick(realDt){
+  if(state.emergencyGranted||!state.emergencyEligible)return;
+  const alive=state.ships.some(u=>u.hp>0&&!u.basic);
+  if(alive){state.emergencyNoFleetSeconds=0;return;}
+  state.emergencyNoFleetSeconds+=realDt;
+  if(state.emergencyNoFleetSeconds>=EMERGENCY_WAIT_SECONDS){
+    state.emergencyGranted=true;
+    grantResources(EMERGENCY_GRANT,'🛟 고급 함대 전멸! 긴급 보급');
+    bossNotice('🛟 긴급 보급 +45! 고급 함선을 다시 건조하세요.');
+  }
+}
+function spawnRegularEnemy(type,slot=0){
+  const sp=ENEMIES[type],hp=Math.round(sp.hp*waveEnemyHpMultiplier());
+  // 3~8척이 비슷한 시각에 출전하되 약간의 간격으로 대형을 만든다.
+  state.enemies.push({id:++ident,type,x:790+(slot%5)*18+Math.floor(slot/5)*8,
+    hp,max:hp,cd:.4,team:'enemy',rush:0,fury:0,
+    protectedUntil:state.elapsed+ENEMY_DEPLOY_PROTECTION});
+  if(type==='boss'&&state.wave===5&&!state.bossSupplyGranted){
+    state.bossSupplyGranted=true;
+    grantResources(BOSS_GRANT,'⚓ 최종 보스 등장! 결전 보급');
+  }
+  if(type==='wakizaka'||type==='boss'){
+    state.bossAbilityDone=false;state.bossRepeat=0;
+    bossNotice(type==='wakizaka'?'⚔️ 일본군 선봉 지휘선 등장!':'🔥 최종 보스 와키자카 야스하루 등장!');
+  }
+}
+function buildEnemyFormationSchedule(wave){
+  const types=[...WAVES[wave-1]],first=Math.min(INITIAL_FLEET[wave-1],types.length),
+    reinforce=REINFORCEMENT_FLEET[wave-1],target=WAVE_BATTLE_TARGET[wave-1];
+  const remaining=types.length-first;
+  const waves=Math.ceil(remaining/reinforce);
+  // 마지막 증원까지의 시간을 분산하되, 웨이브 시작 시 선발 함대는 즉시 배치한다.
+  const times=[];
+  for(let i=0;i<remaining;i++){
+    const group=Math.floor(i/reinforce);
+    times.push(waves===1?target*.53:target*(.38+group*.43/Math.max(1,waves-1)));
+  }
+  return {first,remaining:types.slice(first),times};
+}
+function loop(dt){
+  if(state.phase!=='battle'||state.paused)return;
+  dt=Math.min(dt,.06)*state.speed;
+  state.elapsed+=dt;state.waveRealTime+=dt/state.speed;state.spawnClock-=dt;
+  if(state.wave===5&&state.wave5Gate>0)state.wave5Gate-=dt;
+  state.basicAllyClock-=dt;state.basicEnemyClock-=dt;state.supplyClock-=dt;
+  if(state.supplyClock<=0){state.supplyClock+=PASSIVE_INTERVAL;state.coins=Math.min(RESOURCE_CAP,state.coins+(state.hero==='ryu'?3:2))}
+  for(const team of ['ally','enemy']){
+    const clock=team==='ally'?'basicAllyClock':'basicEnemyClock';
+    if(state[clock]<=0){
+      state[clock]+=BASIC_INTERVAL;
+      if(state.siegeMode)continue;
+      const arr=team==='ally'?state.ships:state.enemies;
+      const spec=MILITIA[team];
+      // 기본 지원선은 기존 생존 수와 무관하게 매 주기 3척씩 출전한다.
+      // 전투로직은 1라인으로 유지하고 작은 위치 차이만 주어 출전 직후 겹침을 줄인다.
+      for(let k=0;k<BASIC_BATCH;k++){
+        arr.push({id:++ident,type:'militia',basic:true,
+          x:(team==='ally'?74:865)+(team==='ally'?-1:1)*k*11,
+          hp:spec.hp,max:spec.hp,cd:.5+k*.08,team,level:1});
+      }
+    }
+  }
+  state.baseAllyCD=Math.max(0,state.baseAllyCD-dt);
+  state.baseEnemyCD=Math.max(0,state.baseEnemyCD-dt);
+  state.shieldTime=Math.max(0,state.shieldTime-dt);state.commandBuff=Math.max(0,(state.commandBuff||0)-dt);
+  bossTick(dt);
+  adaptiveMidTick();
+  // 각 증원 시점에 여러 척을 동시에 출전시켜 각개격파를 방지한다.
+  if(state.spawn.length && state.spawnClock<=0){
+    const nextTime=state.spawnTimes[state.regularSpawned]??Infinity;
+    if(state.waveRealTime>=nextTime){
+      let batch=0;
+      while(state.spawn.length && state.waveRealTime >= (state.spawnTimes[state.regularSpawned]??Infinity)){
+        spawnRegularEnemy(state.spawn.shift(),batch++);
+        state.regularSpawned++;
+      }
+      state.spawnClock=.15;
+      log(`⚓ 적 증원 함대 ${batch}척이 대형을 갖추고 출전합니다!`);
+    }else state.spawnClock=.12;
+  }
+  // 90초가 넘은 장기 교착에서만 후방에 쌓인 비전투 지원선을 교대 퇴역시킨다.
+  // 첫 90초, 주력함, 전방에서 교전 중인 지원선, 지원선 출전 주기는 그대로 둔다.
+  if(state.waveRealTime>90 && !state.siegeMode){
+    for(const [side,arr] of [['ally',state.ships],['enemy',state.enemies]]){
+      const live=arr.filter(u=>u.hp>0&&u.basic);
+      if(live.length>30){
+        const rear=live.filter(u=>side==='ally'?u.x<350:u.x>590).sort((a,b)=>a.id-b.id);
+        for(const u of rear.slice(0,Math.min(rear.length,live.length-30)))u.hp=0,u.retired=true;
+      }
+    }
+  }
+  const all=[...state.ships,...state.enemies];
+  // 이동/공격은 개별 함선마다 독립적으로 처리한다. 아군·적군 모두 같은 편의 선두를 기다리지 않는다.
+  for(const u of all){
+    if(u.hp<=0)continue;
+    const ally=u.team==='ally';
+    const sp=battleStats(u,u.adaptive?u.adaptiveStats:u.basic?MILITIA[u.team]:(ally?SHIPS[u.type]:ENEMIES[u.type]));
+    u.cd=Math.max(0,u.cd-dt);
+    if(!ally){u.rush=Math.max(0,(u.rush||0)-dt);u.fury=Math.max(0,(u.fury||0)-dt)}
+    const opponents=(ally?state.enemies:state.ships).filter(v=>v.hp>0);
+    const target=priorityTarget(u,opponents,sp);
+    if(target&&u.cd<=0){
+      let damage=sp.dmg;
+      if(!ally&&!u.basic)damage*=state.wave>=5?.56:state.wave>=4?.64:state.wave>=3?.68:1;
+      if(!ally&&u.fury>0)damage=Math.ceil(damage*1.35);
+      if(!ally&&state.shieldTime>0)damage=Math.round(damage*(state.hero==='eokgi'?.80:.48));if(ally&&state.hero==='sunshin'&&u.type==='cannon')damage*=1.06;if(ally&&state.hero==='na'&&state.commandBuff>0&&['cannon','fast'].includes(u.type))damage*=1.35;
+      __diagAttacker=u;dmg(target,damage,false);__diagAttacker=null;attackFX(u,target);
+      if(ally&&u.type==='cannon'&&u.level===3){
+        opponents.filter(v=>v!==target&&v.hp>0&&Math.abs(v.x-target.x)<75).slice(0,2).forEach(v=>dmg(v,Math.round(damage*.35)));
+      }
+      // 타격 효과를 개별 대상에 표시한다.
+      u.cd=sp.rate;
+    }
+    // 유효 타격 대상이 없으면 전진. 단, 아군은 최전방 경계에서 정지하고 적군은 호위선에 의해 감속된다.
+    if(!target){
+      let movement=sp.velocity*dt*2.1*(!ally&&u.rush>0?1.5:1);
+      if(!ally){
+        const guards=state.ships.filter(v=>v.hp>0&&v.type==='guard'&&Math.abs(v.x-u.x)<72);
+        if(guards.length)movement*=.30;
+      }
+      u.x=Math.max(ally?74:302,Math.min(ally?572:895,u.x+(ally?movement:-movement)));
+    }
+    if(!ally&&u.x<=302){damageDiagnostic(null,u.basic?3:Math.max(7,Math.round(u.hp/9)),u.basic?'본진 돌파·기본 지원선':'본진 돌파·정규 왜선');state.castle-=u.basic?3:Math.max(7,Math.round(u.hp/9));u.hp=0;fx(120,'💥');if(!u.basic)log('적선이 지휘선을 포격했습니다!')}
+  }
+  // 본진의 약한 자동 포격은 역전을 돕되 주력 함대의 역할을 대신하지 않는다.
+  if(state.baseAllyCD<=0){const near=state.enemies.filter(u=>u.hp>0&&u.x<150).sort((a,b)=>a.x-b.x)[0];if(near){dmg(near,ALLY_BASE_DAMAGE);state.baseAllyCD=ALLY_BASE_INTERVAL;fx(88,'🛡️')}}
+  if(state.baseEnemyCD<=0){
+    // 고급 함선을 먼저 노려 적 본진 앞의 6척 집중 포화를 견제한다.
+    const inRange=state.ships.filter(u=>u.hp>0&&u.x>=ENEMY_BASE_RANGE_START);
+    const near=inRange.filter(u=>!u.basic).sort((a,b)=>b.x-a.x)[0] || inRange.sort((a,b)=>b.x-a.x)[0];
+    if(near){damageDiagnostic(near,Math.min(near.hp,ENEMY_BASE_DAMAGE[state.wave-1]),'적 본진 방어 포격');dmg(near,ENEMY_BASE_DAMAGE[state.wave-1]);state.baseEnemyCD=ENEMY_BASE_INTERVAL;fx(850,'🔥');
+      if(!state.baseFirstShot){state.baseFirstShot=true;log('⚠️ 적 본진의 방어 포격! 전진한 고급 함선에 피해를 줍니다.')}}
+  }
+  // 본진 공격은 일반 함선 교전과 분리한다. 그림 영역에 진입하기 전에 포격한다.
+  // 1~4웨이브에서는 적 본진이 철수/수리해 완전히 파괴되지 않는다.
+  const attackers=state.ships.filter(u=>u.hp>0&&!u.basic&&u.x>=532);
+  if(!state.siegeMode && attackers.length){state.enemyCastle=Math.max(45,state.enemyCastle-2.3*dt)}
+  if(state.siegeMode){
+    state.siegeElapsed+=dt;
+    state.baseAttackClock-=dt;
+    const siegeAttackers=state.ships.filter(u=>u.hp>0&&u.x>=525);
+    if(siegeAttackers.length && state.baseAttackClock<=0){
+      // 마지막 집중 포격은 기존 함선 능력치의 우열보다 승리 연출에 중점을 둔다.
+      const attackPower=Math.min(14,8+Math.min(3,siegeAttackers.length)*2);
+      state.enemyCastle=Math.max(0,state.enemyCastle-attackPower);
+      state.baseAttackClock=1.05;
+      fx(777,'💥');
+      const muzzle=siegeAttackers[0];fx(Math.min(690,muzzle.x),'💨');attackFX(muzzle,{id:0,x:772,team:'enemy'});
+    }
+  }
+  endStalemateTick(dt);
+  // 후방에서 서로 도달하지 못한 채 교전이 무한 지속되는 상황 완화.
+  // 정규 증원이 끝나고 160초를 넘었을 때만, 양측의 전방 정규 함선이
+  // 각각 원거리 지원 포격을 받는다. 직접 승리 판정을 강제로 발생시키지 않는다.
+  if(state.waveRealTime>160 && !state.siegeMode && !state.spawn.length){
+    state.longBattleClock=(state.longBattleClock||0)+dt;
+    if(state.longBattleClock>=3){
+      state.longBattleClock-=3;
+      const hostile=state.enemies.filter(u=>u.hp>0&&!u.basic).sort((a,b)=>a.x-b.x)[0];
+      const friendly=state.ships.filter(u=>u.hp>0&&!u.basic).sort((a,b)=>b.x-a.x)[0];
+      if(hostile)dmg(hostile,16);
+      if(friendly&&hostile)dmg(friendly,3);
+    }
+  }else state.longBattleClock=0;
+  const fallen=state.enemies.filter(x=>x.hp<=0&&!x.retired);
+  if(fallen.length){const cash=fallen.reduce((sum,x)=>sum+(x.basic?MILITIA.enemy.bounty:(x.adaptive?x.adaptiveStats.bounty:ENEMIES[x.type].bounty)),0);state.coins=Math.min(RESOURCE_CAP,state.coins+cash);if(!fallen.every(x=>x.basic))log(`적선 ${fallen.length}척 격침 · 자원 +${cash}`)}
+  state.ships=state.ships.filter(x=>x.hp>0);
+  if(!state.ships.some(s=>s.id===state.selectedShip))state.selectedShip=null;
+  state.enemies=state.enemies.filter(x=>x.hp>0);
+  emergencySupplyTick(dt/state.speed);
+  if(state.castle<=0){state.castle=0;if(typeof window!=='undefined'&&typeof window.hdDiagnostic==='function')window.hdDiagnostic('base_destroyed',state);finish(false);return}
+  if(state.siegeMode){
+    if(state.enemyCastle<=0){state.enemyCastle=0;finish(true);return}
+  }else if(!state.enemies.some(u=>!u.basic)&&!state.spawn.length){
+    if(state.wave===5){
+      state.siegeMode=true;state.siegeElapsed=0;state.baseAttackClock=.1;
+      state.enemies=[];state.basicEnemyClock=BASIC_INTERVAL;
+      $('#siegeMessage').classList.remove('hide');
+      log('🏯 왜군 최종 함대 격퇴! 적 본진에 집중 포격하여 승리하세요.');
+      const charge=state.ships.filter(u=>u.hp>0);
+      // 마지막 적선 격파 뒤 전력 손실로 본진 공격이 멈추지 않도록 전진 지원을 제공.
+      if(!charge.length){for(let i=0;i<3;i++)state.ships.push({id:++ident,type:'militia',basic:true,x:510-i*14,hp:MILITIA.ally.hp,max:MILITIA.ally.hp,cd:.3,team:'ally',level:1})}
+    }else{finish(true);return}
+  }
+  hud();draw();bossHud();
+}
+
+function visualBaseUpdate(){
+ const a=Math.max(0,state.castle),b=Math.max(0,state.enemyCastle);
+ for(const [id,side,hp] of [['allyBase','ally',a],['enemyBase','enemy',b]]){
+  const el=document.getElementById(id);if(!el)return;
+  const stage=hp<=0?3:hp<=40?2:hp<=70?1:0;
+  const image=el.querySelector('img');const uri=`visuals/base_${side}_${stage}.webp`;
+  el.classList.toggle('base-smoke',stage===1);el.classList.toggle('base-fire',stage===2);el.classList.toggle('base-collapse',stage===3);
+  if(image&&image.getAttribute('src')!==uri){image.setAttribute('src',uri);el.classList.add('damaged');setTimeout(()=>el.classList.remove('damaged'),600)}
+ }
+}
+
+function draw(){visualBaseUpdate();let box=$('#ships');box.replaceChildren();for(let u of [...state.ships,...state.enemies]){let s=u.adaptive?u.adaptiveStats:u.basic?MILITIA[u.team]:(u.team==='ally'?SHIPS[u.type]:ENEMIES[u.type]),e=document.createElement('div');e.className='ship '+(u.team==='enemy'?'enemy':'ally')+(u.basic?' basic':'')+(['wakizaka','boss'].includes(u.type)?' boss':'')+(u.adaptive?' adaptive':'')+(u.id===state.selectedShip?' selected':'')+(u.team==='ally'&&state.phase==='prepare'?' preparing':'');e.style.left=u.x/LIMIT*100+'%';e.style.bottom=(u.team==='ally'&&state.phase==='prepare'?29+((u.parkSlot||0)%2)*22:u.team==='ally'?29+((u.id%4))*18:26+((u.id%4))*18)+'px';e.style.zIndex=String(3+u.id%3);e.innerHTML=`<div class="hp"><i style="width:${Math.max(0,100*u.hp/u.max)}%"></i></div><div class="sprite"><img src="visuals/${u.team}_${u.basic?'basic':(u.adaptive?({guard:'heavy',archer:'ranged',cannon:'heavy',fast:'fast'}[u.type]||'boat'):u.type)}.webp" alt="" draggable="false"></div>${!u.basic&&(u.team==='ally'||u.adaptive)?`<div class="level">Lv.${u.level||1}</div>`:''}`;e.title=s.name+(u.team==='ally'?' · 클릭하여 강화':'');if(u.team==='ally'&&!u.basic){e.onclick=()=>chooseShip(u.id)}box.append(e)}}
+
+function review(){let list=$('#review');list.replaceChildren();let wrong=state.done.filter(q=>!q.ok);if(!wrong.length){list.textContent='지금까지 모든 문제를 맞혔습니다!';return}let title=document.createElement('b');title.textContent='오답 복습';list.append(title);let ul=document.createElement('ol');wrong.forEach(q=>{let li=document.createElement('li');li.textContent=`${q.q} — 정답: ${q.opts[q.correct]}. ${q.explain}`;ul.append(li)});list.append(ul)}
+function finish(won){if(typeof window!=='undefined'&&typeof window.hdDiagnostic==='function')window.hdDiagnostic('wave_end',state);$('#siegeMessage').classList.add('hide');if(!won){state.castle=0;visualBaseUpdate()}else if(state.wave===5){state.enemyCastle=0;visualBaseUpdate()}state.ships=state.ships.filter(x=>!x.basic);state.enemies=state.enemies.filter(x=>!x.basic);state.paused=false;phase('result');$('#bossHud').classList.add('hide');$('#bossToast').classList.add('hide');review();if(!won){$('#resultHeading').textContent='지휘선 방어 실패';$('#resultText').textContent=`웨이브 ${state.wave} · 정답 ${state.correct}/${state.answered}. 전술을 다시 조정해 보세요.`;$('#nextWave').classList.add('hide')}else if(state.wave===5){let rate=state.correct/15,stars=rate>=.8&&state.castle>=60?3:rate>=.6?2:1;$('#resultHeading').textContent='한산도 방어 완료 · '+stars+'성 달성';$('#resultText').textContent=`총 15문제 중 ${state.correct}문제 정답, 지휘선 체력 ${Math.ceil(state.castle)}/100 · ${stars}성 달성`;$('#nextWave').classList.add('hide');try{let b=Number(localStorage.getItem('hd_hansan_best')||0);if(stars>b)localStorage.setItem('hd_hansan_best',String(stars))}catch{};best()}else{$('#resultHeading').textContent=`${state.wave}웨이브 방어 성공`;let survivors=state.ships.filter(x=>x.hp>0);state.coins=Math.min(RESOURCE_CAP,state.coins+25);$('#resultText').textContent=`아군 함선 ${survivors.length}척이 생존했습니다. 함선과 현재 체력은 다음 웨이브까지 유지됩니다. 기본 보급 +25, 다음 웨이브 적 함선 ${WAVES[state.wave].length}척이 함대 단위로 출전합니다. (동시 출전 6척, 자원 상한 ${RESOURCE_CAP})`;$('#nextWave').classList.remove('hide');log(`웨이브 ${state.wave} 클리어 · 생존 ${survivors.length}척 유지 · 보급 +25`)}hud()}
+function best(){try{const v=Number(localStorage.getItem('hd_hansan_best')||0);$('#best').textContent=v>0?`${v}성`:'없음'}catch{$('#best').textContent='없음'}}
+$('#pick').onclick=()=>{phase('quiz');showQuestion()};$$('.hero').forEach(b=>b.onclick=()=>{state.hero=b.dataset.hero;$$('.hero').forEach(v=>v.classList.toggle('on',v===b));hud()});
+$('#start').onclick=()=>{if(!state.ships.some(u=>u.hp>0&&!u.basic)){log('함선을 한 척 이상 소환한 뒤 해전을 시작하세요.');hud();$('#fleetReadiness')?.scrollIntoView({block:'nearest',behavior:'smooth'});return;}if(typeof window!=='undefined'&&typeof window.hdDiagnostic==='function')window.hdDiagnostic('wave_start',state);const formation=buildEnemyFormationSchedule(state.wave);state.spawn=formation.remaining;state.waveRealTime=0;state.regularSpawned=0;state.spawnTimes=formation.times;const target=WAVE_BATTLE_TARGET[state.wave-1];state.wave5Sent=0;state.wave5Gate=0;state.wave5GateStarted=false;state.wave5Gate2Started=false;state.wave5GateWait=0;state.wave5GateWait2=0;state.siegeMode=false;state.siegeElapsed=0;state.baseAttackClock=0;$('#siegeMessage').classList.add('hide');state.spawnClock=.45;state.basicAllyClock=1.0;state.basicEnemyClock=1.0;state.supplyClock=PASSIVE_INTERVAL;state.baseAllyCD=0;state.baseEnemyCD=0;state.baseFirstShot=false;state.bossWarn=null;state.bossWarnTime=0;state.bossAbilityDone=false;state.bossRepeat=0;$('#bossToast').classList.add('hide');$('#bossHud').classList.add('hide');state.skillUsed=false;state.shieldTime=0;state.commandBuff=0;state.adaptiveMidPending=false;state.stalemateClock=0;state.focusClock=0;state.focusAnnounced=false;state.emergencyEligible=state.ships.some(s=>s.hp>0&&!s.basic);state.emergencyNoFleetSeconds=0;state.emergencyGranted=false;state.bossSupplyGranted=false;state.paused=false;phase('battle');const responseFleet=startAdaptiveFleet();for(let i=0;i<formation.first;i++)spawnRegularEnemy(WAVES[state.wave-1][i],i);renderUpgrade();draw();log(`웨이브 ${state.wave} 해전 시작 · 선발 함대 ${formation.first}척 즉시 배치, 정규 증원 ${state.spawn.length}척 집단 출전 · 대응 고급 왜선 선발 ${responseFleet}척 + 18초 뒤 전력 재평가 · 전투 약 ${target}초 + 마지막 본진 공격 목표`)};
+$('#pause').onclick=()=>{state.paused=!state.paused;$('#pause').innerHTML=state.paused?'<span class="ui-icon icon-start"></span>재개':'<span class="ui-icon icon-pause"></span>정지';hud()};$('#speed').onclick=()=>{state.speed=state.speed===1.5?2.3:1.5;$('#speed').innerHTML=state.speed===1.5?'<span class="ui-icon icon-speed"></span>기본 1.5배 · 2배속 전환':'<span class="ui-icon icon-speed"></span>빠른 전투 · 기본 속도로';};
+$('#skill').onclick=()=>{if(state.phase!=='battle'||state.paused||state.skillUsed)return;state.skillUsed=true;const h=state.hero;const __skillBefore={hp:state.ships.reduce((a,u)=>a+u.hp,0),coins:state.coins,castle:state.castle};
+if(h==='sunshin'){state.enemies.slice().forEach(u=>dmg(u,Math.min(155,95+state.wave*11)));log('이순신: 학익진 집중 포격!');}
+else if(h==='eokgi'){
+ const ranked=state.enemies.filter(u=>u.hp>0).sort((a,b)=>(b.max||b.hp)-(a.max||a.hp));
+ const target=ranked[0];
+ if(target){ const x=target.x; dmg(target,Math.min(420,270+state.wave*30));
+ ranked.filter(u=>u!==target&&u.hp>0).forEach(u=>dmg(u,Math.abs(u.x-x)<225?125+state.wave*12:55+state.wave*8));
+ log('이억기: 적 기함 집중 격파와 연쇄 포격!');}else log('공격할 적선이 없습니다.');
+}
+else if(h==='na'){
+ const gunners=state.ships.filter(u=>u.hp>0&&!u.basic&&['cannon','fast'].includes(u.type)).length;
+ const volley=Math.min(345,155+gunners*52);
+ state.enemies.slice().forEach(u=>dmg(u,volley));state.commandBuff=16;
+ log('나대용: 개량 군선 집중 포화! 16초간 공격력 강화');
+}
+if(typeof window!=='undefined'&&typeof window.hdSkillMetrics==='function')window.hdSkillMetrics({hero:h,wave:state.wave,hpRecovered:state.ships.reduce((a,u)=>a+u.hp,0)-__skillBefore.hp,coinsGained:state.coins-__skillBefore.coins,castleRecovered:state.castle-__skillBefore.castle});heroSkillVisual();hud();draw();if(h==='sunshin'&&!state.enemies.length&&!state.spawn.length&&state.wave!==5)finish(true)};
+$('#nextWave').onclick=()=>{
+  state.wave++;
+  if(state.wave===5){
+    const before=state.coins;
+    state.coins=Math.min(RESOURCE_CAP,state.coins+60);
+    const restored=Math.min(15,100-state.castle);state.castle+=restored;
+    log(`최종 출전 특별 보급! 자원 +${state.coins-before}, 지휘선 체력 +${Math.ceil(restored)}`);
+  }
+  phase('quiz');showQuestion()
+};$('#restart').onclick=()=>{location.reload()};$('#map').onclick=()=>location.href='../index.html';
+function frame(t){let dt=(t-last)/1000||0;last=t;loop(dt);requestAnimationFrame(frame)}avatar();fleetUI('fleetPrepare');fleetUI('fleetBattle');best();phase('hero');requestAnimationFrame(frame);
+</script></body></html>

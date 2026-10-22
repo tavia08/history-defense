@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100" height="75" viewBox="0 0 100 75">
+<title>거북선 - 조선 수군 돌격형 게임 일러스트</title>
+<path d="M3 62Q27 69 51 63T98 63" fill="none" stroke="#c5eef7" stroke-width="3"/>
+<path d="M7 43 Q38 52 91 43 L89 56 Q48 65 14 55Z" fill="#427c9b" stroke="#22475d" stroke-width="2.8"/>
+<path d="M17 42Q35 17 72 31Q83 34 86 44Z" fill="#8ab2a4" stroke="#254d54" stroke-width="2.5"/>
+<path d="M25 40Q34 25 52 28M38 42Q46 28 61 31M53 44Q63 32 75 38" stroke="#496d62" stroke-width="2.1" fill="none"/>
+<path d="M19 38L77 44" stroke="#40695b" stroke-width="1.7" stroke-dasharray="3 5"/>
+<path d="M82 34Q90 24 94 29L91 36 99 38 91 43 83 42Z" fill="#d2c39b" stroke="#715d49" stroke-width="2"/>
+<circle cx="91" cy="33" r="1.7" fill="#243e43"/>
+<path d="M23 51L16 60M38 54L33 63M60 55L62 64M77 53L82 62" stroke="#9d754b" stroke-width="3" stroke-linecap="round"/>
+<circle cx="28" cy="45" r="2" fill="#dcbb6c"/><circle cx="57" cy="48" r="2" fill="#dcbb6c"/>
+</svg>
