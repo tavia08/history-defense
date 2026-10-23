@@ -24,9 +24,13 @@ document.body.append(wrap);document.getElementById('hdRecordSkip').onclick=()=>w
 const saved=r.find(x=>x.id===id)||past;
 if(window.HDOnline?.isConfigured()){
   // POST is no-cors: completion does not prove the Apps Script saved the row.
-  window.HDOnline.submit({...data,initial,cls}).then(sent=>{
-    alert(sent?'로컬 저장 완료. 온라인 전송 요청도 보냈습니다. Google Sheets의 Leaderboard 시트에서 저장 여부를 확인하세요.':'로컬 저장 완료. 온라인 전송 요청에 실패했습니다. 설정과 Apps Script 배포를 확인하세요.');
-  }).catch(()=>alert('로컬 저장 완료. 온라인 서버에 연결하지 못했습니다.'));
+  window.HDOnline.submit({...data,initial,cls}).then(result=>{
+    const status=result?.status;
+    if(status==='saved')alert('온라인 저장 확인 완료! 구글시트에 최고 기록이 저장됐습니다.');
+    else if(status==='unchanged')alert('서버 확인 완료: 기존 최고 점수가 더 높거나 같아 기록을 유지했습니다.');
+    else if(status==='rejected')alert('온라인 등록 거부: '+String(result.reason||'입력값을 확인하세요.'));
+    else alert('로컬 기록은 저장됐으나 온라인 저장은 확인되지 않았습니다. 연결 상태를 점검하고 구글시트를 확인하세요.');
+  }).catch(()=>alert('로컬 기록은 저장됐지만 온라인 저장 결과를 확인할 수 없습니다.'));
 }else alert('이 브라우저에 저장했습니다. 온라인 설정이 없어 공동 랭킹으로 전송하지 않았습니다.');};}
 let lastKey='';function monitor(stage){let d=snapshot(stage);if(!d)return;if(!d.terminal){lastKey='';return}let key=[d.wave,d.won,d.score].join('|');if(lastKey===key)return;lastKey=key;popup(stage,d)}
 window.HDRecords={read,list,stages,safe};
