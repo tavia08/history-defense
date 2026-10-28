@@ -31,4 +31,4 @@ document.querySelectorAll('.hot').forEach(b=>b.addEventListener('click',()=>{use
 document.querySelectorAll('.tool').forEach(b=>b.addEventListener('click',()=>openTool(b.dataset.tool)));
 el('dialogClose').addEventListener('click',closeTool);el('overlay').addEventListener('click',e=>{if(e.target===el('overlay'))closeTool()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&el('overlay').classList.contains('open'))closeTool()});
 selectStage('ansi');
-</script><a href="leaderboard.html" id="hdLeaderboardLink" style="position:fixed;right:16px;bottom:14px;z-index:20;background:#342316;color:#ffe2a2;border:2px solid #d2a36a;border-radius:10px;padding:10px 14px;text-decoration:none;font:800 14px Malgun Gothic,sans-serif;box-shadow:0 3px 12px #0009">🏆 내 기록 보기</a></body></html>
+</script><a href="leaderboard.html" id="hdLeaderboardLink" style="position:fixed;right:16px;bottom:14px;z-index:20;background:#342316;color:#ffe2a2;border:2px solid #d2a36a;border-radius:10px;padding:10px 14px;text-decoration:none;font:800 14px Malgun Gothic,sans-serif;box-shadow:0 3px 12px #0009">🏆 내 기록 보기</a><script src="assets/hd-command-auth-v513.js"></script></body></html>
