@@ -1,5 +1,8 @@
 /* History Defense v5.0 local-only record system. No remote submission. */
 (()=>{'use strict';
+const hdPersonalStage=document.currentScript?.dataset?.stage||'';
+const hdPersonalScript=document.currentScript?.src||'';
+if(hdPersonalScript){const el=document.createElement('script');el.src=new URL('hd-personal-best-v512.js',hdPersonalScript).href;el.onload=()=>window.HDPersonalBest512?.init(hdPersonalStage);document.head.appendChild(el);}
 const STORE='hd_records_local_v5';
 const stages={ansi:'안시성 전투',gwiju:'귀주대첩',cheonmun:'천문령 전투',hansan:'한산도 대첩'};
 function read(){try{let a=JSON.parse(localStorage.getItem(STORE)||'[]');return Array.isArray(a)?a.filter(x=>x&&stages[x.stage]&&Number.isFinite(x.score)):[]}catch{return []}}
@@ -32,7 +35,7 @@ if(window.HDOnline?.isConfigured()){
     else alert('로컬 기록은 저장됐으나 온라인 저장은 확인되지 않았습니다. 연결 상태를 점검하고 구글시트를 확인하세요.');
   }).catch(()=>alert('로컬 기록은 저장됐지만 온라인 저장 결과를 확인할 수 없습니다.'));
 }else alert('이 브라우저에 저장했습니다. 온라인 설정이 없어 공동 랭킹으로 전송하지 않았습니다.');};}
-let lastKey='';function monitor(stage){let d=snapshot(stage);if(!d)return;if(!d.terminal){lastKey='';return}let key=[d.wave,d.won,d.score].join('|');if(lastKey===key)return;lastKey=key;popup(stage,d)}
+let lastKey='';function monitor(stage){let d=snapshot(stage);if(!d)return;if(!d.terminal){lastKey='';return}let key=[d.wave,d.won,d.score].join('|');if(lastKey===key)return;lastKey=key;try{window.HDPersonalBest512?.recordResult(d)}catch(e){console.warn('[HD512] personal record',e)}popup(stage,d)}
 window.HDRecords={read,list,stages,safe};
 const stage=document.currentScript?.dataset?.stage;if(stage&&stages[stage])setInterval(()=>monitor(stage),600);
 })();
