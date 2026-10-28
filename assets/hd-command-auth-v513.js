@@ -2,8 +2,8 @@
  * Never adds credentials to a URL. Saves the token for stage pages in the same tab.
  */
 (()=>{'use strict';
- const HUB_ORIGIN='PASTE_HUB_ORIGIN_HERE'; // e.g. https://tavia08.github.io (NO path)
- const SERVER='PASTE_V511_EXEC_URL_HERE';
+ const HUB_ORIGIN='https://tavia08.github.io'; // e.g. https://tavia08.github.io (NO path)
+ const SERVER='https://script.google.com/macros/s/AKfycbxaNVvX4B1moP5mlKyk2wUP1NMfOyghLXGtRlWbK7l4x4uKRHOdW-Uj53QvjVYkYHhg/exec';
  const KEY='HD512_AUTH_SESSION';
  if(!/^https:\/\/[^/]+$/.test(HUB_ORIGIN)||!/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(SERVER)){
    console.warn('[HD513] Set HUB_ORIGIN and v5.11 /exec server URL in hd-command-auth-v513.js');return;
