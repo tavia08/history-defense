@@ -39,3 +39,42 @@ let lastKey='';function monitor(stage){let d=snapshot(stage);if(!d)return;if(!d.
 window.HDRecords={read,list,stages,safe};
 const stage=document.currentScript?.dataset?.stage;if(stage&&stages[stage])setInterval(()=>monitor(stage),600);
 })();
+/* v5.14 UI-only finishing pass; no changes to records / scoring / auth. */
+(()=>{'use strict';
+ function apply(){
+  const stage=document.currentScript?.dataset?.stage || window.__HD514_STAGE;
+  // Current script is not available inside a deferred callback; recover from own script tag.
+  const s=stage || document.querySelector('script[src*="hd-records.js"][data-stage]')?.dataset.stage;
+  if(s==='ansi'){
+    // Remove developer notes on the actual siege page; preserve history quizzes/game instructions.
+    const header=document.querySelector('.wrap > header');
+    if(header){
+      header.querySelectorAll('.notice').forEach(el=>el.remove());
+      const subtitle=header.querySelector('p.muted');
+      if(subtitle && /시각 교체판|배경.*교체|v4\.0|실제 성문 배치/.test(subtitle.textContent)) subtitle.textContent='고구려 안시성 방어전 · 3개 성문을 지켜내세요';
+    }
+    document.querySelectorAll('.footer').forEach(el=>{if(/시제품용|창작 배치도|확정된 사료/.test(el.textContent))el.remove();});
+  }
+  if(s==='cheonmun'){
+    if(!document.getElementById('hd514-contrast')){
+      const style=document.createElement('style');style.id='hd514-contrast';
+      style.textContent=`
+        #resultPanel{color:#f7e6ca!important}
+        #resultPanel h2,#resultPanel #resultTitle{color:#ffe3a5!important;text-shadow:0 1px 1px #000}
+        #resultPanel #resultDesc{color:#f1e8d8!important;opacity:1!important}
+        #resultPanel .result-meaning{background:#fff0cc!important;color:#362315!important;border-color:#b47729!important;opacity:1!important}
+        #resultPanel #resultMeaning,#resultPanel #resultMeaning *{color:#362315!important;opacity:1!important}
+        #resultPanel .final-debrief{background:#fff8e8!important;border-color:#a57a46!important;color:#342317!important;opacity:1!important}
+        #resultPanel .final-debrief *{color:#342317!important;opacity:1!important}
+        #resultPanel .result-score>div{background:#f1f7ef!important;border-color:#a4b7ac!important;opacity:1!important}
+        #resultPanel .result-score strong{color:#17425a!important;opacity:1!important}
+        #resultPanel .result-score span{color:#2d5149!important;opacity:1!important}
+        #resultPanel button{opacity:1}
+        #resultPanel button:disabled{opacity:.5}
+      `;
+      document.head.appendChild(style);
+    }
+  }
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();
+})();
