@@ -1,40 +1,28 @@
-/* v5.13 — single-login token receiver for the command center only.
- * Never adds credentials to a URL. Saves the token for stage pages in the same tab.
+/* History Defense command-center auth bridge - Common Auth v1
+ * Trusts the student session already verified by history-hub.
+ * No second roster lookup, no popup/opener dependency, no credentials in the URL.
  */
 (()=>{'use strict';
- const HUB_ORIGIN='https://tavia08.github.io'; // e.g. https://tavia08.github.io (NO path)
- const SERVER='https://script.google.com/macros/s/AKfycbxaNVvX4B1moP5mlKyk2wUP1NMfOyghLXGtRlWbK7l4x4uKRHOdW-Uj53QvjVYkYHhg/exec';
- const KEY='HD512_AUTH_SESSION';
- if(!/^https:\/\/[^/]+$/.test(HUB_ORIGIN)||!/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(SERVER)){
-   console.warn('[HD513] Set HUB_ORIGIN and v5.11 /exec server URL in hd-command-auth-v513.js');return;
- }
- let accepted=false;
- function api(token){return new Promise((resolve,reject)=>{
-  const cb='hd513verify_'+Date.now()+'_'+Math.random().toString(36).slice(2);
-  const s=document.createElement('script');let done=false;
-  const cleanup=()=>{if(done)return;done=true;clearTimeout(timer);delete window[cb];s.remove()};
-  const timer=setTimeout(()=>{cleanup();reject(Error('인증 검증 응답 초과'))},12000);
-  window[cb]=d=>{cleanup();d?.status==='ok'&&d?.valid?resolve(d):reject(Error(d?.message||'인증 실패'))};
-  s.onerror=()=>{cleanup();reject(Error('인증 서버 연결 실패'))};
-  s.src=SERVER+'?'+new URLSearchParams({action:'verifyToken',token,callback:cb}).toString();
-  document.head.appendChild(s);
- })}
- window.addEventListener('message',async e=>{
-  if(accepted||e.source!==window.opener||e.origin!==HUB_ORIGIN||e.data?.type!=='HD_AUTH_HANDOFF_V513')return;
-  const d=e.data;
-  if(d.serverUrl!==SERVER||!d.token||!Number.isFinite(Date.parse(d.expiresAt))||Date.parse(d.expiresAt)<=Date.now())return;
-  try{
-   const checked=await api(d.token);
-   if(checked.expiresAt!==d.expiresAt)throw Error('인증 만료 시간이 다릅니다.');
-   sessionStorage.setItem(KEY,JSON.stringify({token:d.token,expiresAt:Date.parse(d.expiresAt),student:checked.student}));
-   accepted=true;
-   console.info('[HD513] 통합 로그인 인증 완료. 전투 지휘소에서 스테이지를 선택하세요.');
+ const COMMON_KEY='HISTORY_HUB_AUTH_V1';
+ const DEFENSE_KEY='HD_COMMON_AUTH_V1';
+
+ function read(key){try{return JSON.parse(sessionStorage.getItem(key)||'null')}catch{return null}}
+ function valid(s){return !!(s&&s.verified===true&&s.student&&String(s.student.studentNo||'').trim()&&String(s.student.studentName||'').trim())}
+ function accept(){
+   const common=read(COMMON_KEY)||read(DEFENSE_KEY);
+   if(!valid(common)){
+     console.info('[HD CommonAuth] 직접 접속 상태입니다. 역사 학습실에서 로그인하면 학생 정보가 연결됩니다.');
+     return false;
+   }
+   sessionStorage.setItem(DEFENSE_KEY,JSON.stringify(common));
+   window.HDCommonAuthV1={session:()=>common,student:common.student};
+   document.dispatchEvent(new CustomEvent('hd-common-auth-ready',{detail:{student:common.student}}));
+   // Compatibility event used by older UI hooks.
    document.dispatchEvent(new Event('hd513-auth-ready'));
-  }catch(err){console.warn('[HD513]',err)}
- });
- let tries=0;
- const interval=setInterval(()=>{
-  if(accepted||++tries>40){clearInterval(interval);return}
-  if(window.opener)window.opener.postMessage({type:'HD_AUTH_READY_V513'},HUB_ORIGIN);
- },350);
+   console.info('[HD CommonAuth] 학습실 로그인 연결 완료:',common.student.studentNo,common.student.studentName);
+   return true;
+ }
+ if(!accept()){
+   window.HDCommonAuthV1={session:()=>read(COMMON_KEY)||read(DEFENSE_KEY),student:null};
+ }
 })();
