@@ -401,7 +401,14 @@ body #quizPanel .quiz-note{color:#f6ddba!important}
 body #quizPanel .qopts button.correct{color:#123927!important;background:#d4efdf!important}
 body #quizPanel .qopts button.wrong{color:#6f2424!important;background:#ffdfd9!important}
 
-</style><link rel="stylesheet" href="../../assets/hd-records.css"></head>
+</style><link rel="stylesheet" href="../../assets/hd-records.css"><script id="hd-lite-detect">
+const HD_LITE = !!((navigator.deviceMemory && navigator.deviceMemory <= 4) || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) || (navigator.connection && navigator.connection.saveData));
+if(HD_LITE) document.documentElement.classList.add('hd-lite');
+</script><style id="hd-lite-perf">
+.hd-lite .troopSprite,.hd-lite .enemySprite,.hd-lite .sprite img,.hd-lite .base-sprite,.hd-lite .graphic-impact,.hd-lite .fx-shot,.hd-lite .fx-hit,.hd-lite .role img,.hd-lite .spot,.hd-lite .ship img{filter:none!important;backdrop-filter:none!important}
+.hd-lite .gateAlert,.hd-lite .siege-message,.hd-lite .hero-skill-overlay{animation:none!important}
+.hd-lite header,.hd-lite .panel,.hd-lite .field,.hd-lite .stage,.hd-lite .battleCenter .field{box-shadow:none!important}
+</style></head>
 <body>
 <a id="defense-lobby-return" href="../../index.html" style="position:fixed;top:8px;left:8px;z-index:99999;display:inline-block;background:#143c4a;color:#fff;padding:8px 12px;border:2px solid #e4cb89;border-radius:12px;text-decoration:none;font-weight:800;font-size:14px;box-shadow:0 3px 10px #0005">↩ 전투 지휘소</a>
 <div class="wrap">
@@ -702,7 +709,7 @@ function syncGuardianCharacter(){
     avatar.style.visibility='hidden';return;
   }
   avatar.style.visibility='visible';
-  avatar.src='assets/asset_'+String(chosen.base+3).padStart(3,'0')+'.png';
+  avatar.src='../../assets/shared/avatars/asset_'+String(chosen.base+3).padStart(3,'0')+'.png';
   document.querySelector('#guardianName').textContent=chosen.name;
   document.querySelector('#guardianDesc').textContent=chosen.desc;
 }
